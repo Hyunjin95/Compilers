@@ -44,13 +44,13 @@
 #include "scanner.h"
 using namespace std;
 
-//----------------------------[6~--------------------------------------------------
+//------------------------------------------------------------------------------
 // token names
 //
 #define TOKEN_STRLEN 16
 
 char ETokenName[][TOKEN_STRLEN] = {
-	"tCharacter",												///< a character
+	"tChar",												///< a character
 	"tString",													///< a string
 
 	"tIdent",														///< an identifier
@@ -82,7 +82,6 @@ char ETokenName[][TOKEN_STRLEN] = {
 	"tIf",															///< a reserved keyword 'if'
 	"tThen",														///< a reserved keyword 'then'
 	"tElse",														///< a reserved keyword 'else'
-	"tEnd",															///< a reserved keyword 'end'
 	"tWhile",														///< a reserved keyword 'while'
 	"tDo",															///< a reserved keyword 'do'
 	"tReturn",													///< a reserved keyword 'return'
@@ -101,8 +100,8 @@ char ETokenName[][TOKEN_STRLEN] = {
 //
 
 char ETokenStr[][TOKEN_STRLEN] = {
-	"tCharacter (\'%s\')",							///< a character
-	"tString (\"%s\")",									///< a string
+	"tChar (%s)",							///< a character
+	"tString (%s)",									///< a string
 
 	"tIdent (%s)",											///< an identifier
 	"tNumber (%s)",											///< a number
@@ -122,24 +121,23 @@ char ETokenStr[][TOKEN_STRLEN] = {
 	"tRSBrak",													///< a right square bracket ']'
 	"tEMark",														///< an exclamation mark '!'
 
-	"tModule (%s)",											///< a reserved keyword 'module'
-	"tBegin (%s)",											///< a reserved keyword 'begin'
-	"tEnd (%s)",												///< a reserved keyword 'end'
-	"tTrue (%s)",												///< a reserved keyword 'true'
-	"tFalse (%s)",											///< a reserved keyword 'false'
-	"tBoolean (%s)",										///< a reserved keyword 'boolean'
-	"tCharacter (%s)",									///< a reserved keyword 'character'
-	"tInteger (%s)",										///< a reserved keyword 'integer'
-	"tIf (%s)",													///< a reserved keyword 'if'
-	"tThen (%s)",												///< a reserved keyword 'then'
-	"tElse (%s)",												///< a reserved keyword 'else'
-	"tEnd (%s)",												///< a reserved keyword 'end'
-	"tWhile (%s)",											///< a reserved keyword 'while'
-	"tDo (%s)",													///< a reserved keyword 'do'
-	"tReturn (%s)",											///< a reserved keyword 'return'
-	"tVar (%s)",												///< a reserved keyword 'var'
-	"tProcedure (%s)",									///< a reserved keyword 'procedure'
-	"tFunction (%s)",										///< a reserved keyword 'function'
+	"tModule",											///< a reserved keyword 'module'
+	"tBegin",											///< a reserved keyword 'begin'
+	"tEnd",												///< a reserved keyword 'end'
+	"tTrue",												///< a reserved keyword 'true'
+	"tFalse",											///< a reserved keyword 'false'
+	"tBoolean",										///< a reserved keyword 'boolean'
+	"tCharacter",									///< a reserved keyword 'character'
+	"tInteger",										///< a reserved keyword 'integer'
+	"tIf",													///< a reserved keyword 'if'
+	"tThen",												///< a reserved keyword 'then'
+	"tElse",												///< a reserved keyword 'else'
+	"tWhile",											///< a reserved keyword 'while'
+	"tDo",													///< a reserved keyword 'do'
+	"tReturn",											///< a reserved keyword 'return'
+	"tVar",												///< a reserved keyword 'var'
+	"tProcedure",									///< a reserved keyword 'procedure'
+	"tFunction",										///< a reserved keyword 'function'
 
   "tEOF",                             ///< end of file
   "tIOError",                         ///< I/O error
@@ -352,13 +350,25 @@ CToken* CScanner::Scan()
 
   while (_in->good() && IsWhite(_in->peek())) GetChar();
 
-  RecordStreamPosition();
-
-  if (_in->eof()) return NewToken(tEOF);
+	RecordStreamPosition();
+  
+	if (_in->eof()) return NewToken(tEOF);
   if (!_in->good()) return NewToken(tIOError);
 
-  c = GetChar();
-  tokval = c;
+	c = GetChar();
+	
+	if(c == '/') {
+		while(_in->peek() == '/') {
+			while(_in->peek() != '\n') GetChar();
+			while(IsWhite(_in->peek())) GetChar();
+			if(_in->peek() != '/') {
+				RecordStreamPosition();
+				c = GetChar();
+			}
+		}
+	}
+	
+	tokval = c;
   token = tUndefined;
 
   switch (c) {
@@ -419,12 +429,7 @@ CToken* CScanner::Scan()
       break;
 
 		case '/':
-			if (_in->peek() == '/') {
-				while(_in->peek() != '\n')
-					GetChar();
-			}
-			else
-				token = tFactOp;
+			token = tFactOp;
 			break;
 
 		case '&':
@@ -446,34 +451,66 @@ CToken* CScanner::Scan()
 				tokval += GetChar();
 			break;
 
-		// FIX ME!!!!!
 		case '\'':
-			if((_in->peek() == '\'')
-					break;
+		{
+			int length = 0;
+			char tmp_char;
+			bool is_char = true;
+			bool is_escape = false;
 
-			if((_in->peek() >= 0 && _in->peek() <= 127) || _in->peek() == '\n' || _in->peek() == '\t') {
-				tokval += GetChar();
-				if(_in->peek() == '\'') {
-					token = tCharacter;
-					tokval += GetChar();
-				}
+			while(_in->peek() != '\'' && _in->peek() != EOF) {
+				tmp_char = GetChar();
+				tokval += tmp_char;
+				length++;
+
+				if(!IsChar(tmp_char)) is_char = false;
+
+				if(tmp_char == '\\' && 
+					(_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '0' || _in->peek() == '\\'))
+					is_escape = true;
 			}
+			
+			if(_in->peek() != EOF) tokval += GetChar();
+
+			if((length == 1 && is_char) || (length == 2 && is_escape)) token = tChar;
+		}
 			break;
 
 		// ME TOO!!!!!
 		case '\"':
-			while((_in->peek() >= 0 && _in->peek() <= 127) || _in->peek() == '\n' || _in->peek() == '\t') {
-				tokval += GetChar();
-			}
+		{
+			char tmp_char;
+			bool is_char_all = true;
+			bool is_escape = false;
+			bool is_valid = true;
 
+			while(_in->peek() != '\"' && _in->peek() != EOF) {
+				tmp_char = GetChar();
+				tokval += tmp_char;
+
+				if(!IsChar(tmp_char)) is_char_all = false;
+
+				if(tmp_char == '\\' && 
+					(_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\'))
+					is_escape = true;
+
+				if(!is_char_all && !is_escape) is_valid = false;
+			}
+			
+			if(_in->peek() != EOF) tokval += GetChar();
+
+			if(is_valid) token = tString;
+		}
+			break;
    
+
     default:
 			if (IsLetter(c)) {
 				while(IsLetter(_in->peek()) || IsDigit(_in->peek()))
 					tokval += GetChar();
 				
-				map<string, EToken>::iterator it = keyword.find(tokval);
-				if(it != keyword.end()) token = (*it).second;
+				map<string, EToken>::iterator it = keywords.find(tokval);
+				if(it != keywords.end()) token = (*it).second;
 				else token = tIdent;
       }
 			else if (IsDigit(c)) {
@@ -483,10 +520,7 @@ CToken* CScanner::Scan()
 			}
 			else {
 				token = tUndefined;
-        tokval = "invalid character '";
-        tokval += c;
-        tokval += "'";
-      }
+			}
       break;
   }
 
@@ -499,6 +533,11 @@ bool CScanner:: IsLetter(char c) const {
 
 bool CScanner:: IsDigit(char c) const {
 	return (c >= '0' && c <= '9');
+}
+
+// How to handle when input is \' ??
+bool CScanner:: IsChar(char c) const {
+	return (((int)c >= 32 && (int) c <= 127));
 }
 
 char CScanner::GetChar()
@@ -519,3 +558,4 @@ bool CScanner::IsWhite(char c) const
 {
   return ((c == ' ') || (c == '\n') || (c == '\t'));
 }
+

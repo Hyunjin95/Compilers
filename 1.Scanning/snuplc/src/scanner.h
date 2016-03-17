@@ -49,7 +49,7 @@ using namespace std;
 /// each member of this enumeration represents a token in SnuPL/1
 ///
 enum EToken {
-	tCharacter = 0,										///< a character
+	tChar = 0,												///< a character
 	tString,													///< a string
 
 	tIdent,														///< an identifier
@@ -81,7 +81,6 @@ enum EToken {
 	tIf,															///< a reserved keyword 'if'
 	tThen,														///< a reserved keyword 'then'
 	tElse,														///< a reserved keyword 'else'
-	tEnd,															///< a reserved keyword 'end'
 	tWhile,														///< a reserved keyword 'while'
 	tDo,															///< a reserved keyword 'do'
 	tReturn,													///< a reserved keyword 'return'
@@ -312,6 +311,7 @@ class CScanner {
 		
 		bool IsLetter(char c) const;
 		bool IsDigit(char c) const;
+		bool IsChar(char c) const;
     /// @}
 
 

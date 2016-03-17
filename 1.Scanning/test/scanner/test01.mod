@@ -13,6 +13,7 @@ var
 integer
 boolean
 char
+character
 begin
 end
 if
