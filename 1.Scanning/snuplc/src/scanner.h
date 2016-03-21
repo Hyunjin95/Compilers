@@ -49,44 +49,44 @@ using namespace std;
 /// each member of this enumeration represents a token in SnuPL/1
 ///
 enum EToken {
-	tChar = 0,												///< a character
-	tString,													///< a string
+  tCharacter = 0,                   ///< a character
+  tString,                          ///< a string
 
-	tIdent,														///< an identifier
-	tNumber,													///< a number
+  tIdent,                           ///< an identifier
+  tNumber,                          ///< a number
 
-  tTermOp,													///< '+' or '-' or '||'
+  tTermOp,                          ///< '+' or '-' or '||'
   tFactOp,                          ///< '*' or '/' or '&&'
   tRelOp,                           ///< relational operator
   
-	tAssign,                          ///< assignment operator ':='
+  tAssign,                          ///< assignment operator ':='
   tSemicolon,                       ///< a semicolon ';'
-	tColon,														///< a colon ':'
+  tColon,                           ///< a colon ':'
   tDot,                             ///< a dot '.'
-	tComma,														///< a comma ','
+  tComma,                           ///< a comma ','
   tLBrak,                           ///< a left bracket '('
   tRBrak,                           ///< a right bracket ')'
-	tLSBrak,													///< a left square bracket '['
-	tRSBrak,													///< a right square bracket ']'
-	tEMark,														///< an exclamation mark '!'
+  tLSBrak,                          ///< a left square bracket '['
+  tRSBrak,                          ///< a right square bracket ']'
+  tEMark,                           ///< an exclamation mark '!'
 
-	tModule,													///< a reserved keyword 'module'
-	tBegin,														///< a reserved keyword 'begin'
-	tEnd,															///< a reserved keyword 'end'
-	tTrue,														///< a reserved keyword 'true'
-	tFalse,														///< a reserved keyword 'false'
-	tBoolean,													///< a reserved keyword 'boolean'
-	tCharacter,												///< a reserved keyword 'character'
-	tInteger,													///< a reserved keyword 'integer'
-	tIf,															///< a reserved keyword 'if'
-	tThen,														///< a reserved keyword 'then'
-	tElse,														///< a reserved keyword 'else'
-	tWhile,														///< a reserved keyword 'while'
-	tDo,															///< a reserved keyword 'do'
-	tReturn,													///< a reserved keyword 'return'
-	tVar,															///< a reserved keyword 'var'
-	tProcedure,												///< a reserved keyword 'procedure'
-	tFunction,												///< a reserved keyword 'function'
+  tModule,                          ///< a reserved keyword 'module'
+  tBegin,                           ///< a reserved keyword 'begin'
+  tEnd,                             ///< a reserved keyword 'end'
+  tTrue,                            ///< a reserved keyword 'true'
+  tFalse,                           ///< a reserved keyword 'false'
+  tBoolean,                         ///< a reserved keyword 'boolean'
+  tChar,                            ///< a reserved keyword 'char'
+  tInteger,                         ///< a reserved keyword 'integer'
+  tIf,                              ///< a reserved keyword 'if'
+  tThen,                            ///< a reserved keyword 'then'
+  tElse,                            ///< a reserved keyword 'else'
+  tWhile,                           ///< a reserved keyword 'while'
+  tDo,                              ///< a reserved keyword 'do'
+  tReturn,                          ///< a reserved keyword 'return'
+  tVar,                             ///< a reserved keyword 'var'
+  tProcedure,                       ///< a reserved keyword 'procedure'
+  tFunction,                        ///< a reserved keyword 'function'
 
   tEOF,                             ///< end of file
   tIOError,                         ///< I/O error
@@ -308,10 +308,10 @@ class CScanner {
     /// @retval true character is white space
     /// @retval false character is not white space
     bool IsWhite(char c) const;
-		
-		bool IsLetter(char c) const;
-		bool IsDigit(char c) const;
-		bool IsChar(char c) const;
+    
+    bool IsLetter(char c) const;
+    bool IsDigit(char c) const;
+    bool IsChar(char c) const;
     /// @}
 
 

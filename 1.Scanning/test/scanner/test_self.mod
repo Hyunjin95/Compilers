@@ -5,6 +5,8 @@
 ' '
 ''
 '\n'
+'\a'
+"\a"
 +
 -
 *
@@ -22,4 +24,9 @@ module
 begin
 var boolean true
 code
-'T
+"This is escape new line"
+"\n"
+"This is enter"
+"
+"
+

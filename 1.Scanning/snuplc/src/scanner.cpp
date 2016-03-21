@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-/// @brief SnuPL/0 scanner
+/// @brief SnuPL/1 scanner
 /// @author Bernhard Egger <bernhard@csap.snu.ac.kr>
 /// @section changelog Change Log
 /// 2012/09/14 Bernhard Egger created
@@ -50,48 +50,48 @@ using namespace std;
 #define TOKEN_STRLEN 16
 
 char ETokenName[][TOKEN_STRLEN] = {
-	"tChar",												///< a character
-	"tString",													///< a string
+  "tCharacter",                       ///< a character
+  "tString",                          ///< a string
 
-	"tIdent",														///< an identifier
-	"tNumber",													///< a number
+  "tIdent",                           ///< an identifier
+  "tNumber",                          ///< a number
 
-  "tTermOp",													///< '+' or '-' or '&&'
+  "tTermOp",                          ///< '+' or '-' or '&&'
   "tFactOp",                          ///< '*' or '/' or '||'
   "tRelOp",                           ///< relational operator
   
-	"tAssign",                          ///< assignment operator ':='
+  "tAssign",                          ///< assignment operator ':='
   "tSemicolon",                       ///< a semicolon ';'
-	"tColon",														///< a colon ':'
+  "tColon",                           ///< a colon ':'
   "tDot",                             ///< a dot '.'
-	"tComma",														///< a comma ','
+  "tComma",                           ///< a comma ','
   "tLBrak",                           ///< a left bracket '('
   "tRBrak",                           ///< a right bracket ')'
-	"tLSBrak",													///< a left square bracket '['
-	"tRSBrak",													///< a right square bracket ']'
-	"tEMark",														///< an exclamation mark '!'
+  "tLSBrak",                          ///< a left square bracket '['
+  "tRSBrak",                          ///< a right square bracket ']'
+  "tEMark",                           ///< an exclamation mark '!'
 
-	"tModule",													///< a reserved keyword 'module'
-	"tBegin",														///< a reserved keyword 'begin'
-	"tEnd",															///< a reserved keyword 'end'
-	"tTrue",														///< a reserved keyword 'true'
-	"tFalse",														///< a reserved keyword 'false'
-	"tBoolean",													///< a reserved keyword 'boolean'
-	"tCharacter",												///< a reserved keyword 'character'
-	"tInteger",													///< a reserved keyword 'integer'
-	"tIf",															///< a reserved keyword 'if'
-	"tThen",														///< a reserved keyword 'then'
-	"tElse",														///< a reserved keyword 'else'
-	"tWhile",														///< a reserved keyword 'while'
-	"tDo",															///< a reserved keyword 'do'
-	"tReturn",													///< a reserved keyword 'return'
-	"tVar",															///< a reserved keyword 'var'
-	"tProcedure",												///< a reserved keyword 'procedure'
-	"tFunction",												///< a reserved keyword 'function'
+  "tModule",                          ///< a reserved keyword 'module'
+  "tBegin",                           ///< a reserved keyword 'begin'
+  "tEnd",                             ///< a reserved keyword 'end'
+  "tTrue",                            ///< a reserved keyword 'true'
+  "tFalse",                           ///< a reserved keyword 'false'
+  "tBoolean",                         ///< a reserved keyword 'boolean'
+  "tChar",                            ///< a reserved keyword 'char'
+  "tInteger",                         ///< a reserved keyword 'integer'
+  "tIf",                              ///< a reserved keyword 'if'
+  "tThen",                            ///< a reserved keyword 'then'
+  "tElse",                            ///< a reserved keyword 'else'
+  "tWhile",                           ///< a reserved keyword 'while'
+  "tDo",                              ///< a reserved keyword 'do'
+  "tReturn",                          ///< a reserved keyword 'return'
+  "tVar",                             ///< a reserved keyword 'var'
+  "tProcedure",                       ///< a reserved keyword 'procedure'
+  "tFunction",                        ///< a reserved keyword 'function'
 
   "tEOF",                             ///< end of file
   "tIOError",                         ///< I/O error
-  "tUndefined",                       ///< undefined
+  "tUndefined",                       ///< undefined 
 };
 
 
@@ -100,44 +100,44 @@ char ETokenName[][TOKEN_STRLEN] = {
 //
 
 char ETokenStr[][TOKEN_STRLEN] = {
-	"tChar (%s)",							///< a character
-	"tString (%s)",									///< a string
+  "tCharacter (%s)",                  ///< a character
+  "tString (%s)",                     ///< a string
 
-	"tIdent (%s)",											///< an identifier
-	"tNumber (%s)",											///< a number
+  "tIdent (%s)",                      ///< an identifier
+  "tNumber (%s)",                     ///< a number
 
-  "tTermOp (%s)",											///< '+' or '-' or '&&'
+  "tTermOp (%s)",                     ///< '+' or '-' or '&&'
   "tFactOp (%s)",                     ///< '*' or '/' or '||'
   "tRelOp (%s)",                      ///< relational operator
   
-	"tAssign",                          ///< assignment operator ':='
+  "tAssign",                          ///< assignment operator ':='
   "tSemicolon",                       ///< a semicolon ';'
-	"tColon",														///< a colon ':'
+  "tColon",                           ///< a colon ':'
   "tDot",                             ///< a dot '.'
-	"tComma",														///< a comma ','
+  "tComma",                           ///< a comma ','
   "tLBrak",                           ///< a left bracket '('
   "tRBrak",                           ///< a right bracket ')'
-	"tLSBrak",													///< a left square bracket '['
-	"tRSBrak",													///< a right square bracket ']'
-	"tEMark",														///< an exclamation mark '!'
+  "tLSBrak",                          ///< a left square bracket '['
+  "tRSBrak",                          ///< a right square bracket ']'
+  "tEMark",                           ///< an exclamation mark '!'
 
-	"tModule",											///< a reserved keyword 'module'
-	"tBegin",											///< a reserved keyword 'begin'
-	"tEnd",												///< a reserved keyword 'end'
-	"tTrue",												///< a reserved keyword 'true'
-	"tFalse",											///< a reserved keyword 'false'
-	"tBoolean",										///< a reserved keyword 'boolean'
-	"tCharacter",									///< a reserved keyword 'character'
-	"tInteger",										///< a reserved keyword 'integer'
-	"tIf",													///< a reserved keyword 'if'
-	"tThen",												///< a reserved keyword 'then'
-	"tElse",												///< a reserved keyword 'else'
-	"tWhile",											///< a reserved keyword 'while'
-	"tDo",													///< a reserved keyword 'do'
-	"tReturn",											///< a reserved keyword 'return'
-	"tVar",												///< a reserved keyword 'var'
-	"tProcedure",									///< a reserved keyword 'procedure'
-	"tFunction",										///< a reserved keyword 'function'
+  "tModule",                          ///< a reserved keyword 'module'
+  "tBegin",                           ///< a reserved keyword 'begin'
+  "tEnd",                             ///< a reserved keyword 'end'
+  "tTrue",                            ///< a reserved keyword 'true'
+  "tFalse",                           ///< a reserved keyword 'false'
+  "tBoolean",                         ///< a reserved keyword 'boolean'
+  "tChar",                            ///< a reserved keyword 'char'
+  "tInteger",                         ///< a reserved keyword 'integer'
+  "tIf",                              ///< a reserved keyword 'if'
+  "tThen",                            ///< a reserved keyword 'then'
+  "tElse",                            ///< a reserved keyword 'else'
+  "tWhile",                           ///< a reserved keyword 'while'
+  "tDo",                              ///< a reserved keyword 'do'
+  "tReturn",                          ///< a reserved keyword 'return'
+  "tVar",                             ///< a reserved keyword 'var'
+  "tProcedure",                       ///< a reserved keyword 'procedure'
+  "tFunction",                        ///< a reserved keyword 'function'
 
   "tEOF",                             ///< end of file
   "tIOError",                         ///< I/O error
@@ -150,24 +150,24 @@ char ETokenStr[][TOKEN_STRLEN] = {
 //
 pair<const char*, EToken> Keywords[] =
 {
-	make_pair("module", tModule),
-	make_pair("begin", tBegin),
-	make_pair("end", tEnd),
-	make_pair("true", tTrue),
-	make_pair("false", tFalse),
-	make_pair("boolean", tBoolean),
-	make_pair("character", tCharacter),
-	make_pair("integer", tInteger),
-	make_pair("if", tIf),
-	make_pair("then", tThen),
-	make_pair("else", tElse),
-	make_pair("end", tEnd),
-	make_pair("while", tWhile),
-	make_pair("do", tDo),
-	make_pair("return", tReturn),
-	make_pair("var", tVar),
-	make_pair("procedure", tProcedure),
-	make_pair("function", tFunction),
+  make_pair("module", tModule),
+  make_pair("begin", tBegin),
+  make_pair("end", tEnd),
+  make_pair("true", tTrue),
+  make_pair("false", tFalse),
+  make_pair("boolean", tBoolean),
+  make_pair("char", tChar),
+  make_pair("integer", tInteger),
+  make_pair("if", tIf),
+  make_pair("then", tThen),
+  make_pair("else", tElse),
+  make_pair("end", tEnd),
+  make_pair("while", tWhile),
+  make_pair("do", tDo),
+  make_pair("return", tReturn),
+  make_pair("var", tVar),
+  make_pair("procedure", tProcedure),
+  make_pair("function", tFunction),
 };
 
 
@@ -342,57 +342,60 @@ CToken* CScanner::NewToken(EToken type, const string token)
   return new CToken(_saved_line, _saved_char, type, token);
 }
 
+/// Scan one token from input string.
 CToken* CScanner::Scan()
 {
   EToken token;
   string tokval;
   char c;
 
+  /// Consume all white spaces.
   while (_in->good() && IsWhite(_in->peek())) GetChar();
 
-	RecordStreamPosition();
+  RecordStreamPosition();
   
-	if (_in->eof()) return NewToken(tEOF);
+  if (_in->eof()) return NewToken(tEOF);
   if (!_in->good()) return NewToken(tIOError);
 
-	c = GetChar();
-	
-	if(c == '/') {
-		while(_in->peek() == '/') {
-			while(_in->peek() != '\n') GetChar();
-			while(IsWhite(_in->peek())) GetChar();
-			if(_in->peek() != '/') {
-				RecordStreamPosition();
-				c = GetChar();
-			}
-		}
-	}
-	
-	tokval = c;
+  c = GetChar();
+  
+  /// Consume comments.
+  if(c == '/') {
+    while(_in->peek() == '/') {
+      while(_in->peek() != '\n') GetChar();
+      while(IsWhite(_in->peek())) GetChar();
+      if(_in->peek() != '/') {
+        RecordStreamPosition();
+        c = GetChar();
+      }
+    }
+  }
+  
+  tokval = c;
   token = tUndefined;
 
   switch (c) {
     case ':':
-			token = tColon;
+      token = tColon;
       if (_in->peek() == '=') {
         tokval += GetChar();
         token = tAssign;
       }
       break;
-		
-		case ';':
+    
+    case ';':
       token = tSemicolon;
       break;
     
-		case '.':
+    case '.':
       token = tDot;
       break;
 
-		case ',':
-			token = tComma;
-			break;
+    case ',':
+      token = tComma;
+      break;
 
-		case '(':
+    case '(':
       token = tLBrak;
       break;
 
@@ -400,127 +403,133 @@ CToken* CScanner::Scan()
       token = tRBrak;
       break;
 
-		case '[':
-			token = tLSBrak;
-			break;
+    case '[':
+      token = tLSBrak;
+      break;
 
-		case ']':
-			token = tRSBrak;
-			break;
+    case ']':
+      token = tRSBrak;
+      break;
 
-		case '!':
-			token = tEMark;
-			break;
+    case '!':
+      token = tEMark;
+      break;
 
-		case '+':
+    case '+':
     case '-':
       token = tTermOp;
       break;
 
-		case '|':
-			if (_in->peek() == '|') {
-				token = tTermOp;
-				tokval += GetChar();
-			}
-			break;
+    case '|':
+      if (_in->peek() == '|') {
+        token = tTermOp;
+        tokval += GetChar();
+      }
+      break;
 
     case '*':
       token = tFactOp;
       break;
 
-		case '/':
-			token = tFactOp;
-			break;
+    case '/':
+      token = tFactOp;
+      break;
 
-		case '&':
-			if (_in->peek() == '&') {
-				token = tFactOp;
-				tokval += GetChar();
-			}
-			break;
+    case '&':
+      if (_in->peek() == '&') {
+        token = tFactOp;
+        tokval += GetChar();
+      }
+      break;
 
     case '=':
     case '#':
       token = tRelOp;
       break;
 
-		case '<':
-		case '>':
-			token = tRelOp;
-			if (_in->peek() == '=')
-				tokval += GetChar();
-			break;
+    case '<':
+    case '>':
+      token = tRelOp;
+      if (_in->peek() == '=')
+        tokval += GetChar();
+      break;
 
-		case '\'':
-		{
-			int length = 0;
-			char tmp_char;
-			bool is_char = true;
-			bool is_escape = false;
 
-			while(_in->peek() != '\'' && _in->peek() != EOF) {
-				tmp_char = GetChar();
-				tokval += tmp_char;
-				length++;
+    // escape 처리 어떻게 하는지? 예를 들어 \% 같은 경우. error? \%? %?
 
-				if(!IsChar(tmp_char)) is_char = false;
+    case '\'':
+    {
+      int length = 0;
+      char tmp_char;
+      bool is_char = true;
+      bool is_escape = false;
 
-				if(tmp_char == '\\' && 
-					(_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '0' || _in->peek() == '\\'))
-					is_escape = true;
-			}
-			
-			if(_in->peek() != EOF) tokval += GetChar();
+      while(_in->peek() != '\'' && _in->peek() != EOF) {
+        tmp_char = GetChar();
+        tokval += tmp_char;
+        length++;
 
-			if((length == 1 && is_char) || (length == 2 && is_escape)) token = tChar;
-		}
-			break;
+        if(!IsChar(tmp_char)) is_char = false;
 
-		// ME TOO!!!!!
-		case '\"':
-		{
-			char tmp_char;
-			bool is_char_all = true;
-			bool is_escape = false;
-			bool is_valid = true;
+        if(tmp_char == '\\' && 
+          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '0' || _in->peek() == '\\')) {
+          is_escape = true;
+          tokval += GetChar();
+        }
+      }
+      
+      if(_in->peek() != EOF) tokval += GetChar();
 
-			while(_in->peek() != '\"' && _in->peek() != EOF) {
-				tmp_char = GetChar();
-				tokval += tmp_char;
+      if(length == 1 && (is_char || is_escape)) token = tCharacter;
+    }
+      break;
 
-				if(!IsChar(tmp_char)) is_char_all = false;
+    // ME TOO!!!!!
+    case '\"':
+    {
+      char tmp_char;
+      bool is_valid = true;
+      bool is_char, is_escape;
 
-				if(tmp_char == '\\' && 
-					(_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\'))
-					is_escape = true;
+      while(_in->peek() != '"' && _in->peek() != EOF) {
+        is_char = true;
+        is_escape = false;
+        tmp_char = GetChar();
+        tokval += tmp_char;
 
-				if(!is_char_all && !is_escape) is_valid = false;
-			}
-			
-			if(_in->peek() != EOF) tokval += GetChar();
+        if(!IsChar(tmp_char)) is_char = false;
 
-			if(is_valid) token = tString;
-		}
-			break;
+        if(tmp_char == '\\' && 
+          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\')) {
+          is_escape = true;
+          tokval += GetChar();
+        }
+
+        if(!(is_char || is_escape)) is_valid = false;
+      }
+      
+      if(_in->peek() != EOF) tokval += GetChar();
+
+      if(is_valid) token = tString;
+    }
+      break;
    
 
     default:
-			if (IsLetter(c)) {
-				while(IsLetter(_in->peek()) || IsDigit(_in->peek()))
-					tokval += GetChar();
-				
-				map<string, EToken>::iterator it = keywords.find(tokval);
-				if(it != keywords.end()) token = (*it).second;
-				else token = tIdent;
+      if (IsLetter(c)) {
+        while(IsLetter(_in->peek()) || IsDigit(_in->peek()))
+          tokval += GetChar();
+        
+        map<string, EToken>::iterator it = keywords.find(tokval);
+        if(it != keywords.end()) token = (*it).second;
+        else token = tIdent;
       }
-			else if (IsDigit(c)) {
-				token = tNumber;
-				while(IsDigit(_in->peek()))
-					tokval += GetChar();
-			}
-			else {
-				token = tUndefined;
-			}
+      else if (IsDigit(c)) {
+        token = tNumber;
+        while(IsDigit(_in->peek()))
+          tokval += GetChar();
+      }
+      else token = tUndefined;
       break;
   }
 
@@ -528,16 +537,15 @@ CToken* CScanner::Scan()
 }
 
 bool CScanner:: IsLetter(char c) const {
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '_'));
+  return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '_'));
 }
 
 bool CScanner:: IsDigit(char c) const {
-	return (c >= '0' && c <= '9');
+  return (c >= '0' && c <= '9');
 }
 
-// How to handle when input is \' ??
 bool CScanner:: IsChar(char c) const {
-	return (((int)c >= 32 && (int) c <= 127));
+  return (((int)c >= 32 && (int) c <= 126));
 }
 
 char CScanner::GetChar()
