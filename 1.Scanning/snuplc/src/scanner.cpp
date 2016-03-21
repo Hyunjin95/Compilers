@@ -367,6 +367,7 @@ CToken* CScanner::Scan()
       if(_in->peek() != '/') {
         RecordStreamPosition();
         c = GetChar();
+        if(c == EOF) return NewToken(tEOF);
       }
     }
   }
@@ -454,17 +455,16 @@ CToken* CScanner::Scan()
         tokval += GetChar();
       break;
 
-
-    // escape 처리 어떻게 하는지? 예를 들어 \% 같은 경우. error? \%? %?
-
     case '\'':
     {
       int length = 0;
       char tmp_char;
-      bool is_char = true;
-      bool is_escape = false;
+      bool is_valid = true;
+      bool is_char, is_escape;
 
       while(_in->peek() != '\'' && _in->peek() != EOF) {
+        is_char = true;
+        is_escape = false;
         tmp_char = GetChar();
         tokval += tmp_char;
         length++;
@@ -472,19 +472,20 @@ CToken* CScanner::Scan()
         if(!IsChar(tmp_char)) is_char = false;
 
         if(tmp_char == '\\' && 
-          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '0' || _in->peek() == '\\')) {
+          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\')) {
           is_escape = true;
           tokval += GetChar();
         }
+
+        if(!(is_char || is_escape)) is_valid = false;
       }
       
       if(_in->peek() != EOF) tokval += GetChar();
 
-      if(length == 1 && (is_char || is_escape)) token = tCharacter;
+      if(length == 1 && is_valid) token = tCharacter;
     }
       break;
 
-    // ME TOO!!!!!
     case '\"':
     {
       char tmp_char;
@@ -500,7 +501,7 @@ CToken* CScanner::Scan()
         if(!IsChar(tmp_char)) is_char = false;
 
         if(tmp_char == '\\' && 
-          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\')) {
+          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\')) {
           is_escape = true;
           tokval += GetChar();
         }
@@ -566,4 +567,3 @@ bool CScanner::IsWhite(char c) const
 {
   return ((c == ' ') || (c == '\n') || (c == '\t'));
 }
-

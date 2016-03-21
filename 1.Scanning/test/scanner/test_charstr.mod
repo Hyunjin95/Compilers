@@ -17,11 +17,12 @@
 'ab'
 'a\n'
 '  '
-'\"'
+'\p'
 '
 '
 
 // This is a valid string test set.
+""
 "a"
 "ab"
 "hello world"
@@ -29,6 +30,7 @@
 "adsjflsafjlajfl  jw90t09jr23jro2n3p429123"
 "asdjfajfpaofjspoafapofpjo \'\0\t\n"
 "\%"
+"\a\sd\\fz\xc\v\z\\df\d\f\dr\w\rwe\rw\\qq\e"
 
 
 // These should not be passed.
