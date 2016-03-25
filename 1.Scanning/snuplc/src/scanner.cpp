@@ -465,16 +465,13 @@ CToken* CScanner::Scan()
 
       // Get all characters before second '\''.
       while(_in->peek() != '\'' && _in->peek() != EOF) {
-        is_char = true;
+        is_char = false;
         is_escape = false;
         tmp_char = GetChar();
         tokval += tmp_char;
         length++;
 
-        // Check whether input is ASCII character.
-        if(!IsChar(tmp_char)) is_char = false;
-
-        // Valid escape characters.
+        // Escape characters.
         if(tmp_char == '\\') {
           if(_in->peek() == 'n') {
             GetChar();
@@ -512,7 +509,12 @@ CToken* CScanner::Scan()
             tokval = tokval.substr(0, tokval.length() - 1);
             tokval += '\\';
           }
+          // Error when undefined esscaped character.
+          else tokval += GetChar();
         }
+        // Check whether input is ASCII character.
+        else if(IsChar(tmp_char)) is_char = true;
+          
 
         if(!(is_char || is_escape)) is_valid = false;
       }
@@ -535,15 +537,12 @@ CToken* CScanner::Scan()
 
       // Get all characters before second '"'
       while(_in->peek() != '"' && _in->peek() != EOF) {
-        is_char = true;
+        is_char = false;
         is_escape = false;
         tmp_char = GetChar();
         tokval += tmp_char;
 
-        // Check whether input is ASCII character.
-        if(!IsChar(tmp_char)) is_char = false;
-        
-        // Valid escape characters.
+        // Escape characters.
         if(tmp_char == '\\') {
           if(_in->peek() == 'n') {
             GetChar();
@@ -581,7 +580,11 @@ CToken* CScanner::Scan()
             tokval = tokval.substr(0, tokval.length() - 1);
             tokval += '\\';
           }
+          // Error when undefined escaped character.
+          else tokval += GetChar();
         }
+        // Check whether input is ASCII character.
+        else if(IsChar(tmp_char)) is_char = true;
 
         if(!(is_char || is_escape)) is_valid = false;
       }
