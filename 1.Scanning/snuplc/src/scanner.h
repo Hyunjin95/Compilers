@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-/// @brief SnuPL/0 scanner
+/// @brief SnuPL/1 scanner
 /// @author Bernhard Egger <bernhard@csap.snu.ac.kr>
 /// @section changelog Change Log
 /// 2012/09/14 Bernhard Egger created
@@ -309,8 +309,25 @@ class CScanner {
     /// @retval false character is not white space
     bool IsWhite(char c) const;
     
+    /// @brief check if a character is a letter('a'-'z' || 'A'-'Z' || '_')
+    ///
+    /// @param c character
+    /// @retval true character is letter
+    /// @retval false character is not letter
     bool IsLetter(char c) const;
+
+    /// @brief check if a character is a digit('0'-'9')
+    ///
+    /// @param c character
+    /// @retval true character is number
+    /// @retval false character is not number
     bool IsDigit(char c) const;
+
+    /// @brief check if a character is a character(ascii number 32-126)
+    ///
+    /// @param c character
+    /// @retval true character is character
+    /// @retval false character is not character
     bool IsChar(char c) const;
     /// @}
 

@@ -342,14 +342,13 @@ CToken* CScanner::NewToken(EToken type, const string token)
   return new CToken(_saved_line, _saved_char, type, token);
 }
 
-/// Scan one token from input string.
 CToken* CScanner::Scan()
 {
   EToken token;
   string tokval;
   char c;
 
-  /// Consume all white spaces.
+  // Consume all white spaces.
   while (_in->good() && IsWhite(_in->peek())) GetChar();
 
   RecordStreamPosition();
@@ -359,15 +358,17 @@ CToken* CScanner::Scan()
 
   c = GetChar();
   
-  /// Consume comments.
+  // Consume comments.
   if(c == '/') {
-    while(_in->peek() == '/') {
-      while(_in->peek() != '\n') GetChar();
-      while(IsWhite(_in->peek())) GetChar();
-      if(_in->peek() != '/') {
-        RecordStreamPosition();
-        c = GetChar();
+    while(_in->peek() == '/') { // consume consecutive comments.
+      while(_in->peek() != '\n') GetChar(); // consume one line.
+      while(IsWhite(_in->peek())) GetChar(); // consume white spaces.
+      
+      RecordStreamPosition();
+      c = GetChar();
+      if(c != '/') {
         if(c == EOF) return NewToken(tEOF);
+        break;
       }
     }
   }
@@ -462,6 +463,7 @@ CToken* CScanner::Scan()
       bool is_valid = true;
       bool is_char, is_escape;
 
+      // Get all characters before second '\''.
       while(_in->peek() != '\'' && _in->peek() != EOF) {
         is_char = true;
         is_escape = false;
@@ -469,12 +471,47 @@ CToken* CScanner::Scan()
         tokval += tmp_char;
         length++;
 
+        // Check whether input is ASCII character.
         if(!IsChar(tmp_char)) is_char = false;
 
-        if(tmp_char == '\\' && 
-          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\')) {
-          is_escape = true;
-          tokval += GetChar();
+        // Valid escape characters.
+        if(tmp_char == '\\') {
+          if(_in->peek() == 'n') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\n';
+          }
+          else if(_in->peek() == 't') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\t';
+          }
+          else if(_in->peek() == '\'') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\'';
+          }
+          else if(_in->peek() == '"') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\"';
+          }
+          else if(_in->peek() == '0') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\0';
+          }
+          else if(_in->peek() == '\\') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\\';
+          }
         }
 
         if(!(is_char || is_escape)) is_valid = false;
@@ -482,28 +519,68 @@ CToken* CScanner::Scan()
       
       if(_in->peek() != EOF) tokval += GetChar();
 
-      if(length == 1 && is_valid) token = tCharacter;
+      // Check whether length is 1 and character is valid.
+      if(length == 1 && is_valid) {
+        token = tCharacter;
+        tokval = tokval.substr(1, tokval.length() - 2);
+      }
     }
       break;
 
-    case '\"':
+    case '"':
     {
       char tmp_char;
       bool is_valid = true;
       bool is_char, is_escape;
 
+      // Get all characters before second '"'
       while(_in->peek() != '"' && _in->peek() != EOF) {
         is_char = true;
         is_escape = false;
         tmp_char = GetChar();
         tokval += tmp_char;
 
+        // Check whether input is ASCII character.
         if(!IsChar(tmp_char)) is_char = false;
-
-        if(tmp_char == '\\' && 
-          (_in->peek() == 'n' || _in->peek() == 't' || _in->peek() == '\'' || _in->peek() == '"' || _in->peek() == '0' || _in->peek() == '\\')) {
-          is_escape = true;
-          tokval += GetChar();
+        
+        // Valid escape characters.
+        if(tmp_char == '\\') {
+          if(_in->peek() == 'n') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\n';
+          }
+          else if(_in->peek() == 't') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\t';
+          }
+          else if(_in->peek() == '\'') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\'';
+          }
+          else if(_in->peek() == '"') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\"';
+          }
+          else if(_in->peek() == '0') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\0';
+          }
+          else if(_in->peek() == '\\') {
+            GetChar();
+            is_escape = true;
+            tokval = tokval.substr(0, tokval.length() - 1);
+            tokval += '\\';
+          }
         }
 
         if(!(is_char || is_escape)) is_valid = false;
@@ -511,7 +588,11 @@ CToken* CScanner::Scan()
       
       if(_in->peek() != EOF) tokval += GetChar();
 
-      if(is_valid) token = tString;
+      // Check whether all characters are valid.
+      if(is_valid) {
+        token = tString;
+        tokval = tokval.substr(1, tokval.length() - 2);
+      }
     }
       break;
    
@@ -521,6 +602,7 @@ CToken* CScanner::Scan()
         while(IsLetter(_in->peek()) || IsDigit(_in->peek()))
           tokval += GetChar();
         
+        // Check whether input is reserved keyword.
         map<string, EToken>::iterator it = keywords.find(tokval);
         if(it != keywords.end()) token = (*it).second;
         else token = tIdent;
@@ -530,6 +612,7 @@ CToken* CScanner::Scan()
         while(IsDigit(_in->peek()))
           tokval += GetChar();
       }
+      // return tUndefined token if error.
       else token = tUndefined;
       break;
   }
