@@ -471,9 +471,6 @@ CToken* CScanner::Scan()
         tokval += tmp_char;
         length++;
 
-        // Check whether input is ASCII character.
-        if(!IsChar(tmp_char)) is_char = false;
-
         // Valid escape characters.
         if(tmp_char == '\\') {
           if(_in->peek() == 'n') {
@@ -513,6 +510,8 @@ CToken* CScanner::Scan()
             tokval += '\\';
           }
         }
+        // Check whether input is ASCII character.
+        else if(!IsChar(tmp_char)) is_char = false;
 
         if(!(is_char || is_escape)) is_valid = false;
       }
@@ -540,9 +539,6 @@ CToken* CScanner::Scan()
         tmp_char = GetChar();
         tokval += tmp_char;
 
-        // Check whether input is ASCII character.
-        if(!IsChar(tmp_char)) is_char = false;
-        
         // Valid escape characters.
         if(tmp_char == '\\') {
           if(_in->peek() == 'n') {
@@ -582,6 +578,8 @@ CToken* CScanner::Scan()
             tokval += '\\';
           }
         }
+        // Check whether input is ASCII character.
+        else if(!IsChar(tmp_char)) is_char = false;
 
         if(!(is_char || is_escape)) is_valid = false;
       }
