@@ -1,12 +1,11 @@
 //------------------------------------------------------------------------------
-/// @brief SnuPL/0 scanner
+/// @brief SnuPL/1 scanner
 /// @author Bernhard Egger <bernhard@csap.snu.ac.kr>
 /// @section changelog Change Log
 /// 2012/09/14 Bernhard Egger created
 /// 2013/03/07 Bernhard Egger adapted to SnuPL/0
-/// 2016/03/11 Bernhard Egger adapted to SnuPL/1
-/// 2016/03/13 Bernhard Egger assignment 1: scans SnuPL/-1
-
+/// 2014/09/10 Bernhard Egger assignment 1: scans SnuPL/-1
+/// 2016/03/13 Bernhard Egger assignment 1: adapted to modified SnuPL/-1 syntax
 ///
 /// @section license_section License
 /// Copyright (c) 2012-2016, Bernhard Egger
@@ -34,8 +33,8 @@
 /// DAMAGE.
 //------------------------------------------------------------------------------
 
-#ifndef __SnuPL_SCANNER_H__
-#define __SnuPL_SCANNER_H__
+#ifndef __SnuPL1_SCANNER_H__
+#define __SnuPL1_SCANNER_H__
 
 #include <istream>
 #include <ostream>
@@ -45,20 +44,49 @@
 using namespace std;
 
 //------------------------------------------------------------------------------
-/// @brief SnuPL/0 token type
+/// @brief SnuPL/1 token type
 ///
-/// each member of this enumeration represents a token in SnuPL/0
+/// each member of this enumeration represents a token in SnuPL/1
 ///
 enum EToken {
-  tNumber,                          ///< number
-  tPlusMinus,                       ///< '+' or '-'
-  tMulDiv,                          ///< '*' or '/'
+  tCharacter = 0,                   ///< a character
+  tString,                          ///< a string
+
+  tIdent,                           ///< an identifier
+  tNumber,                          ///< a number
+
+  tTermOp,                          ///< '+' or '-' or '||'
+  tFactOp,                          ///< '*' or '/' or '&&'
   tRelOp,                           ///< relational operator
-  tAssign,                          ///< assignment operator
-  tSemicolon,                       ///< a semicolon
-  tDot,                             ///< a dot
-  tLParens,                         ///< a left parenthesis
-  tRParens,                         ///< a right parenthesis
+  
+  tAssign,                          ///< assignment operator ':='
+  tSemicolon,                       ///< a semicolon ';'
+  tColon,                           ///< a colon ':'
+  tDot,                             ///< a dot '.'
+  tComma,                           ///< a comma ','
+  tLBrak,                           ///< a left bracket '('
+  tRBrak,                           ///< a right bracket ')'
+  tLSBrak,                          ///< a left square bracket '['
+  tRSBrak,                          ///< a right square bracket ']'
+  tEMark,                           ///< an exclamation mark '!'
+
+  tModule,                          ///< a reserved keyword 'module'
+  tBegin,                           ///< a reserved keyword 'begin'
+  tEnd,                             ///< a reserved keyword 'end'
+  tTrue,                            ///< a reserved keyword 'true'
+  tFalse,                           ///< a reserved keyword 'false'
+  tBoolean,                         ///< a reserved keyword 'boolean'
+  tChar,                            ///< a reserved keyword 'char'
+  tInteger,                         ///< a reserved keyword 'integer'
+  tIf,                              ///< a reserved keyword 'if'
+  tThen,                            ///< a reserved keyword 'then'
+  tElse,                            ///< a reserved keyword 'else'
+  tWhile,                           ///< a reserved keyword 'while'
+  tDo,                              ///< a reserved keyword 'do'
+  tReturn,                          ///< a reserved keyword 'return'
+  tVar,                             ///< a reserved keyword 'var'
+  tProcedure,                       ///< a reserved keyword 'procedure'
+  tFunction,                        ///< a reserved keyword 'function'
 
   tEOF,                             ///< end of file
   tIOError,                         ///< I/O error
@@ -140,6 +168,7 @@ class CToken {
 
     /// @}
 
+  
     /// @name string escape/unescaping (static methods)
     /// @{
 
@@ -152,9 +181,10 @@ class CToken {
     /// @brief unescape special characters in a string
     ///
     /// @param text escapted string
-    /// @retval unescaped string
+    /// @retval unescaped_string
     static string unescape(const string text);
     /// @}
+
 
     /// @brief print the token to an output stream
     ///
@@ -247,7 +277,7 @@ class CScanner {
     void NextToken(void);
 
     /// @brief store the current position of the input stream internally
-    void RecordStreamPosition(void);
+    void RecordStreamPosition();
 
     /// @brief return the previously recorded input stream position
     ///
@@ -288,28 +318,27 @@ class CScanner {
     /// @retval true character is white space
     /// @retval false character is not white space
     bool IsWhite(char c) const;
-
-    /// @brief check if a character is an alphabetic character (a-z, A-Z)
+    
+    /// @brief check if a character is a letter('a'-'z' || 'A'-'Z' || '_')
     ///
     /// @param c character
-    /// @retval true character is alphabetic
-    /// @retval false character is not alphabetic
-    bool IsAlpha(char c) const;
+    /// @retval true character is letter
+    /// @retval false character is not letter
+    bool IsLetter(char c) const;
 
-    /// @brief check if a character is an numeric character (0-9)
+    /// @brief check if a character is a digit('0'-'9')
     ///
     /// @param c character
-    /// @retval true character is numeric
-    /// @retval false character is not numeric
-    bool IsNum(char c) const;
+    /// @retval true character is number
+    /// @retval false character is not number
+    bool IsDigit(char c) const;
 
-    /// @brief check if a character is a valid ID character
+    /// @brief check if a character is a character(ascii number 32-126)
     ///
     /// @param c character
-    /// @retval true character is valid as an ID character
-    /// @retval false character is not valid in an ID
-    bool IsIDChar(char c) const;
-
+    /// @retval true character is character
+    /// @retval false character is not character
+    bool IsChar(char c) const;
     /// @}
 
 
@@ -326,4 +355,4 @@ class CScanner {
 };
 
 
-#endif // __SnuPL_SCANNER_H__
+#endif // __SnuPL0_SCANNER_H__
