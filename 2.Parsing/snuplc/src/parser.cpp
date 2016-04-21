@@ -532,11 +532,8 @@ CAstStatement* CParser::statement(CAstScope *s) {
       if(_scanner->Peek().GetType() == tLBrak) {
         st = dynamic_cast<CAstStatement *>(subroutineCall(s, t));
       }
-      else if(_scanner->Peek().GetType() == tAssign || _scanner->Peek().GetType() == tLSBrak) {
+      else {
         st = dynamic_cast<CAstStatement *>(assignment(s, t));
-      }
-      else { // TODO: Error message should be modified.
-        SetError(_scanner->Peek(), "Hyunjin Error");
       }
       break;
 
@@ -564,13 +561,13 @@ CAstStatCall* CParser::subroutineCall(CAstScope *s, CToken ident) {
   if(isExpr(_scanner->Peek())) {
     CAstExpression *expr = expression(s);
     assert(expr != NULL);
-    call->Addarg(expr);
+    call->AddArg(expr);
 
     while(_scanner->Peek().GetType() == tComma) {
       Consume(tComma);
       expr = expression(s);
       assert(expr != NULL);
-      call->Addarg(expr);
+      call->AddArg(expr);
     }
   }
   
@@ -589,7 +586,7 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
   CAstDesignator *lhs;
 
   if(_scanner->Peek().GetType() == tAssign) {
-    lhs = new CAstArrayDesignator(t, CSymtab::FindSymbol(ident.GetValue(), s));
+    lhs = new CAstDesignator(t, CSymtab::FindSymbol(ident.GetValue(), s));
   }
   else {
     CAstArrayDesignator *arraylhs = new CAstArrayDesignator(t, CSymtab::FindSymbol(ident.GetValue(), s));
@@ -702,17 +699,237 @@ CAstStatReturn* CParser::returnStatement(CAstScope *s) {
 CAstExpression* CParser::expression(CAstScope *s) {
   //
   // expression ::= simpleexpr [ relOp simpleexpr ].
-  // simpleexpr ::= ["+" | "-"] term { termOp term }.
-  // term ::= factor { factOp factor }.
-  // factor ::= qualident | number | boolean | char | string | "(" expression ")" | subroutineCall | "!" factor.
   //
   
-  simpleexpr(s);
-  if(_scanner->Peek().GetType() == tRelOp) {
-    CToken relOp;
-    Consume(tRelOp, &relOp);
-    simpleexpr(s);
+  CToken t;
+  EOperation relop;
+  CAstExpression *left = NULL, *right = NULL;
+
+  left = simpleexpr(s);
+
+  if (_scanner->Peek().GetType() == tRelOp) {
+    Consume(tRelOp, &t);
+    right = simpleexpr(s);
+
+    if (t.GetValue() == "=")
+      relop = opEqual;
+    else if (t.GetValue() == "#")
+      relop = opNotEqual;
+    else if (t.GetValue() == "<")
+      relop = opLessThan;
+    else if (t.GetValue() == "<=")
+      relop = opLessEqual;
+    else if (t.GetValue() == ">")
+      relop = opBiggerThan;
+    else if (t.GetValue() == ">=")
+      relop = opBiggerEqual;
+    else
+      SetError(t, "invalid relation.");
+
+    return new CAstBinaryOp(t, relop, left, right);
   }
+  else {
+    return left;
+  }
+}
+
+CAstExpression* CParser::simpleexpr(CAstScope *s) {
+  //
+  // simpleexpr ::= ["+" | "-"] term { termOp term }.
+  //
+  CAstExpression *n = NULL;
+
+  if(_scanner->Peek().GetType() == tTermOp) {
+    CToken t, tOp;
+
+    if(_scanner->Peek().GetValue() != "||") 
+      Consume(tTermOp, &tOp);
+    
+    n = term(s);
+
+    while(_scanner->Peek().GetType() == tTermOp) {
+      CToken tt;
+      CAstExpression *l = n, *r;
+      Consume(tTermOp, &tt);
+      r = term(s);
+
+      if(tt.GetValue() == "+") {
+        n = new CAstBinaryOp(tt, opAdd, l, r);
+      }
+      else if(tt.GetValue() == "-") {
+        n = new CAstBinaryOp(tt, opSub, l, r);
+      }
+      else {
+        n = new CAstBinaryOp(tt, opOr, l, r);
+      }
+    }
+
+    return new CAstUnaryOp(t, tOp.GetValue(), n);
+  }
+  else {
+    n = term(s);
+
+    while (_scanner->Peek().GetType() == tTermOp) {
+      CToken t;
+      CAstExpression *l = n, *r;
+
+      Consume(tTermOp, &t);
+
+      r = term(s);
+      
+      if(tt.GetValue() == "+") {
+        n = new CAstBinaryOp(tt, opAdd, l, r);
+      }
+      else if(tt.GetValue() == "-") {
+        n = new CAstBinaryOp(tt, opSub, l, r);
+      }
+      else {
+        n = new CAstBinaryOp(tt, opOr, l, r);
+      }
+    }
+
+    return n;
+  }
+}
+
+CAstExpression* CParser::term(CAstScope *s) {
+  //
+  // term ::= factor { factOp factor }.
+  //
+
+  CAstExpression *n = NULL;
+
+  n = factor(s);
+
+  EToken tt = _scanner->Peek().GetType();
+
+  while ((tt == tFactOp)) {
+    CToken t;
+    CAstExpression *l = n, *r;
+
+    Consume(tFactOp, &t);
+
+    r = factor(s);
+
+    if(t.GetValue() == "*") {
+      n = new CAstBinaryOp(t, opMul, l, r);
+    }
+    else if(t.GetValue() == "/") {
+      n = new CAstBinaryOp(t, opDiv, l, r);
+    }
+    else {
+      n = new CAstBinaryOp(t, opAnd, l, r);
+    }
+
+    tt = _scanner->Peek().GetType();
+  }
+
+  return n;
+}
+
+CAstExpression* CParser::factor(CAstScope *s) {
+  //
+  // factor ::= qualident | number | boolean | char | string | "(" expression ")" | subroutineCall | "!" factor.
+  // FIRST(factor) = { tIdent, tNumber, tTrue, tFalse, tCharacter, tString, tLBrak, tEMark }.
+  
+  CToken t;
+  EToken tt = _scanner->Peek().GetType();
+  CTypeManager *tm = CTypeManager::Get();
+  CAstExpression *n = NULL;
+
+  switch(tt) {
+    case tTrue:
+      Consume(tTrue, &t);
+      n = new CAstConstant(t, tm->GetBool(), 1);
+      break;
+
+    case tFalse:
+      Consuee(tFalse, &t);
+      n = new CAstConstant(t, tm->GetBool(), 0);
+      break;
+
+    case tNumber:
+      Consume(tNumber, &t);
+      errno = 0;
+      long long v = strtoll(t.GetValue().c_str(), NULL, 10);
+      if (errno != 0) SetError(t, "invalid number.");
+      n = new CAstConstant(t, tm->GetInt(), v);
+      break;
+
+    case tIdent:
+      CToken tid;
+      Consume(tIdent, &t);
+      if(_scanner->Peek().GetType() == tLBrak) { // subroutineCall
+        Consume(tLBrak);
+
+        n = new CAstFunctionCall(tid, CSymtab::FindSymbol(t.GetValue(), s));
+        assert(n != NULL);
+
+        if(isExpr(_scanner->Peek())) {
+          CAstExpression *expr = expression(s);
+          assert(expr != NULL);
+          n->AddArg(expr);
+
+          while(_scanner->Peek().GetType() == tComma) {
+            Consume(tComma);
+            expr = expression(s);
+            assert(expr != NULL);
+            n->AddArg(expr);
+          }
+        }
+
+        Consume(tRBrak);
+      }
+      else { // qualident
+        if(_scanner->Peek().GetType() == tLSBrak) { // It means array
+          n = new CAstArrayDesignator(tid, CSymtab::FindSymbol(t.GetValue(), s));
+          
+          while(_scanner->Peek().GetType() == tLSBrak) {
+            Consume(tLSBrak);
+
+            CAstExpression *expr = expression(s);
+            assert(expr != NULL);
+            n->AddIndex(expr);
+
+            Consume(tRSBrak);
+          }
+
+          n->IndicesComplete();
+        }
+        else {
+          n = new CAstDesignator(tid, CSymtab::FindSymbol(t.GetValue(), s));
+        }
+      }
+      break;
+
+    case tString:
+      Consume(tString, &t);
+      n = new CAstStringConstant(t, t.GetValue(), s);
+      break;
+
+    case tCharacter:
+      Consume(tCharacter, &t);
+      n = new CAstConstant(t, tm->GetChar(), );
+      break;
+
+    case tLBark:
+      Consume(tLBrak);
+      n = expression(s);
+      Consume(tRBrak);
+      break;
+
+    case tEMark:
+      Consume(tEMark);
+      n = new CAstUnaryOp(t, opNot, factor(s));
+      break;
+
+    default:
+      cout << "got " << _scanner->Peek() << endl;
+      SetError(_scanner->Peek(), "factor expected.");
+      break;
+  }
+
+  return n;
 }
 
 static bool isExpr(CToken t) {
