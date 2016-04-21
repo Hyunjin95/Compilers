@@ -135,14 +135,24 @@ CAstModule* CParser::module() {
 
   CAstModule *m = new CAstModule(module_name, module_name.GetValue());
 
-  varDeclaration(m);
-/*
-  if(_scanner->peek().GetType() == tProcedure || _scanner->peek().GetType() == tFunction) {
-    subroutinDecl();
+  // varDeclaration
+  if(_scanner->Peek().GetType() == tVar) {
+    Consume(tVar);
+    varDecl(m);
+    while(_scanner->Peek().GetType() == tSemicolon) {
+      Consume(tSemicolon);
+      if(_scanner->Peek().GetType() == tIdent)
+        varDecl(m);
+    }
   }
-*/
+
+  // subroutineDecl
+  if(_scanner->peek().GetType() == tProcedure || _scanner->peek().GetType() == tFunction)
+    subroutineDecl(m);
+
   Consume(tBegin);
   
+  // statSequence
   statseq = statSequence(m);
   m->SetStatementSequence(statseq);
 
@@ -158,28 +168,218 @@ CAstModule* CParser::module() {
   return m;
 }
 
-void CParser::varDeclaration(CAstScope *s) {
+void CParser::subroutineDecl(CAstScope *s) {
   //
-  // varDeclaration ::= [ "var" varDeclSequence ";" ].
-  // Last semicolon is consumed by varDeclSequence in my implementation.
+  // subroutineDecl ::= (procedureDecl | functionDecl) subroutineBody ident ";".
+  // procedureDecl ::= "procedure" ident [ formalParam ] ";".
+  // functionDecl ::= "function" ident [ formalParam ] ":" type ";".
+  // formalParam ::= "(" [ varDeclSequence ] ")".
+  // subroutineBody ::= varDeclaration "begin" statSequence "end".
+  // varDeclSequence ::= varDecl { ";" varDecl }.
+  // varDecl ::= ident { "," ident } ":" type.
   //
 
-  if(_scanner->Peek().GetType() == tVar) {
-    Consume(tVar);
-    varDeclSequence(s);
+
+  CToken subroutine_name;
+  CToken subroutine_name_check;
+
+  // procedureDecl
+  if(_scanner->Peek().GetType() == tProcedure) {
+    CToken t;
+    CAstStatement *statseq = NULL;
+
+    Consume(tProcedure);
+    Consume(tIdent, &subroutine_name);
+     
+    CSymProc *symproc = new CSymProc(subroutine_name.GetValue(), NULL);
+    assert(symproc != NULL);
+
+    if(_scanner->Peek().GetType() == tLBrak) {
+      Consume(tLBrak);
+
+      varDeclParam(symproc, 0);
+      while(_scanner->Peek().GetType() == tSemicolon) {
+        Consume(tSemicolon);
+        if(_scanner->Peek().GetType() == tIdent)
+          varDeclParam(symproc, symproc->GetNParams());
+      }
+
+      Consume(tRBrak);
+    }
+
+    s->AddSymbol(symproc);
+    
+    Consume(tSemicolon);
+
+    CAstProcedure *procedure = new CAstProcedure(t, subroutine_name.GetValue(), s, symproc);
+
+    // varDeclaration
+    if(_scanner->Peek().GetType() == tVar) {
+      Consume(tVar);
+      varDecl(procedure);
+      while(_scanner->Peek().GetType() == tSemicolon) {
+        Consume(tSemicolon);
+        if(_scanner->Peek().GetType() == tIdent)
+          varDecl(procedure);
+      }
+    }
+
+    Consume(tBegin);
+    // statSequence
+    statseq = statSequence(procedure);
+    procedure->SetStatementSequence(statseq);
+
+    Consume(tEnd);
+
+    Consume(tIdent, &subroutine_name_check);
+    
+    if(subroutine_name.GetValue() != subroutine_name_check.GetValue()) {
+      SetError(subroutine_name_check, "expected '" + subroutine_name.GetValue() + "', got '" + subroutine_name_check.GetValue() + "'");
+    }
+
+    Consume(tSemicolon);
+  }
+  // functionDecl
+  else {
+    CToken tmp;
+    vector<CSymParam *> params;
+    const CType *func_type;
+    CAstStatement *statseq = NULL;
+    
+    Consume(tFunction);
+    Consume(tIdent, &subroutine_name);
+
+    if(_scanner->Peek().GetType() == tLBrak) {
+      int idx = 0;
+      CToken t;
+      vector<string> vars;
+      const CType *var_type;
+      
+      Consume(tLBrak);
+
+      Consume(tIdent, &t);
+      vars.push_back(t.GetValue());
+
+      while(_scanner->Peek().GetType() == tComma) {
+        Consume(tComma);
+        Consume(tIdent, &t);
+        vars.push_back(t.GetValue());
+      }
+
+      Consume(tColon);
+      var_type = type();
+
+      for(int i = vars.size() - 1; i >= 0; i--) {
+        CSymParam *param = new CSymParam(i, vars[i], var_type);
+        params.push_back(param);
+        vars.pop_back();
+      }
+
+      idx = vars.size();
+
+      while(_scanner->Peek().GetType() == tSemicolon) {
+        Consume(tSemicolon);
+        
+        if(_scanner->Peek().GetType() == tIdent) {
+          CToken t_loop;
+          vector<string> vars_loop;
+          const CType *var_type_loop;
+
+          Consume(tIdent, &t_loop);
+          vars_loop.push_back(t_loop.GetValue());
+
+          while(_scanner->Peek().GetType() == tComma) {
+            Consume(tComma);
+            Consume(tIdent, &t_loop);
+            vars_loop.push_back(t_loop.GetValue());
+          }
+
+          Consume(tColon);
+          var_type_loop = type();
+
+          for(int i = vars_loop.size() - 1; i >= 0; i--) {
+            CSymParam *param = new CSymParam(i+idx, vars_loop[i], var_type_loop);
+            params.push_back(param);
+            vars.pop_back();
+          }
+
+          idx += vars_loop.size();
+        }
+      }
+
+      Consume(tRBrak);
+    }
+    Consume(tColon);
+    func_type = type();
+    
+    CSymProc *symproc = new CSymProc(subroutine_name.GetValue(), func_type);
+    assert(symproc != NULL);
+
+    for(int i = params.size() - 1; i >= 0; i--) {
+      CSymParam *param = params[i];
+      symproc->AddParam(param);
+      params.pop_back();
+    }
+
+    s->AddSymbol(symproc);
+    
+    Consume(tSemicolon);
+
+    CAstProcedure *function = new CAstProcedure(tmp, subroutine_name.GetValue(), s, symproc);
+
+    // varDeclaration
+    if(_scanner->Peek().GetType() == tVar) {
+      Consume(tVar);
+      varDecl(function);
+      while(_scanner->Peek().GetType() == tSemicolon) {
+        Consume(tSemicolon);
+        if(_scanner->Peek().GetType() == tIdent)
+          varDecl(function);
+      }
+    }
+
+    Consume(tBegin);
+    // statSequence
+    statseq = statSequence(function);
+    function->SetStatementSequence(statseq);
+
+    Consume(tEnd);
+
+    Consume(tIdent, &subroutine_name_check);
+    
+    if(subroutine_name.GetValue() != subroutine_name_check.GetValue()) {
+      SetError(subroutine_name_check, "expected '" + subroutine_name.GetValue() + "', got '" + subroutine_name_check.GetValue() + "'");
+    }
+
+    Consume(tSemicolon);
   }
 }
 
-void CParser::varDeclSequence(CAstScope *s) {
+void CParser::varDeclParam(CSymProc *proc, int index) {
   //
-  // varDeclSequence ::= varDecl { ";" varDecl }.
+  // varDecl ::= ident { "," ident } ":" type.
   //
+  
+  CToken t;
+  const CType *var_type;
+  vector<string> vars;
 
-  varDecl(s);
-  Consume(tSemicolon);
+  Consume(tIdent, &t);
+  vars.push_back(t.GetValue());
 
-  if(_scanner->Peek().GetType() == tIdent) {
-    varDeclSequence(s);
+  while(_scanner->Peek().GetType() == tComma) {
+    Consume(tComma);
+    Consume(tIdent, &t);
+    vars.push_back(t.GetValue());
+  }
+
+  Consume(tColon);
+  var_type = type();
+
+  for(int i = vars.size()-1; i >= 0; i--) {
+    CSymParam *param = new CSymParam(index + i, vars[i], var_type);
+    proc->AddParam(param);
+    vars.pop_back();
   }
 }
 
@@ -209,6 +409,8 @@ void CParser::varDecl(CAstScope *s) {
     vars.pop_back();
   }
 }
+
+
 
 const CType* CParser::type() {
   //
@@ -498,6 +700,13 @@ CAstStatReturn* CParser::returnStatement(CAstScope *s) {
 }
 
 CAstExpression* CParser::expression(CAstScope *s) {
+  //
+  // expression ::= simpleexpr [ relOp simpleexpr ].
+  // simpleexpr ::= ["+" | "-"] term { termOp term }.
+  // term ::= factor { factOp factor }.
+  // factor ::= qualident | number | boolean | char | string | "(" expression ")" | subroutineCall | "!" factor.
+  //
+  
   simpleexpr(s);
   if(_scanner->Peek().GetType() == tRelOp) {
     CToken relOp;
@@ -505,8 +714,6 @@ CAstExpression* CParser::expression(CAstScope *s) {
     simpleexpr(s);
   }
 }
-
-
 
 static bool isExpr(CToken t) {
   EToken tt = t.GetType();
