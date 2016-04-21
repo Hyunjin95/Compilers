@@ -99,7 +99,7 @@ class CParser {
     void                  varDeclaration(CAstScope *);
     void                  varDeclSequence(CAstScope *);
     void                  varDecl(CAstScope *);
-    CType*                type(void);
+    const CType*          type(void);
 
     /// @}
 
