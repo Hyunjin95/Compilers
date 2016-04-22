@@ -96,10 +96,21 @@ class CParser {
     /// @{
 
     CAstModule*           module(void);
-    void                  varDeclaration(CAstScope *);
-    void                  varDeclSequence(CAstScope *);
+    void                  subroutineDecl(CAstScope *);
+    void                  varDeclParam(CSymProc *, int);
     void                  varDecl(CAstScope *);
     const CType*          type(void);
+    CAstStatement*        statSequence(CAstScope *);
+    CAstStatement*        statement(CAstScope *);
+    CAstStatCall*         subroutineCall(CAstScope *, CToken);
+    CAstStatAssign*       assignment(CAstScope *, CToken);
+    CAstStatIf*           ifStatement(CAstScope *);
+    CAstStatWhile*        whileStatement(CAstScope *);
+    CAstStatReturn*       returnStatement(CAstScope *);
+    CAstExpression*       expression(CAstScope *);
+    CAstExpression*       simpleexpr(CAstScope *);
+    CAstExpression*       term(CAstScope *);
+    CAstExpression*       factor(CAstScope *);
 
     /// @}
 

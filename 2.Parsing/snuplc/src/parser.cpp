@@ -44,7 +44,7 @@
 
 #include "parser.h"
 using namespace std;
-
+static bool isExpr(CToken);
 
 //------------------------------------------------------------------------------
 // CParser
@@ -115,8 +115,48 @@ bool CParser::Consume(EToken type, CToken *token)
 void CParser::InitSymbolTable(CSymtab *s)
 {
   CTypeManager *tm = CTypeManager::Get();
+  
+  // predefined functions:
+  //  - DIM(a: ptr to array; dim: integer): integer
+  //  - DOFS(a: ptr to array): integer
+  //  - ReadInt(): integer
+  //  - WriteInt(i:integer): void
+  //  - WriteChar(c:char): void
+  //  - WriteStr(str: char[]): void
+  //  - WriteLn():void
 
-  // TODO: add predefined functions here
+  CSymProc *DIM = new CSymProc("DIM", tm->GetInt());
+  CSymParam *DIM_a = new CSymParam(0, "a", tm->GetPointer(tm->GetArray(CArrayType::OPEN, tm->GetNull())));
+  CSymParam *DIM_dim = new CSymParam(1, "dim", tm->GetInt());
+  DIM->AddParam(DIM_a);
+  DIM->AddParam(DIM_dim);
+  s->AddSymbol(DIM);
+
+  CSymProc *DOFS = new CSymProc("DOFS", tm->GetInt());
+  CSymParam *DOFS_a = new CSymParam(0, "a", tm->GetPointer(tm->GetArray(CArrayType::OPEN, tm->GetNull())));
+  DOFS->AddParam(DOFS_a);
+  s->AddSymbol(DOFS);
+
+  CSymProc *ReadInt = new CSymProc("ReadInt", tm->GetInt());
+  s->AddSymbol(ReadInt);
+  
+  CSymProc *WriteInt = new CSymProc("WriteInt", tm->GetNull());
+  CSymParam *WriteInt_i = new CSymParam(0, "i", tm->GetInt());
+  WriteInt->AddParam(WriteInt_i);
+  s->AddSymbol(WriteInt);
+
+  CSymProc *WriteChar = new CSymProc("WriteChar", tm->GetNull());
+  CSymParam *WriteChar_c = new CSymParam(0, "c", tm->GetChar());
+  WriteInt->AddParam(WriteChar_c);
+  s->AddSymbol(WriteChar);
+
+  CSymProc *WriteStr = new CSymProc("WriteStr", tm->GetNull());
+  CSymParam *WriteStr_str = new CSymParam(0, "str", tm->GetArray(CArrayType::OPEN, tm->GetChar()));
+  WriteStr->AddParam(WriteStr_str);
+  s->AddSymbol(WriteStr);
+
+  CSymProc *WriteLn = new CSymProc("WriteLn", tm->GetNull());
+  s->AddSymbol(WriteLn);
 }
 
 CAstModule* CParser::module() {
@@ -135,6 +175,8 @@ CAstModule* CParser::module() {
 
   CAstModule *m = new CAstModule(module_name, module_name.GetValue());
 
+  InitSymbolTable(m->GetSymbolTable());
+
   // varDeclaration
   if(_scanner->Peek().GetType() == tVar) {
     Consume(tVar);
@@ -147,7 +189,7 @@ CAstModule* CParser::module() {
   }
 
   // subroutineDecl
-  if(_scanner->peek().GetType() == tProcedure || _scanner->peek().GetType() == tFunction)
+  if(_scanner->Peek().GetType() == tProcedure || _scanner->Peek().GetType() == tFunction)
     subroutineDecl(m);
 
   Consume(tBegin);
@@ -183,6 +225,7 @@ void CParser::subroutineDecl(CAstScope *s) {
   CToken subroutine_name;
   CToken subroutine_name_check;
 
+
   // procedureDecl
   if(_scanner->Peek().GetType() == tProcedure) {
     CToken t;
@@ -207,7 +250,7 @@ void CParser::subroutineDecl(CAstScope *s) {
       Consume(tRBrak);
     }
 
-    s->AddSymbol(symproc);
+    s->GetSymbolTable()->AddSymbol(symproc);
     
     Consume(tSemicolon);
 
@@ -321,7 +364,7 @@ void CParser::subroutineDecl(CAstScope *s) {
       params.pop_back();
     }
 
-    s->AddSymbol(symproc);
+    s->GetSymbolTable()->AddSymbol(symproc);
     
     Consume(tSemicolon);
 
@@ -526,6 +569,7 @@ CAstStatement* CParser::statement(CAstScope *s) {
       st = dynamic_cast<CAstStatement *>(returnStatement(s));
       break;
     case tIdent:
+    {
       CToken t;
       Consume(tIdent, &t);
   
@@ -536,6 +580,7 @@ CAstStatement* CParser::statement(CAstScope *s) {
         st = dynamic_cast<CAstStatement *>(assignment(s, t));
       }
       break;
+    }
 
     default: // TODO: Error message should be modified.
       SetError(_scanner->Peek(), "Hyunjin Error");
@@ -554,8 +599,9 @@ CAstStatCall* CParser::subroutineCall(CAstScope *s, CToken ident) {
 
   CToken t;
   Consume(tLBrak);
-  
-  CAstFunctionCall *call = new CAstFunctionCall(t, CSymtab::FindSymbol(ident.GetValue(), s));
+  CSymtab *symtab = s->GetSymbolTable();
+
+  CAstFunctionCall *call = new CAstFunctionCall(t, dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sLocal)));
   assert(call != NULL);
   
   if(isExpr(_scanner->Peek())) {
@@ -584,12 +630,13 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
   
   CToken t;
   CAstDesignator *lhs;
+  CSymtab *symtab = s->GetSymbolTable();
 
   if(_scanner->Peek().GetType() == tAssign) {
-    lhs = new CAstDesignator(t, CSymtab::FindSymbol(ident.GetValue(), s));
+    lhs = new CAstDesignator(t, symtab->FindSymbol(ident.GetValue(), sLocal));
   }
   else {
-    CAstArrayDesignator *arraylhs = new CAstArrayDesignator(t, CSymtab::FindSymbol(ident.GetValue(), s));
+    CAstArrayDesignator *arraylhs = new CAstArrayDesignator(t, symtab->FindSymbol(ident.GetValue(), sLocal));
     
     while(_scanner->Peek().GetType() == tLSBrak) { // It means array assignment.
       Consume(tLSBrak);
@@ -602,7 +649,7 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
     }
     arraylhs->IndicesComplete();
 
-    lhs = dynamic_cast<CAstDesignator *>arraylhs;
+    lhs = dynamic_cast<CAstDesignator *>(arraylhs);
   }
   assert(lhs != NULL);
 
@@ -636,7 +683,7 @@ CAstStatIf* CParser::ifStatement(CAstScope *s) {
   ifbody = statSequence(s);
   assert(ifbody != NULL);
   
-  if(_scanner->Peek()->GetType() == tElse) {
+  if(_scanner->Peek().GetType() == tElse) {
     Consume(tElse);
     elsebody = statSequence(s);
     assert(elsebody != NULL);
@@ -693,7 +740,7 @@ CAstStatReturn* CParser::returnStatement(CAstScope *s) {
     assert(expr != NULL);
   }
 
-  return new CAstStatReturn(t, expr);
+  return new CAstStatReturn(t, s, expr);
 }
 
 CAstExpression* CParser::expression(CAstScope *s) {
@@ -738,6 +785,8 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
   // simpleexpr ::= ["+" | "-"] term { termOp term }.
   //
   CAstExpression *n = NULL;
+  EOperation eOp;
+  CToken tt;
 
   if(_scanner->Peek().GetType() == tTermOp) {
     CToken t, tOp;
@@ -748,23 +797,25 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
     n = term(s);
 
     while(_scanner->Peek().GetType() == tTermOp) {
-      CToken tt;
       CAstExpression *l = n, *r;
       Consume(tTermOp, &tt);
       r = term(s);
 
       if(tt.GetValue() == "+") {
         n = new CAstBinaryOp(tt, opAdd, l, r);
+        eOp = opAdd;
       }
       else if(tt.GetValue() == "-") {
         n = new CAstBinaryOp(tt, opSub, l, r);
+        eOp = opSub;
       }
       else {
         n = new CAstBinaryOp(tt, opOr, l, r);
+        eOp = opOr;
       }
     }
 
-    return new CAstUnaryOp(t, tOp.GetValue(), n);
+    return new CAstUnaryOp(t, eOp, n);
   }
   else {
     n = term(s);
@@ -836,6 +887,7 @@ CAstExpression* CParser::factor(CAstScope *s) {
   EToken tt = _scanner->Peek().GetType();
   CTypeManager *tm = CTypeManager::Get();
   CAstExpression *n = NULL;
+  CSymtab *symtab = s->GetSymbolTable();
 
   switch(tt) {
     case tTrue:
@@ -844,63 +896,68 @@ CAstExpression* CParser::factor(CAstScope *s) {
       break;
 
     case tFalse:
-      Consuee(tFalse, &t);
+      Consume(tFalse, &t);
       n = new CAstConstant(t, tm->GetBool(), 0);
       break;
 
     case tNumber:
+    {
       Consume(tNumber, &t);
       errno = 0;
       long long v = strtoll(t.GetValue().c_str(), NULL, 10);
       if (errno != 0) SetError(t, "invalid number.");
       n = new CAstConstant(t, tm->GetInt(), v);
       break;
+    }
 
     case tIdent:
+    {
       CToken tid;
       Consume(tIdent, &t);
       if(_scanner->Peek().GetType() == tLBrak) { // subroutineCall
         Consume(tLBrak);
 
-        n = new CAstFunctionCall(tid, CSymtab::FindSymbol(t.GetValue(), s));
-        assert(n != NULL);
+        CAstFunctionCall *f = new CAstFunctionCall(tid, dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sLocal)));
+        assert(f != NULL);
 
         if(isExpr(_scanner->Peek())) {
           CAstExpression *expr = expression(s);
           assert(expr != NULL);
-          n->AddArg(expr);
+          f->AddArg(expr);
 
           while(_scanner->Peek().GetType() == tComma) {
             Consume(tComma);
             expr = expression(s);
             assert(expr != NULL);
-            n->AddArg(expr);
+            f->AddArg(expr);
           }
         }
-
+        n = f;
         Consume(tRBrak);
       }
       else { // qualident
         if(_scanner->Peek().GetType() == tLSBrak) { // It means array
-          n = new CAstArrayDesignator(tid, CSymtab::FindSymbol(t.GetValue(), s));
+          CAstArrayDesignator *f = new CAstArrayDesignator(tid, symtab->FindSymbol(t.GetValue(), sLocal));
           
           while(_scanner->Peek().GetType() == tLSBrak) {
             Consume(tLSBrak);
 
             CAstExpression *expr = expression(s);
             assert(expr != NULL);
-            n->AddIndex(expr);
+            f->AddIndex(expr);
 
             Consume(tRSBrak);
           }
 
-          n->IndicesComplete();
+          f->IndicesComplete();
+          n = f;
         }
         else {
-          n = new CAstDesignator(tid, CSymtab::FindSymbol(t.GetValue(), s));
+          n = new CAstDesignator(tid, symtab->FindSymbol(t.GetValue(), sLocal));
         }
       }
       break;
+    }
 
     case tString:
       Consume(tString, &t);
@@ -908,11 +965,43 @@ CAstExpression* CParser::factor(CAstScope *s) {
       break;
 
     case tCharacter:
+    {
       Consume(tCharacter, &t);
-      n = new CAstConstant(t, tm->GetChar(), );
-      break;
+      char fst = t.GetValue().at(0);
+      char res;
 
-    case tLBark:
+      if(fst != '\\')
+        res = fst;
+      else {
+        char snd = t.GetValue().at(1);
+        if(snd == 'n') {
+          res = '\n';
+        }
+        else if(snd == 't') {
+          res = '\t';
+        }
+        else if(snd == '"') {
+          res = '"';
+        }
+        else if(snd == '\'') {
+          res = '\'';
+        }
+        else if(snd == '\\') {
+          res = '\\';
+        }
+        else if(snd == '0') {
+          res = '\0';
+        }
+        else {
+          SetError(t, "wrong character");
+        }
+      }
+
+      n = new CAstConstant(t, tm->GetChar(), (long long)res);
+      break;
+    }
+
+    case tLBrak:
       Consume(tLBrak);
       n = expression(s);
       Consume(tRBrak);

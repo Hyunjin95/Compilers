@@ -52,7 +52,7 @@ using namespace std;
 class CAstStatement;
 class CAstExpression;
 class CAstFunctionCall;
-class CAstConstant;
+class CAstDesignator;
 
 //------------------------------------------------------------------------------
 /// @brief AST base node
