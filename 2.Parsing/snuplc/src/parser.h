@@ -97,7 +97,7 @@ class CParser {
 
     CAstModule*           module(void);
     void                  subroutineDecl(CAstScope *);
-    void                  varDeclParam(CSymProc *, int);
+    void                  varDeclParam(CAstScope *, CSymProc *, int);
     void                  varDecl(CAstScope *);
     const CType*          type(void);
     CAstStatement*        statSequence(CAstScope *);
