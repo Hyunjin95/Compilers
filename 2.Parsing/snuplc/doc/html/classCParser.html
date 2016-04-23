@@ -73,7 +73,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a8d3b3514bb26761dd840a43899a60c98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a8d3b3514bb26761dd840a43899a60c98">SetError</a> (<a class="el" href="classCToken.html">CToken</a> t, const string message)</td></tr>
 <tr class="memdesc:a8d3b3514bb26761dd840a43899a60c98"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets the token causing a parse error along with a message  <a href="#a8d3b3514bb26761dd840a43899a60c98">More...</a><br /></td></tr>
 <tr class="separator:a8d3b3514bb26761dd840a43899a60c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af036593159f9387e1f9604e2790a8d86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#af036593159f9387e1f9604e2790a8d86">Consume</a> (<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08">EToken</a> type, <a class="el" href="classCToken.html">CToken</a> *token=NULL)</td></tr>
+<tr class="memitem:af036593159f9387e1f9604e2790a8d86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#af036593159f9387e1f9604e2790a8d86">Consume</a> (<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08">EToken</a> <a class="el" href="classCParser.html#a2554620ae9f06872a7762720ff1c4e75">type</a>, <a class="el" href="classCToken.html">CToken</a> *token=NULL)</td></tr>
 <tr class="memdesc:af036593159f9387e1f9604e2790a8d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">consume a token given type and optionally store the token  <a href="#af036593159f9387e1f9604e2790a8d86">More...</a><br /></td></tr>
 <tr class="separator:af036593159f9387e1f9604e2790a8d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79fb208a17e733f5ce3ca866bce7387f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a79fb208a17e733f5ce3ca866bce7387f">InitSymbolTable</a> (<a class="el" href="classCSymtab.html">CSymtab</a> *s)</td></tr>
@@ -82,20 +82,36 @@ Private Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">methods for recursive-descent parsing</div></td></tr>
 <tr class="memitem:a608abf6627862b02dff4e2146416d81e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstModule.html">CAstModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a608abf6627862b02dff4e2146416d81e">module</a> (void)</td></tr>
 <tr class="separator:a608abf6627862b02dff4e2146416d81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab80b3a1e6c92caee041d937a5c98b492"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatement.html">CAstStatement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ab80b3a1e6c92caee041d937a5c98b492">statSequence</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
-<tr class="separator:ab80b3a1e6c92caee041d937a5c98b492"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2adfe259b73c4e3695eb3269ca6b83d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatAssign.html">CAstStatAssign</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a2adfe259b73c4e3695eb3269ca6b83d8">assignment</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
-<tr class="separator:a2adfe259b73c4e3695eb3269ca6b83d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7852ab9a6c8bb432f771a578e26d36f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ab7852ab9a6c8bb432f771a578e26d36f">expression</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
-<tr class="separator:ab7852ab9a6c8bb432f771a578e26d36f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af96bce53cd6e0a0093d6ceed571e6d72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#af96bce53cd6e0a0093d6ceed571e6d72">simpleexpr</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
-<tr class="separator:af96bce53cd6e0a0093d6ceed571e6d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad91bb89e981a45a0d9332ed0c1ce9537"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ad91bb89e981a45a0d9332ed0c1ce9537">term</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
-<tr class="separator:ad91bb89e981a45a0d9332ed0c1ce9537"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fb9499395df05708e93ac0e5c553411"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a3fb9499395df05708e93ac0e5c553411">factor</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
-<tr class="separator:a3fb9499395df05708e93ac0e5c553411"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01c77fec4ed324078d63dda279597289"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstConstant.html">CAstConstant</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a01c77fec4ed324078d63dda279597289">number</a> (void)</td></tr>
-<tr class="separator:a01c77fec4ed324078d63dda279597289"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28f1c232321d5f53e2e51d73138e1f22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a28f1c232321d5f53e2e51d73138e1f22">subroutineDecl</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:a28f1c232321d5f53e2e51d73138e1f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac265266665bb2707036b0eeb630a5add"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ac265266665bb2707036b0eeb630a5add">varDeclParam</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *, <a class="el" href="classCSymProc.html">CSymProc</a> *, int)</td></tr>
+<tr class="separator:ac265266665bb2707036b0eeb630a5add"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f383cf59801313619742205909c3a2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a6f383cf59801313619742205909c3a2d">varDecl</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:a6f383cf59801313619742205909c3a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2554620ae9f06872a7762720ff1c4e75"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classCType.html">CType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a2554620ae9f06872a7762720ff1c4e75">type</a> (void)</td></tr>
+<tr class="separator:a2554620ae9f06872a7762720ff1c4e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed13f06ccab27316a8e1bb2002e2d06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatement.html">CAstStatement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a9ed13f06ccab27316a8e1bb2002e2d06">statSequence</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:a9ed13f06ccab27316a8e1bb2002e2d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad29c7709448a182c31ff660da0f5b487"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatement.html">CAstStatement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ad29c7709448a182c31ff660da0f5b487">statement</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:ad29c7709448a182c31ff660da0f5b487"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada85042a899515cf9b7ec05459301915"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatCall.html">CAstStatCall</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ada85042a899515cf9b7ec05459301915">subroutineCall</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *, <a class="el" href="classCToken.html">CToken</a>)</td></tr>
+<tr class="separator:ada85042a899515cf9b7ec05459301915"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef85d49776be7a30e14a694d1d00773"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatAssign.html">CAstStatAssign</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a1ef85d49776be7a30e14a694d1d00773">assignment</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *, <a class="el" href="classCToken.html">CToken</a>)</td></tr>
+<tr class="separator:a1ef85d49776be7a30e14a694d1d00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05e0825d67988a07dd9edaef8946b622"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatIf.html">CAstStatIf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a05e0825d67988a07dd9edaef8946b622">ifStatement</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:a05e0825d67988a07dd9edaef8946b622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01cc64a99ce56680577e181f565add09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatWhile.html">CAstStatWhile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a01cc64a99ce56680577e181f565add09">whileStatement</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:a01cc64a99ce56680577e181f565add09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad95f3ba857f485fb5324c3df0b71222e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatReturn.html">CAstStatReturn</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ad95f3ba857f485fb5324c3df0b71222e">returnStatement</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:ad95f3ba857f485fb5324c3df0b71222e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8906e076ba05bcf578dda5173280bda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ae8906e076ba05bcf578dda5173280bda">expression</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:ae8906e076ba05bcf578dda5173280bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40a6a6bfcc9101f9774e2611d959c5e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a40a6a6bfcc9101f9774e2611d959c5e4">simpleexpr</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:a40a6a6bfcc9101f9774e2611d959c5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00e355c4588727cea975fcc79aae953f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a00e355c4588727cea975fcc79aae953f">term</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:a00e355c4588727cea975fcc79aae953f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab137c5c5cbe6bee7e2c7c4aaf7737c36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstExpression.html">CAstExpression</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ab137c5c5cbe6bee7e2c7c4aaf7737c36">factor</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *)</td></tr>
+<tr class="separator:ab137c5c5cbe6bee7e2c7c4aaf7737c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -176,7 +192,7 @@ License</h1>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a2adfe259b73c4e3695eb3269ca6b83d8"></a>
+<a class="anchor" id="a1ef85d49776be7a30e14a694d1d00773"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -187,8 +203,18 @@ License</h1>
           <td class="memname"><a class="el" href="classCAstStatAssign.html">CAstStatAssign</a> * CParser::assignment </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classCToken.html">CToken</a>&#160;</td>
+          <td class="paramname"><em>ident</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -198,7 +224,7 @@ License</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00184">184</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00640">640</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -254,7 +280,7 @@ License</h1>
 
 </div>
 </div>
-<a class="anchor" id="ab7852ab9a6c8bb432f771a578e26d36f"></a>
+<a class="anchor" id="ae8906e076ba05bcf578dda5173280bda"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -276,11 +302,11 @@ License</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00199">199</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00770">770</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3fb9499395df05708e93ac0e5c553411"></a>
+<a class="anchor" id="ab137c5c5cbe6bee7e2c7c4aaf7737c36"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -302,7 +328,7 @@ License</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00275">275</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00908">908</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -393,6 +419,32 @@ License</h1>
 
 </div>
 </div>
+<a class="anchor" id="a05e0825d67988a07dd9edaef8946b622"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCAstStatIf.html">CAstStatIf</a> * CParser::ifStatement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00690">690</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a79fb208a17e733f5ce3ca866bce7387f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -443,33 +495,7 @@ License</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00122">122</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a01c77fec4ed324078d63dda279597289"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classCAstConstant.html">CAstConstant</a> * CParser::number </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00309">309</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00162">162</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -496,6 +522,32 @@ License</h1>
 </dl>
 
 <p>Definition at line <a class="el" href="parser_8cpp_source.html#l00058">58</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad95f3ba857f485fb5324c3df0b71222e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCAstStatReturn.html">CAstStatReturn</a> * CParser::returnStatement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00746">746</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -544,7 +596,7 @@ License</h1>
 
 </div>
 </div>
-<a class="anchor" id="af96bce53cd6e0a0093d6ceed571e6d72"></a>
+<a class="anchor" id="a40a6a6bfcc9101f9774e2611d959c5e4"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -566,11 +618,37 @@ License</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00224">224</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00807">807</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab80b3a1e6c92caee041d937a5c98b492"></a>
+<a class="anchor" id="ad29c7709448a182c31ff660da0f5b487"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCAstStatement.html">CAstStatement</a> * CParser::statement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00560">560</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9ed13f06ccab27316a8e1bb2002e2d06"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -592,11 +670,73 @@ License</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00139">139</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00525">525</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad91bb89e981a45a0d9332ed0c1ce9537"></a>
+<a class="anchor" id="ada85042a899515cf9b7ec05459301915"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCAstStatCall.html">CAstStatCall</a> * CParser::subroutineCall </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCToken.html">CToken</a>&#160;</td>
+          <td class="paramname"><em>ident</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00605">605</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a28f1c232321d5f53e2e51d73138e1f22"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CParser::subroutineDecl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00214">214</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a00e355c4588727cea975fcc79aae953f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -618,7 +758,127 @@ License</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00248">248</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00873">873</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2554620ae9f06872a7762720ff1c4e75"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classCType.html">CType</a> * CParser::type </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00467">467</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6f383cf59801313619742205909c3a2d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CParser::varDecl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00438">438</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac265266665bb2707036b0eeb630a5add"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CParser::varDeclParam </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCSymProc.html">CSymProc</a> *&#160;</td>
+          <td class="paramname"><em>proc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00409">409</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a01cc64a99ce56680577e181f565add09"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCAstStatWhile.html">CAstStatWhile</a> * CParser::whileStatement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCAstScope.html">CAstScope</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00721">721</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -643,7 +903,7 @@ License</h1>
 
 <p>error flag </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00121">121</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00125">125</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -667,7 +927,7 @@ License</h1>
 
 <p>error token </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00119">119</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00123">123</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -691,7 +951,7 @@ License</h1>
 
 <p>error message </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00120">120</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00124">124</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -715,7 +975,7 @@ License</h1>
 
 <p>root node of the program </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00115">115</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00119">119</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -739,7 +999,7 @@ License</h1>
 
 <p><a class="el" href="classCScanner.html" title="scanner ">CScanner</a> instance. </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00114">114</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00118">118</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -763,7 +1023,7 @@ License</h1>
 
 <p>current token </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00116">116</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00120">120</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -774,7 +1034,7 @@ License</h1>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 14 2016 11:53:24 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 23 2016 16:48:32 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

@@ -820,7 +820,7 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
     if(tOp.GetValue() == "+")
       eOp = opPos;
     else if(tOp.GetValue() == "-")
-      eOp = opNot;
+      eOp = opNeg;
     else
       SetError(tOp, "invalid term operator");
    
@@ -832,13 +832,13 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
       r = term(s);
 
       if(tt.GetValue() == "+") {
-        n = new CAstBinaryOp(tt, opAdd, l, r);
+        n = new CAstBinaryOp(t, opAdd, l, r);
       }
       else if(tt.GetValue() == "-") {
-        n = new CAstBinaryOp(tt, opSub, l, r);
+        n = new CAstBinaryOp(t, opSub, l, r);
       }
       else {
-        n = new CAstBinaryOp(tt, opOr, l, r);
+        n = new CAstBinaryOp(t, opOr, l, r);
       }
     }
 
@@ -851,18 +851,18 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
       CToken t;
       CAstExpression *l = n, *r;
 
-      Consume(tTermOp, &t);
+      Consume(tTermOp, &tt);
 
       r = term(s);
       
       if(tt.GetValue() == "+") {
-        n = new CAstBinaryOp(tt, opAdd, l, r);
+        n = new CAstBinaryOp(t, opAdd, l, r);
       }
       else if(tt.GetValue() == "-") {
-        n = new CAstBinaryOp(tt, opSub, l, r);
+        n = new CAstBinaryOp(t, opSub, l, r);
       }
       else {
-        n = new CAstBinaryOp(tt, opOr, l, r);
+        n = new CAstBinaryOp(t, opOr, l, r);
       }
     }
 
@@ -886,7 +886,7 @@ CAstExpression* CParser::term(CAstScope *s) {
     CAstExpression *l = n, *r;
 
     Consume(tFactOp, &t);
-
+ 
     r = factor(s);
 
     if(t.GetValue() == "*") {

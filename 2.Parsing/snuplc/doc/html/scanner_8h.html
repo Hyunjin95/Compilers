@@ -72,23 +72,55 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a9093554967c90043b2a4a74c028f3f08"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08">EToken</a> { <br />
-&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a72eac3695c1398ad6f1135fede455f43">tNumber</a>, 
-<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ae6c68b5b5352fb48681dce352980d9df">tPlusMinus</a>, 
-<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ac310ea8cd49261a561b1f3bc485a3a89">tMulDiv</a>, 
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ad1d32d46641b20bb5c32b37149e464fc">tCharacter</a> = 0, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a563fef1333847dcd5b129d94da20e260">tString</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a84bd5f86e7e79bffd011ab224f21bd59">tIdent</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a72eac3695c1398ad6f1135fede455f43">tNumber</a>, 
+<br />
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a8415e49336e565212ad0cfb02ff5b9e6">tTermOp</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a1d4c3bdfc9f1a622df9034faa9351f80">tFactOp</a>, 
 <a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a7ff40ee5afb5b86c87e93d1c41f60a20">tRelOp</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a31be042cf58eb5cddbc7eadedeb2cc0e">tAssign</a>, 
 <br />
-&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a31be042cf58eb5cddbc7eadedeb2cc0e">tAssign</a>, 
-<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a94a2999916c80551c1b474603bab69fc">tSemicolon</a>, 
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a94a2999916c80551c1b474603bab69fc">tSemicolon</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08aa724120863145a80c326f5f0ef45e0ab">tColon</a>, 
 <a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a3db027d103c3b06ba435d85b4c50feff">tDot</a>, 
-<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a96acf131759c129c574902d764a8c62f">tLParens</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a609c0b331973879ec142909a94fd0d27">tComma</a>, 
 <br />
-&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a10aa734e29e57d24eb792822540e8b55">tRParens</a>, 
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a928dab804bac965ce970fc9cee9dcab5">tLBrak</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a2afcdb41d73ae3c4618dc01281ba1c01">tRBrak</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a6072991d8946d53a1b6fab66a2b7fb34">tLSBrak</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a1a780b295679651d097bd02ebcc725f9">tRSBrak</a>, 
+<br />
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a7b2de79511971f1894092366760299c1">tEMark</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ad96e005abb865326d95bcd78a9837ea9">tModule</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08abe557cc99bc01533eaceee30eaf94109">tBegin</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a8d56402cd74395a2f0731c1971fb7d2e">tEnd</a>, 
+<br />
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08aa5b09f395af4e23ed9481594257c39de">tTrue</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ac501dc9eaaa9f954d5a9d1bcdf4adea5">tFalse</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a0082dbf47d3c546fe9142d0617edbcc4">tBoolean</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a58ee754d09822cfd6a9417f08561f252">tChar</a>, 
+<br />
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a0ac27b5ea77651f451c45c9e021988a6">tInteger</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ae9f5d04c0a96d851caf3c54fd6e21744">tIf</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ae6e7d2100b228fb1fe8b86973ab6a4d9">tThen</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a4bef8821926a90cd87aad5c3e4dc6e03">tElse</a>, 
+<br />
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ae39c29f9c276b5379a48e4c43c0c81c6">tWhile</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a894707ef9dc1bad629de42519f869fe9">tDo</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a8e3934d76821f0e33e170299526439e6">tReturn</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08acdf7a278bd62d7df25ded625c4ad7296">tVar</a>, 
+<br />
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08aceaa0040bfc3643551c575d40b833838">tProcedure</a>, 
+<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08ae4bb1408cee9d08f59d7700e7269fa51">tFunction</a>, 
 <a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a3dbd690d2ab18e24298f74abec8ec6f5">tEOF</a>, 
 <a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08adafa2c7f95d45d2e6c46d4e941faa1fe">tIOError</a>, 
-<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a93dd8ba9e5e5dacd46c9e1d8487e072f">tUndefined</a>
+<br />
+&#160;&#160;<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08a93dd8ba9e5e5dacd46c9e1d8487e072f">tUndefined</a>
 <br />
  }</td></tr>
-<tr class="memdesc:a9093554967c90043b2a4a74c028f3f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">SnuPL/0 token type.  <a href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08">More...</a><br /></td></tr>
+<tr class="memdesc:a9093554967c90043b2a4a74c028f3f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">SnuPL/1 token type.  <a href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08">More...</a><br /></td></tr>
 <tr class="separator:a9093554967c90043b2a4a74c028f3f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -112,35 +144,110 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>SnuPL/0 token type. </p>
-<p>each member of this enumeration represents a token in SnuPL/0 </p>
+<p>SnuPL/1 token type. </p>
+<p>each member of this enumeration represents a token in SnuPL/1 </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a72eac3695c1398ad6f1135fede455f43"></a>tNumber&#160;</td><td class="fielddoc">
-<p>number </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ad1d32d46641b20bb5c32b37149e464fc"></a>tCharacter&#160;</td><td class="fielddoc">
+<p>a character </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ae6c68b5b5352fb48681dce352980d9df"></a>tPlusMinus&#160;</td><td class="fielddoc">
-<p>'+' or '-' </p>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a563fef1333847dcd5b129d94da20e260"></a>tString&#160;</td><td class="fielddoc">
+<p>a string </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ac310ea8cd49261a561b1f3bc485a3a89"></a>tMulDiv&#160;</td><td class="fielddoc">
-<p>'*' or '/' </p>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a84bd5f86e7e79bffd011ab224f21bd59"></a>tIdent&#160;</td><td class="fielddoc">
+<p>an identifier </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a72eac3695c1398ad6f1135fede455f43"></a>tNumber&#160;</td><td class="fielddoc">
+<p>a number </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a8415e49336e565212ad0cfb02ff5b9e6"></a>tTermOp&#160;</td><td class="fielddoc">
+<p>'+' or '-' or '||' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a1d4c3bdfc9f1a622df9034faa9351f80"></a>tFactOp&#160;</td><td class="fielddoc">
+<p>'*' or '/' or '&amp;&amp;' </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a7ff40ee5afb5b86c87e93d1c41f60a20"></a>tRelOp&#160;</td><td class="fielddoc">
 <p>relational operator </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a31be042cf58eb5cddbc7eadedeb2cc0e"></a>tAssign&#160;</td><td class="fielddoc">
-<p>assignment operator </p>
+<p>assignment operator ':=' </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a94a2999916c80551c1b474603bab69fc"></a>tSemicolon&#160;</td><td class="fielddoc">
-<p>a semicolon </p>
+<p>a semicolon ';' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08aa724120863145a80c326f5f0ef45e0ab"></a>tColon&#160;</td><td class="fielddoc">
+<p>a colon ':' </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a3db027d103c3b06ba435d85b4c50feff"></a>tDot&#160;</td><td class="fielddoc">
-<p>a dot </p>
+<p>a dot '.' </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a96acf131759c129c574902d764a8c62f"></a>tLParens&#160;</td><td class="fielddoc">
-<p>a left parenthesis </p>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a609c0b331973879ec142909a94fd0d27"></a>tComma&#160;</td><td class="fielddoc">
+<p>a comma ',' </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a10aa734e29e57d24eb792822540e8b55"></a>tRParens&#160;</td><td class="fielddoc">
-<p>a right parenthesis </p>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a928dab804bac965ce970fc9cee9dcab5"></a>tLBrak&#160;</td><td class="fielddoc">
+<p>a left bracket '(' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a2afcdb41d73ae3c4618dc01281ba1c01"></a>tRBrak&#160;</td><td class="fielddoc">
+<p>a right bracket ')' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a6072991d8946d53a1b6fab66a2b7fb34"></a>tLSBrak&#160;</td><td class="fielddoc">
+<p>a left square bracket '[' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a1a780b295679651d097bd02ebcc725f9"></a>tRSBrak&#160;</td><td class="fielddoc">
+<p>a right square bracket ']' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a7b2de79511971f1894092366760299c1"></a>tEMark&#160;</td><td class="fielddoc">
+<p>an exclamation mark '!' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ad96e005abb865326d95bcd78a9837ea9"></a>tModule&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'module' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08abe557cc99bc01533eaceee30eaf94109"></a>tBegin&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'begin' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a8d56402cd74395a2f0731c1971fb7d2e"></a>tEnd&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'end' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08aa5b09f395af4e23ed9481594257c39de"></a>tTrue&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'true' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ac501dc9eaaa9f954d5a9d1bcdf4adea5"></a>tFalse&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'false' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a0082dbf47d3c546fe9142d0617edbcc4"></a>tBoolean&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'boolean' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a58ee754d09822cfd6a9417f08561f252"></a>tChar&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'char' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a0ac27b5ea77651f451c45c9e021988a6"></a>tInteger&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'integer' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ae9f5d04c0a96d851caf3c54fd6e21744"></a>tIf&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'if' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ae6e7d2100b228fb1fe8b86973ab6a4d9"></a>tThen&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'then' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a4bef8821926a90cd87aad5c3e4dc6e03"></a>tElse&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'else' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ae39c29f9c276b5379a48e4c43c0c81c6"></a>tWhile&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'while' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a894707ef9dc1bad629de42519f869fe9"></a>tDo&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'do' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a8e3934d76821f0e33e170299526439e6"></a>tReturn&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'return' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08acdf7a278bd62d7df25ded625c4ad7296"></a>tVar&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'var' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08aceaa0040bfc3643551c575d40b833838"></a>tProcedure&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'procedure' </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08ae4bb1408cee9d08f59d7700e7269fa51"></a>tFunction&#160;</td><td class="fielddoc">
+<p>a reserved keyword 'function' </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="a9093554967c90043b2a4a74c028f3f08a3dbd690d2ab18e24298f74abec8ec6f5"></a>tEOF&#160;</td><td class="fielddoc">
 <p>end of file </p>
@@ -153,7 +260,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="scanner_8h_source.html#l00052">52</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p>Definition at line <a class="el" href="scanner_8h_source.html#l00051">51</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>
@@ -197,7 +304,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="scanner_8cpp_source.html#l00200">200</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
+<p>Definition at line <a class="el" href="scanner_8cpp_source.html#l00276">276</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -240,14 +347,14 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="scanner_8cpp_source.html#l00205">205</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
+<p>Definition at line <a class="el" href="scanner_8cpp_source.html#l00281">281</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 14 2016 11:53:24 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 23 2016 16:48:31 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

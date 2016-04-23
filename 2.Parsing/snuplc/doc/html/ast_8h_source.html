@@ -72,7 +72,7 @@
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">class </span><a class="code" href="classCAstStatement.html">CAstStatement</a>;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">class </span><a class="code" href="classCAstExpression.html">CAstExpression</a>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">class </span><a class="code" href="classCAstFunctionCall.html">CAstFunctionCall</a>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">class </span><a class="code" href="classCAstConstant.html">CAstConstant</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">class </span><a class="code" href="classCAstDesignator.html">CAstDesignator</a>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span></div>
@@ -285,11 +285,11 @@
 <div class="line"><a name="l00450"></a><span class="lineno"><a class="line" href="classCAstStatAssign.html">  450</a></span>&#160;<span class="keyword">class </span><a class="code" href="classCAstStatAssign.html">CAstStatAssign</a> : <span class="keyword">public</span> <a class="code" href="classCAstStatement.html">CAstStatement</a> {</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <a class="code" href="classCAstStatAssign.html">CAstStatAssign</a>(<a class="code" href="classCToken.html">CToken</a> t, <a class="code" href="classCAstConstant.html">CAstConstant</a> *lhs, <a class="code" href="classCAstExpression.html">CAstExpression</a> *rhs);</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <a class="code" href="classCAstStatAssign.html">CAstStatAssign</a>(<a class="code" href="classCToken.html">CToken</a> t, <a class="code" href="classCAstDesignator.html">CAstDesignator</a> *lhs, <a class="code" href="classCAstExpression.html">CAstExpression</a> *rhs);</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;</div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
 <div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <a class="code" href="classCAstConstant.html">CAstConstant</a>* GetLHS(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <a class="code" href="classCAstDesignator.html">CAstDesignator</a>* GetLHS(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;</div>
 <div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;    <a class="code" href="classCAstExpression.html">CAstExpression</a>* GetRHS(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;</div>
@@ -316,7 +316,7 @@
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;</div>
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;</div>
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00520"></a><span class="lineno"><a class="line" href="classCAstStatAssign.html#ab29ce0a109c26c808804817438f17750">  520</a></span>&#160;    <a class="code" href="classCAstConstant.html">CAstConstant</a>   *<a class="code" href="classCAstStatAssign.html#ab29ce0a109c26c808804817438f17750">_lhs</a>;           </div>
+<div class="line"><a name="l00520"></a><span class="lineno"><a class="line" href="classCAstStatAssign.html#a9066e6885ee96512a236f51b1fd316b1">  520</a></span>&#160;    <a class="code" href="classCAstDesignator.html">CAstDesignator</a> *<a class="code" href="classCAstStatAssign.html#a9066e6885ee96512a236f51b1fd316b1">_lhs</a>;           </div>
 <div class="line"><a name="l00521"></a><span class="lineno"><a class="line" href="classCAstStatAssign.html#a8e39e52316994fce07cf5711b98cb4f4">  521</a></span>&#160;    <a class="code" href="classCAstExpression.html">CAstExpression</a> *<a class="code" href="classCAstStatAssign.html#a8e39e52316994fce07cf5711b98cb4f4">_rhs</a>;           </div>
 <div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;};</div>
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;</div>
@@ -886,7 +886,6 @@
 <div class="ttc" id="classCAstFunctionCall_html_a4fad91d37c8f610c959313befc1e7b9a"><div class="ttname"><a href="classCAstFunctionCall.html#a4fad91d37c8f610c959313befc1e7b9a">CAstFunctionCall::_symbol</a></div><div class="ttdeci">const CSymProc * _symbol</div><div class="ttdoc">symbol </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01228">ast.h:1228</a></div></div>
 <div class="ttc" id="classCAstArrayDesignator_html"><div class="ttname"><a href="classCAstArrayDesignator.html">CAstArrayDesignator</a></div><div class="ttdoc">AST array designator. </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01332">ast.h:1332</a></div></div>
 <div class="ttc" id="classCTacAddr_html"><div class="ttname"><a href="classCTacAddr.html">CTacAddr</a></div><div class="ttdoc">address class </div><div class="ttdef"><b>Definition:</b> <a href="ir_8h_source.html#l00115">ir.h:115</a></div></div>
-<div class="ttc" id="classCAstStatAssign_html_ab29ce0a109c26c808804817438f17750"><div class="ttname"><a href="classCAstStatAssign.html#ab29ce0a109c26c808804817438f17750">CAstStatAssign::_lhs</a></div><div class="ttdeci">CAstConstant * _lhs</div><div class="ttdoc">LHS (designator) </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00520">ast.h:520</a></div></div>
 <div class="ttc" id="classCAstScope_html_a96f527f3b0e0973c849c350b500d5053"><div class="ttname"><a href="classCAstScope.html#a96f527f3b0e0973c849c350b500d5053">CAstScope::_cb</a></div><div class="ttdeci">CCodeBlock * _cb</div><div class="ttdoc">(entry) code block for this scope </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00258">ast.h:258</a></div></div>
 <div class="ttc" id="classCAstScope_html_a9fcd397a5634e1a2c21da63cabffc3b3"><div class="ttname"><a href="classCAstScope.html#a9fcd397a5634e1a2c21da63cabffc3b3">CAstScope::_children</a></div><div class="ttdeci">vector&lt; CAstScope * &gt; _children</div><div class="ttdoc">subordinate scopes </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00257">ast.h:257</a></div></div>
 <div class="ttc" id="classCAstNode_html_a65fa3cba817ec329bc386dd20ce7d395"><div class="ttname"><a href="classCAstNode.html#a65fa3cba817ec329bc386dd20ce7d395">CAstNode::_global_id</a></div><div class="ttdeci">static int _global_id</div><div class="ttdoc">holds the (global) next id </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00129">ast.h:129</a></div></div>
@@ -915,6 +914,7 @@
 <div class="ttc" id="scanner_8h_html"><div class="ttname"><a href="scanner_8h.html">scanner.h</a></div></div>
 <div class="ttc" id="classCDataInitString_html"><div class="ttname"><a href="classCDataInitString.html">CDataInitString</a></div><div class="ttdoc">string data initializer </div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00094">data.h:94</a></div></div>
 <div class="ttc" id="classCAstSpecialOp_html"><div class="ttname"><a href="classCAstSpecialOp.html">CAstSpecialOp</a></div><div class="ttdoc">AST special operation node. </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01073">ast.h:1073</a></div></div>
+<div class="ttc" id="classCAstStatAssign_html_a9066e6885ee96512a236f51b1fd316b1"><div class="ttname"><a href="classCAstStatAssign.html#a9066e6885ee96512a236f51b1fd316b1">CAstStatAssign::_lhs</a></div><div class="ttdeci">CAstDesignator * _lhs</div><div class="ttdoc">LHS (designator) </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00520">ast.h:520</a></div></div>
 <div class="ttc" id="classCAstFunctionCall_html_ad4144e86e6698ff836abf212be380dd6"><div class="ttname"><a href="classCAstFunctionCall.html#ad4144e86e6698ff836abf212be380dd6">CAstFunctionCall::_arg</a></div><div class="ttdeci">vector&lt; CAstExpression * &gt; _arg</div><div class="ttdoc">parameter list </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01229">ast.h:1229</a></div></div>
 <div class="ttc" id="classCTacLabel_html"><div class="ttname"><a href="classCTacLabel.html">CTacLabel</a></div><div class="ttdef"><b>Definition:</b> <a href="ir_8h_source.html#l00118">ir.h:118</a></div></div>
 <div class="ttc" id="classCAstBinaryOp_html"><div class="ttname"><a href="classCAstBinaryOp.html">CAstBinaryOp</a></div><div class="ttdoc">AST binary operation node. </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00914">ast.h:914</a></div></div>
@@ -929,7 +929,7 @@
 <div class="ttc" id="classCAstArrayDesignator_html_ad98c3713f5bef9545a61e5e395a3b2e4"><div class="ttname"><a href="classCAstArrayDesignator.html#ad98c3713f5bef9545a61e5e395a3b2e4">CAstArrayDesignator::_offset</a></div><div class="ttdeci">CAstExpression * _offset</div><div class="ttdoc">address computation expression </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01417">ast.h:1417</a></div></div>
 <div class="ttc" id="classCAstConstant_html"><div class="ttname"><a href="classCAstConstant.html">CAstConstant</a></div><div class="ttdoc">AST constant operand node. </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01427">ast.h:1427</a></div></div>
 <div class="ttc" id="classCAstScope_html_a0b0de878902832d5093695464e7c90d8"><div class="ttname"><a href="classCAstScope.html#a0b0de878902832d5093695464e7c90d8">CAstScope::_parent</a></div><div class="ttdeci">CAstScope * _parent</div><div class="ttdoc">superordinate scope </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00255">ast.h:255</a></div></div>
-<div class="ttc" id="classCToken_html"><div class="ttname"><a href="classCToken.html">CToken</a></div><div class="ttdoc">token </div><div class="ttdef"><b>Definition:</b> <a href="scanner_8h_source.html#l00076">scanner.h:76</a></div></div>
+<div class="ttc" id="classCToken_html"><div class="ttname"><a href="classCToken.html">CToken</a></div><div class="ttdoc">token </div><div class="ttdef"><b>Definition:</b> <a href="scanner_8h_source.html#l00104">scanner.h:104</a></div></div>
 <div class="ttc" id="classCAstArrayDesignator_html_afa91453d1cfbe7675aa8b7c86d2290a7"><div class="ttname"><a href="classCAstArrayDesignator.html#afa91453d1cfbe7675aa8b7c86d2290a7">CAstArrayDesignator::_done</a></div><div class="ttdeci">bool _done</div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01414">ast.h:1414</a></div></div>
 <div class="ttc" id="classCAstStringConstant_html_aede1c74cde3576fb7cb148f4b7df50be"><div class="ttname"><a href="classCAstStringConstant.html#aede1c74cde3576fb7cb148f4b7df50be">CAstStringConstant::_idx</a></div><div class="ttdeci">static int _idx</div><div class="ttdoc">static counter </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l01574">ast.h:1574</a></div></div>
 <div class="ttc" id="classCAstStatWhile_html_ade21f515915edc66bccbce52c64c0e82"><div class="ttname"><a href="classCAstStatWhile.html#ade21f515915edc66bccbce52c64c0e82">CAstStatWhile::_body</a></div><div class="ttdeci">CAstStatement * _body</div><div class="ttdoc">body </div><div class="ttdef"><b>Definition:</b> <a href="ast_8h_source.html#l00835">ast.h:835</a></div></div>
@@ -946,7 +946,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 14 2016 11:53:23 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 23 2016 16:48:31 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
