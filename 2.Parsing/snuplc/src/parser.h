@@ -99,7 +99,7 @@ class CParser {
     void                  subroutineDecl(CAstScope *);
     void                  varDeclParam(CAstScope *, CSymProc *, int);
     void                  varDecl(CAstScope *);
-    const CType*          type(void);
+    const CType*          type(bool);
     CAstStatement*        statSequence(CAstScope *);
     CAstStatement*        statement(CAstScope *);
     CAstStatCall*         subroutineCall(CAstScope *, CToken);

@@ -62,7 +62,7 @@ digraph AST {
   node21 -> node28 [style=dotted];
   node37 [label="if",shape=box];
   node33 [label="<",shape=box];
-  node31 [label="or",shape=box];
+  node31 [label="add",shape=box];
   node29 [label="a",shape=ellipse];
   node31->node29;
   node30 [label="b",shape=ellipse];

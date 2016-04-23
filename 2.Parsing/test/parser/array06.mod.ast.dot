@@ -4,8 +4,8 @@ digraph AST {
   edge  [fontname="Times New Roman",fontsize=10];
 
   node0 [label="m array06",shape=box];
-  node111 [label="call Test",shape=box];
-  node0 -> node111 [style=dotted];
+  node113 [label="call Test",shape=box];
+  node0 -> node113 [style=dotted];
   node1 [label="p/f Print",shape=box];
   node6 [label=":=",shape=box];
   node2 [label="N",shape=ellipse];
@@ -66,7 +66,7 @@ digraph AST {
   node35 [label=":=",shape=box];
   node31 [label="j",shape=ellipse];
   node35->node31;
-  node34 [label="or",shape=box];
+  node34 [label="add",shape=box];
   node32 [label="j",shape=ellipse];
   node34->node32;
   node33 [label="1",shape=ellipse];
@@ -77,7 +77,7 @@ digraph AST {
   node41 [label=":=",shape=box];
   node37 [label="i",shape=ellipse];
   node41->node37;
-  node40 [label="or",shape=box];
+  node40 [label="add",shape=box];
   node38 [label="i",shape=ellipse];
   node40->node38;
   node39 [label="1",shape=ellipse];
@@ -152,7 +152,7 @@ digraph AST {
   node78 [label=":=",shape=box];
   node74 [label="c",shape=ellipse];
   node78->node74;
-  node77 [label="or",shape=box];
+  node77 [label="add",shape=box];
   node75 [label="c",shape=ellipse];
   node77->node75;
   node76 [label="1",shape=ellipse];
@@ -162,7 +162,7 @@ digraph AST {
   node83 [label=":=",shape=box];
   node79 [label="j",shape=ellipse];
   node83->node79;
-  node82 [label="or",shape=box];
+  node82 [label="add",shape=box];
   node80 [label="j",shape=ellipse];
   node82->node80;
   node81 [label="1",shape=ellipse];
@@ -173,7 +173,7 @@ digraph AST {
   node89 [label=":=",shape=box];
   node85 [label="i",shape=ellipse];
   node89->node85;
-  node88 [label="or",shape=box];
+  node88 [label="add",shape=box];
   node86 [label="i",shape=ellipse];
   node88->node86;
   node87 [label="1",shape=ellipse];
@@ -194,18 +194,22 @@ digraph AST {
   node98 [label="call WriteLn",shape=box];
   node95 -> node98 [style=dotted];
   node100 [label="call Print",shape=box];
+  node102 [label="&()",shape=box];
   node101 [label="x",shape=ellipse];
-  node100->node101;
+  node102->node101;
+  node100->node102;
   node98 -> node100 [style=dotted];
-  node103 [label="call WriteInt",shape=box];
-  node104 [label="22222222",shape=ellipse];
-  node103->node104;
-  node100 -> node103 [style=dotted];
-  node106 [label="call WriteLn",shape=box];
-  node103 -> node106 [style=dotted];
-  node108 [label="call Init",shape=box];
-  node109 [label="x",shape=ellipse];
-  node108->node109;
-  node106 -> node108 [style=dotted];
+  node104 [label="call WriteInt",shape=box];
+  node105 [label="22222222",shape=ellipse];
+  node104->node105;
+  node100 -> node104 [style=dotted];
+  node107 [label="call WriteLn",shape=box];
+  node104 -> node107 [style=dotted];
+  node109 [label="call Init",shape=box];
+  node111 [label="&()",shape=box];
+  node110 [label="x",shape=ellipse];
+  node111->node110;
+  node109->node111;
+  node107 -> node109 [style=dotted];
   node0 -> node94;
 }

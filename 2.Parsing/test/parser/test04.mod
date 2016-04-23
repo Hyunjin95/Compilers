@@ -12,9 +12,9 @@ module test04;
 var a,b,c : integer;
 
 begin
-  a := 1;
-  b := 2;
-  c := 3;
+//  a := 1;
+//  b := 2;
+//  c := 3;
 
   a := a + b + c;
   b := a - b - c;

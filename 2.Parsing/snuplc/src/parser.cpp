@@ -203,7 +203,7 @@ CAstModule* CParser::module() {
   Consume(tIdent, &module_name_check);
   
   if(module_name.GetValue() != module_name_check.GetValue()) {
-    SetError(module_name_check, "expected '" + module_name.GetValue() + "', got '" + module_name_check.GetValue() + "'");
+    SetError(module_name_check, "procedure/function identifier mismatch ('" + module_name.GetValue() + "' != '" + module_name_check.GetValue() + "').");
   }
 
   Consume(tDot);
@@ -280,7 +280,7 @@ void CParser::subroutineDecl(CAstScope *s) {
     Consume(tIdent, &subroutine_name_check);
     
     if(subroutine_name.GetValue() != subroutine_name_check.GetValue()) {
-      SetError(subroutine_name_check, "expected '" + subroutine_name.GetValue() + "', got '" + subroutine_name_check.GetValue() + "'");
+      SetError(subroutine_name_check, "procedure/function identifier mismatch ('" + subroutine_name.GetValue() + "' != '" + subroutine_name_check.GetValue() + "').");
     }
 
     Consume(tSemicolon);
@@ -315,15 +315,14 @@ void CParser::subroutineDecl(CAstScope *s) {
         }
 
         Consume(tColon);
-        var_type = type();
+        var_type = type(true);
 
         for(int i = vars.size() - 1; i >= 0; i--) {
           CSymParam *param = new CSymParam(i, vars[i], var_type);
           params.push_back(param);
           vars.pop_back();
+          idx++;
         }
-
-        idx = vars.size();
 
         while(_scanner->Peek().GetType() == tSemicolon) {
           Consume(tSemicolon);
@@ -343,15 +342,17 @@ void CParser::subroutineDecl(CAstScope *s) {
             }
 
             Consume(tColon);
-            var_type_loop = type();
+            var_type_loop = type(true);
   
+            int tmp_idx = idx;
+            idx += vars_loop.size();
+            
             for(int i = vars_loop.size() - 1; i >= 0; i--) {
-              CSymParam *param = new CSymParam(i+idx, vars_loop[i], var_type_loop);
+              CSymParam *param = new CSymParam(i+tmp_idx, vars_loop[i], var_type_loop);
               params.push_back(param);
-              vars.pop_back();
+              vars_loop.pop_back();
             }
 
-            idx += vars_loop.size();
           }
         }
       }
@@ -360,7 +361,7 @@ void CParser::subroutineDecl(CAstScope *s) {
     }
 
     Consume(tColon);
-    func_type = type();
+    func_type = type(false);
     Consume(tSemicolon);
     
     CSymProc *symproc = new CSymProc(subroutine_name.GetValue(), func_type);
@@ -399,7 +400,7 @@ void CParser::subroutineDecl(CAstScope *s) {
     Consume(tIdent, &subroutine_name_check);
     
     if(subroutine_name.GetValue() != subroutine_name_check.GetValue()) {
-      SetError(subroutine_name_check, "expected '" + subroutine_name.GetValue() + "', got '" + subroutine_name_check.GetValue() + "'");
+      SetError(subroutine_name_check, "procedure/function identifier mismatch ('" + subroutine_name.GetValue() + "' != '" + subroutine_name_check.GetValue() + "').");
     }
 
     Consume(tSemicolon);
@@ -425,7 +426,7 @@ void CParser::varDeclParam(CAstScope *s, CSymProc *proc, int index) {
   }
 
   Consume(tColon);
-  var_type = type();
+  var_type = type(true);
 
   for(int i = vars.size()-1; i >= 0; i--) {
     CSymParam *param = new CSymParam(index + i, vars[i], var_type);
@@ -454,7 +455,7 @@ void CParser::varDecl(CAstScope *s) {
   }
 
   Consume(tColon);
-  var_type = type();
+  var_type = type(false);
 
   for(int i = vars.size()-1; i >= 0; i--) {
     s->GetSymbolTable()->AddSymbol(s->CreateVar(vars[i], var_type));
@@ -464,7 +465,7 @@ void CParser::varDecl(CAstScope *s) {
 
 
 
-const CType* CParser::type() {
+const CType* CParser::type(bool isParam) {
   //
   // type ::= basetype | type "[" [ number ] "]".
   // basetype ::= "boolean" | "char" | "integer".
@@ -516,6 +517,9 @@ const CType* CParser::type() {
     type = dynamic_cast<const CType *>(tm->GetArray(nelems[i], type));
     assert(type != NULL);
     nelems.pop_back();
+
+    if(i == 0 && isParam)
+      type = dynamic_cast<const CType *>(tm->GetPointer(type));
   }
 
   return type;
@@ -622,12 +626,20 @@ CAstStatCall* CParser::subroutineCall(CAstScope *s, CToken ident) {
   if(isExpr(_scanner->Peek())) {
     CAstExpression *expr = expression(s);
     assert(expr != NULL);
+
+    if(expr->GetType()->IsArray())
+      expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
+
     call->AddArg(expr);
 
     while(_scanner->Peek().GetType() == tComma) {
       Consume(tComma);
       expr = expression(s);
       assert(expr != NULL);
+
+      if(expr->GetType()->IsArray())
+        expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
+
       call->AddArg(expr);
     }
   }
@@ -823,8 +835,8 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
       eOp = opNeg;
     else
       SetError(tOp, "invalid term operator");
-   
-    n = term(s);
+
+    n = new CAstUnaryOp(t, eOp, term(s));
 
     while(_scanner->Peek().GetType() == tTermOp) {
       CAstExpression *l = n, *r;
@@ -842,7 +854,7 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
       }
     }
 
-    return new CAstUnaryOp(t, eOp, n);
+    return n;
   }
   else {
     n = term(s);
@@ -933,6 +945,10 @@ CAstExpression* CParser::factor(CAstScope *s) {
       errno = 0;
       long long v = strtoll(t.GetValue().c_str(), NULL, 10);
       if (errno != 0) SetError(t, "invalid number.");
+
+      if(v > 2147483648)
+        SetError(t, "integer constant outside valid range.");
+
       n = new CAstConstant(t, tm->GetInt(), v);
       break;
     }
@@ -956,16 +972,25 @@ CAstExpression* CParser::factor(CAstScope *s) {
         if(isExpr(_scanner->Peek())) {
           CAstExpression *expr = expression(s);
           assert(expr != NULL);
+ 
+          if(expr->GetType()->IsArray())
+            expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
+
           f->AddArg(expr);
 
           while(_scanner->Peek().GetType() == tComma) {
             Consume(tComma);
             expr = expression(s);
             assert(expr != NULL);
+ 
+            if(expr->GetType()->IsArray())
+              expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
+
             f->AddArg(expr);
           }
         }
         Consume(tRBrak);
+
         n = f;
       }
       else { // qualident
@@ -988,6 +1013,7 @@ CAstExpression* CParser::factor(CAstScope *s) {
           }
 
           f->IndicesComplete();
+
           n = f;
         }
         else {

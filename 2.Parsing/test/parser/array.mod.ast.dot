@@ -5,12 +5,18 @@ digraph AST {
 
   node0 [label="m array",shape=box];
   node53 [label="call add",shape=box];
+  node55 [label="&()",shape=box];
   node54 [label="a",shape=ellipse];
-  node53->node54;
-  node55 [label="b",shape=ellipse];
+  node55->node54;
   node53->node55;
-  node56 [label="c",shape=ellipse];
-  node53->node56;
+  node57 [label="&()",shape=box];
+  node56 [label="b",shape=ellipse];
+  node57->node56;
+  node53->node57;
+  node59 [label="&()",shape=box];
+  node58 [label="c",shape=ellipse];
+  node59->node58;
+  node53->node59;
   node0 -> node53 [style=dotted];
   node1 [label="p/f add",shape=box];
   node4 [label=":=",shape=box];
@@ -46,7 +52,7 @@ digraph AST {
   node16 [label="j",shape=ellipse];
   node14-> node16;
   node24->node14;
-  node23 [label="or",shape=box];
+  node23 [label="add",shape=box];
   node17 [label="A[]",shape=ellipse];
   node18 [label="i",shape=ellipse];
   node17-> node18;
@@ -98,7 +104,7 @@ digraph AST {
   node42 [label="j",shape=ellipse];
   node40-> node42;
   node50->node40;
-  node49 [label="or",shape=box];
+  node49 [label="add",shape=box];
   node43 [label="A[]",shape=ellipse];
   node44 [label="i",shape=ellipse];
   node43-> node44;

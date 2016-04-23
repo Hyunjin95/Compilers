@@ -16,4 +16,14 @@ digraph AST {
   node6->node5;
   node1 -> node6 [style=dotted];
   node0 -> node1;
+  node7 [label="p/f proc",shape=box];
+  node0 -> node7;
+  node8 [label="p/f func",shape=box];
+  node9 [label="call proc",shape=box];
+  node10 [label="d[]",shape=ellipse];
+  node11 [label="1",shape=ellipse];
+  node10-> node11;
+  node9->node10;
+  node8 -> node9 [style=dotted];
+  node0 -> node8;
 }
