@@ -203,7 +203,7 @@ CAstModule* CParser::module() {
   Consume(tIdent, &module_name_check);
   
   if(module_name.GetValue() != module_name_check.GetValue()) {
-    SetError(module_name_check, "procedure/function identifier mismatch ('" + module_name.GetValue() + "' != '" + module_name_check.GetValue() + "').");
+    SetError(module_name_check, "module identifier mismatch ('" + module_name.GetValue() + "' != '" + module_name_check.GetValue() + "').");
   }
 
   Consume(tDot);
