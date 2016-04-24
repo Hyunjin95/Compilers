@@ -235,6 +235,15 @@ void CParser::subroutineDecl(CAstScope *s) {
     Consume(tProcedure);
     Consume(tIdent, &subroutine_name);
  
+    if(dynamic_cast<CAstModule *>(s)) {
+      if(s->GetSymbolTable()->FindSymbol(subroutine_name.GetValue(), sGlobal) != NULL)
+        SetError(subroutine_name, "duplicate procedure/function declaration '" + subroutine_name.GetValue() + "'.");
+    }
+    else {
+      if(s->GetSymbolTable()->FindSymbol(subroutine_name.GetValue(), sLocal) != NULL)
+        SetError(subroutine_name, "duplicate procedure/function declaration '" + subroutine_name.GetValue() + "'.");
+    }
+
     CSymProc *symproc = new CSymProc(subroutine_name.GetValue(), tm->GetNull());
     CAstProcedure *procedure = new CAstProcedure(t, subroutine_name.GetValue(), s, symproc);
 
@@ -295,6 +304,15 @@ void CParser::subroutineDecl(CAstScope *s) {
     Consume(tFunction);
     Consume(tIdent, &subroutine_name);
 
+    if(dynamic_cast<CAstModule *>(s)) {
+      if(s->GetSymbolTable()->FindSymbol(subroutine_name.GetValue(), sGlobal) != NULL)
+        SetError(subroutine_name, "duplicate procedure/function declaration '" + subroutine_name.GetValue() + "'.");
+    }
+    else {
+      if(s->GetSymbolTable()->FindSymbol(subroutine_name.GetValue(), sLocal) != NULL)
+        SetError(subroutine_name, "duplicate procedure/function declaration '" + subroutine_name.GetValue() + "'.");
+    }
+
     // formalParam
     if(_scanner->Peek().GetType() == tLBrak) {
       int idx = 0;
@@ -311,6 +329,14 @@ void CParser::subroutineDecl(CAstScope *s) {
         while(_scanner->Peek().GetType() == tComma) {
           Consume(tComma);
           Consume(tIdent, &t);
+
+          for(int i = 0; i < vars.size(); i++) {
+            if(vars[i] == t.GetValue()) {
+              SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+              break;
+            }
+          }
+
           vars.push_back(t.GetValue());
         }
 
@@ -333,11 +359,27 @@ void CParser::subroutineDecl(CAstScope *s) {
             const CType *var_type_loop;
 
             Consume(tIdent, &t_loop);
+
+            for(int i = 0; i < params.size(); i++) {
+              if(params[i]->GetName() == t_loop.GetValue()) {
+                SetError(t_loop, "duplicate variable declaration '" + t_loop.GetValue() + "'.");
+                break;
+              }
+            }
+
             vars_loop.push_back(t_loop.GetValue());
 
             while(_scanner->Peek().GetType() == tComma) {
               Consume(tComma);
               Consume(tIdent, &t_loop);
+
+              for(int i = 0; i < vars_loop.size(); i++) {
+                if(params[i]->GetName() == t_loop.GetValue() || vars_loop[i] == t_loop.GetValue()) {
+                  SetError(t_loop, "duplicate variable declaration '" + t_loop.GetValue() + "'.");
+                  break;
+                }
+              }
+
               vars_loop.push_back(t_loop.GetValue());
             }
 
@@ -419,9 +461,35 @@ void CParser::varDeclParam(CAstScope *s, CSymProc *proc, int index) {
   Consume(tIdent, &t);
   vars.push_back(t.GetValue());
 
+  if(dynamic_cast<CAstModule *>(s)) {
+    if(dynamic_cast<const CSymParam *>(s->GetSymbolTable()->FindSymbol(t.GetValue(), sGlobal)) != NULL)
+      SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+  }
+  else {
+    if(dynamic_cast<const CSymParam *>(s->GetSymbolTable()->FindSymbol(t.GetValue(), sLocal)) != NULL)
+      SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+  }
+
   while(_scanner->Peek().GetType() == tComma) {
     Consume(tComma);
     Consume(tIdent, &t);
+
+    if(dynamic_cast<CAstModule *>(s)) {
+      if(dynamic_cast<const CSymParam *>(s->GetSymbolTable()->FindSymbol(t.GetValue(), sGlobal)) != NULL)
+        SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+    }
+    else {
+      if(dynamic_cast<const CSymParam *>(s->GetSymbolTable()->FindSymbol(t.GetValue(), sLocal)) != NULL)
+        SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+    }
+
+    for(int i = 0; i < vars.size(); i++) {
+      if(vars[i] == t.GetValue()) {
+        SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+        break;
+      }
+    }
+
     vars.push_back(t.GetValue());
   }
 
@@ -446,11 +514,38 @@ void CParser::varDecl(CAstScope *s) {
   vector<string> vars;
 
   Consume(tIdent, &t);
+
+  if(dynamic_cast<CAstModule *>(s)) {
+    if(s->GetSymbolTable()->FindSymbol(t.GetValue(), sGlobal) != NULL)
+      SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+  }
+  else {
+    if(s->GetSymbolTable()->FindSymbol(t.GetValue(), sLocal) != NULL)
+      SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+  }
+
   vars.push_back(t.GetValue());
 
   while(_scanner->Peek().GetType() == tComma) {
     Consume(tComma);
     Consume(tIdent, &t);
+   
+    if(dynamic_cast<CAstModule *>(s)) {
+      if(s->GetSymbolTable()->FindSymbol(t.GetValue(), sGlobal) != NULL)
+        SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+    }
+    else {
+      if(s->GetSymbolTable()->FindSymbol(t.GetValue(), sLocal) != NULL)
+        SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+    }
+
+    for(int i = 0; i < vars.size(); i++) {
+      if(vars[i] == t.GetValue()) {
+        SetError(t, "duplicate variable declaration '" + t.GetValue() + "'.");
+        break;
+      }
+    }
+
     vars.push_back(t.GetValue());
   }
 
@@ -462,8 +557,6 @@ void CParser::varDecl(CAstScope *s) {
     vars.pop_back();
   }
 }
-
-
 
 const CType* CParser::type(bool isParam) {
   //
@@ -507,8 +600,10 @@ const CType* CParser::type(bool isParam) {
       nelems.push_back(atoi(nelem.GetValue().c_str()));
     }
     else {
-      // TODO(or doesn't have to?): OPEN arrays are allowed only in parameter.
-      nelems.push_back(-1);
+      if(isParam)
+        nelems.push_back(-1);
+      else
+        SetError(_scanner->Peek(), "expected 'tNumber', got '" + _scanner->Peek().GetName() + "'");
     }
     Consume(tRSBrak);
   }
@@ -616,12 +711,20 @@ CAstStatCall* CParser::subroutineCall(CAstScope *s, CToken ident) {
   CSymtab *symtab = s->GetSymbolTable();
   CAstFunctionCall *call = NULL;
 
-  if(symtab->FindSymbol(ident.GetValue(), sLocal) == NULL)
+  if(symtab->FindSymbol(ident.GetValue(), sLocal) == NULL && symtab->FindSymbol(ident.GetValue(), sGlobal) != NULL) {
+    if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sGlobal)) == NULL)
+      SetError(ident, "invalid procedure/function identifier.");
+    
     call = new CAstFunctionCall(t, dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sGlobal)));
-  else
+  }
+  else if(symtab->FindSymbol(ident.GetValue(), sLocal) != NULL) {
+    if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sLocal)) == NULL)
+        SetError(ident, "invalid procedure/function identifier.");
+    
     call = new CAstFunctionCall(t, dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sLocal)));
- 
-  assert(call != NULL);
+  }
+  else
+    SetError(ident, "undefined identifier.");
   
   if(isExpr(_scanner->Peek())) {
     CAstExpression *expr = expression(s);
@@ -661,20 +764,24 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
 
   if(_scanner->Peek().GetType() == tAssign) {
     const CSymbol *tmpsym = symtab->FindSymbol(ident.GetValue(), sLocal);
-    if(tmpsym == NULL)
+    if(tmpsym == NULL && symtab->FindSymbol(ident.GetValue(), sGlobal) != NULL)
       lhs = new CAstDesignator(t, symtab->FindSymbol(ident.GetValue(), sGlobal));
-    else
+    else if(tmpsym != NULL)
       lhs = new CAstDesignator(t, symtab->FindSymbol(ident.GetValue(), sLocal));
+    else
+      SetError(ident, "undefined identifier.");
   }
   else {
     const CSymbol *tmpsym = symtab->FindSymbol(ident.GetValue(), sLocal);
     CAstArrayDesignator *arraylhs;
 
-    if(tmpsym == NULL)
+    if(tmpsym == NULL && symtab->FindSymbol(ident.GetValue(), sGlobal) != NULL)
       arraylhs = new CAstArrayDesignator(t, symtab->FindSymbol(ident.GetValue(), sGlobal));
-    else
+    else if(tmpsym != NULL)
       arraylhs = new CAstArrayDesignator(t, symtab->FindSymbol(ident.GetValue(), sLocal));
-
+    else
+      SetError(ident, "undefined identifier.");
+      
     while(_scanner->Peek().GetType() == tLSBrak) { // It means array assignment.
       Consume(tLSBrak);
 
@@ -968,11 +1075,21 @@ CAstExpression* CParser::factor(CAstScope *s) {
         Consume(tLBrak);
         CAstFunctionCall *f;
 
-        if(symtab->FindSymbol(t.GetValue(),sLocal) == NULL)
+        if(symtab->FindSymbol(t.GetValue(),sLocal) == NULL && symtab->FindSymbol(t.GetValue(), sGlobal) != NULL) {
+          if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sGlobal)) == NULL)
+            SetError(t, "invalid procedure/function identifier.");
+
           f = new CAstFunctionCall(tid, dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sGlobal)));
-        else
+        }
+        else if(symtab->FindSymbol(t.GetValue(), sLocal) != NULL) {
+          if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sLocal)) == NULL)
+            SetError(t, "invalid procedure/function identifier.");
+
           f = new CAstFunctionCall(tid, dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sLocal)));
-        
+        }
+        else
+          SetError(t, "undefined identifier.");
+
         assert(f != NULL);
 
         if(isExpr(_scanner->Peek())) {
