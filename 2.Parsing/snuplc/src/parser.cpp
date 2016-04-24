@@ -836,7 +836,13 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
     else
       SetError(tOp, "invalid term operator");
 
-    n = new CAstUnaryOp(t, eOp, term(s));
+    CAstExpression *tmp = term(s);
+    if(dynamic_cast<CAstConstant *>(tmp) != NULL && tmp->GetType()->IsInt()) {
+      dynamic_cast<CAstConstant *>(tmp)->SetValue(-dynamic_cast<CAstConstant *>(tmp)->GetValue());
+      n = tmp;
+    }
+    else
+      n = new CAstUnaryOp(t, eOp, tmp);
 
     while(_scanner->Peek().GetType() == tTermOp) {
       CAstExpression *l = n, *r;

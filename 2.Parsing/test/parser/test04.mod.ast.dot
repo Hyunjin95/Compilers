@@ -68,18 +68,16 @@ digraph AST {
   node31->node30;
   node32->node31;
   node25 -> node32 [style=dotted];
-  node39 [label=":=",shape=box];
+  node38 [label=":=",shape=box];
   node33 [label="c",shape=ellipse];
-  node39->node33;
-  node38 [label="neg",shape=box];
-  node37 [label="add",shape=box];
-  node35 [label="neg",shape=box];
-  node34 [label="1",shape=ellipse];
-  node35->node34;
-  node37->node35;
-  node36 [label="a",shape=ellipse];
+  node38->node33;
+  node37 [label="neg",shape=box];
+  node36 [label="add",shape=box];
+  node34 [label="-1",shape=ellipse];
+  node36->node34;
+  node35 [label="a",shape=ellipse];
+  node36->node35;
   node37->node36;
   node38->node37;
-  node39->node38;
-  node32 -> node39 [style=dotted];
+  node32 -> node38 [style=dotted];
 }

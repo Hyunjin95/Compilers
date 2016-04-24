@@ -915,7 +915,7 @@ const CType* CAstUnaryOp::GetType(void) const
   if(e->GetType() == NULL)
     return NULL;
 
-  if(oper == opNeg || oper == opPos) { // '-'
+  if(oper == opNeg || oper == opPos) { // '+' || '-'
     if(e->GetType()->IsInt())
       return tm->GetInt();
     else return NULL;
