@@ -367,6 +367,7 @@ void CParser::subroutineDecl(CAstScope *s) {
           idx++;
         }
 
+        // for multiple parameter declaration.
         while(_scanner->Peek().GetType() == tSemicolon) {
           Consume(tSemicolon);
         
@@ -408,6 +409,7 @@ void CParser::subroutineDecl(CAstScope *s) {
             int tmp_idx = idx;
             idx += vars_loop.size();
             
+            // Add parameters into vector 'params'.
             for(int i = vars_loop.size() - 1; i >= 0; i--) {
               CSymParam *param = new CSymParam(i+tmp_idx, vars_loop[i], var_type_loop);
               params.push_back(param);
@@ -674,6 +676,7 @@ CAstStatement* CParser::statSequence(CAstScope *s) {
       head = tail = statement(s);
       assert(head != NULL);
 
+      // for multiple statement.
       while(_scanner->Peek().GetType() == tSemicolon) {
         CAstStatement *st = NULL;
         Consume(tSemicolon);
@@ -703,6 +706,7 @@ CAstStatement* CParser::statement(CAstScope *s) {
   CAstStatement *st = NULL;
 
   EToken tt = _scanner->Peek().GetType();
+  
   switch(tt) {
     case tIf:
       st = dynamic_cast<CAstStatement *>(ifStatement(s));
@@ -826,7 +830,8 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
       arraylhs = new CAstArrayDesignator(t, symtab->FindSymbol(ident.GetValue(), sLocal));
     else
       SetError(ident, "undefined identifier.");
-      
+  
+    // multiple index.
     while(_scanner->Peek().GetType() == tLSBrak) {
       Consume(tLSBrak);
 
@@ -889,6 +894,7 @@ CAstStatWhile* CParser::whileStatement(CAstScope *s) {
   //
   // whileStatement ::= "while" "(" expression ")" "do" statSequence "end".
   //
+  
   CToken t;
   CAstExpression *cond = NULL;
   CAstStatement *body = NULL;
@@ -1002,7 +1008,7 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
     CAstExpression *tmp = term(s);
 
     // integer negation.
-    if(dynamic_cast<CAstConstant *>(tmp) != NULL && tmp->GetType()->IsInt()) {
+    if(eOp == opNeg && dynamic_cast<CAstConstant *>(tmp) != NULL && tmp->GetType()->IsInt()) {
       dynamic_cast<CAstConstant *>(tmp)->SetValue(-dynamic_cast<CAstConstant *>(tmp)->GetValue());
       n = tmp;
     }
