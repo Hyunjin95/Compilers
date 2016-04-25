@@ -806,21 +806,25 @@ const CType* CAstBinaryOp::GetType(void) const
   CTypeManager *tm = CTypeManager::Get();
   EOperation oper = GetOperation();
 
+  // If lhs or rhs is null, then null.
   if(_left->GetType() == NULL || _right->GetType() == NULL)
     return NULL;
 
+  // case '+', '-', '*', '/'
   if(oper == opAdd || oper == opSub || oper == opMul || oper == opDiv) {
     if(_left->GetType()->IsInt() && _right->GetType()->IsInt())
       return tm->GetInt();
 
     else return NULL;
   }
+  // case '&&' , '||'
   else if(oper == opAnd || oper == opOr) {
     if(_left->GetType()->IsBoolean() && _right->GetType()->IsBoolean())
       return tm->GetBool();
 
     else return NULL;
   }
+  // case '=', '#'
   else if(oper == opEqual || oper == opNotEqual) {
     if(_left->GetType()->IsBoolean() && _right->GetType()->IsBoolean() ||
        _left->GetType()->IsChar() && _right->GetType()->IsChar() ||
@@ -829,6 +833,7 @@ const CType* CAstBinaryOp::GetType(void) const
 
     else return NULL;
   }
+  // case '>', '>=', '<', '<='
   else {
     if(_left->GetType()->IsInt() && _right->GetType()->IsInt() ||
        _left->GetType()->IsChar() && _right->GetType()->IsChar())
@@ -915,12 +920,12 @@ const CType* CAstUnaryOp::GetType(void) const
   if(e->GetType() == NULL)
     return NULL;
 
-  if(oper == opNeg || oper == opPos) { // '+' || '-'
+  if(oper == opNeg || oper == opPos) { //case '+' || '-'
     if(e->GetType()->IsInt())
       return tm->GetInt();
     else return NULL;
   }
-  else { // '!'
+  else { // case '!'
     if(e->GetType()->IsBoolean())
       return tm->GetBool();
   
@@ -1003,9 +1008,11 @@ const CType* CAstSpecialOp::GetType(void) const
   if(GetOperand()->GetType() == NULL)
     return NULL;
 
+  // case '&'
   if(oper == opAddress) {
     return tm->GetPointer(GetOperand()->GetType());
   }
+  // we don't implement '*' , '(cast)'.
   else if(oper == opDeref) {
     return NULL;
   }
@@ -1262,13 +1269,15 @@ const CType* CAstArrayDesignator::GetType(void) const
 
   const CType *type;
 
+  // if array is pointer, then reference.
   if(array_type->IsPointer())
     type = dynamic_cast<const CPointerType *>(array_type)->GetBaseType();
-  else if(array_type->IsArray())
+  else if(array_type->IsArray()) // else just array.
     type = array_type;
-  else
+  else // if not array, then return NULL.
     return NULL;
 
+  // get innertype by the number of index.
   for(int i = 0; i < _idx.size(); i++) {
     type = dynamic_cast<const CArrayType *>(type)->GetInnerType();
     if(type == NULL) {
@@ -1444,6 +1453,7 @@ const CType* CAstStringConstant::GetType(void) const
 {
   CTypeManager *tm = CTypeManager::Get();
 
+  // string is array of character.
   return tm->GetArray(CToken::unescape(GetValueStr()).length()+1, tm->GetChar());
 }
 
