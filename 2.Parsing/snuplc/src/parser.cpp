@@ -727,11 +727,10 @@ CAstStatement* CParser::statement(CAstScope *s) {
         st = dynamic_cast<CAstStatement *>(subroutineCall(s, t));
       }
       // case assignment.
-      else if(_scanner->Peek().GetType() == tAssign || _scanner->Peek().GetType() == tLSBrak) {
+      else {
         st = dynamic_cast<CAstStatement *>(assignment(s, t));
       }
-      else
-        SetError(_scanner->Peek(), "got " + _scanner->Peek().GetValue() + ", expected '(' or '[' or '::='");
+
       break;
     }
 
@@ -819,8 +818,10 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
       lhs = new CAstDesignator(t, symtab->FindSymbol(ident.GetValue(), sLocal));
     else
       SetError(ident, "undefined identifier.");
+    
+    assert(lhs != NULL);
   }
-  else { // array case.
+  else if(_scanner->Peek().GetType() == tLSBrak) { // array case.
     const CSymbol *tmpsym = symtab->FindSymbol(ident.GetValue(), sLocal);
     CAstArrayDesignator *arraylhs;
 
@@ -844,8 +845,10 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
     arraylhs->IndicesComplete();
 
     lhs = dynamic_cast<CAstDesignator *>(arraylhs);
+    assert(lhs != NULL);
   }
-  assert(lhs != NULL);
+  else {
+  }
 
   Consume(tAssign);
 
@@ -1008,8 +1011,10 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
     CAstExpression *tmp = term(s);
 
     // integer negation.
-    if(eOp == opNeg && dynamic_cast<CAstConstant *>(tmp) != NULL && tmp->GetType()->IsInt()) {
-      dynamic_cast<CAstConstant *>(tmp)->SetValue(-dynamic_cast<CAstConstant *>(tmp)->GetValue());
+    if(dynamic_cast<CAstConstant *>(tmp) != NULL && tmp->GetType()->IsInt()) {
+      if(eOp == opNeg)
+        dynamic_cast<CAstConstant *>(tmp)->SetValue(-dynamic_cast<CAstConstant *>(tmp)->GetValue());
+      
       n = tmp;
     }
     else
