@@ -1,0 +1,45 @@
+digraph AST {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  node0 [label="m procedure_return",shape=box];
+  node14 [label="call proc_return1",shape=box];
+  node16 [label="&()",shape=box];
+  node15 [label="sum",shape=ellipse];
+  node16->node15;
+  node14->node16;
+  node0 -> node14 [style=dotted];
+  node18 [label="call proc_return",shape=box];
+  node20 [label="&()",shape=box];
+  node19 [label="sum",shape=ellipse];
+  node20->node19;
+  node18->node20;
+  node14 -> node18 [style=dotted];
+  node1 [label="p/f proc_return1",shape=box];
+  node5 [label="return",shape=box];
+  node2 [label="sum[]",shape=ellipse];
+  node3 [label="1",shape=ellipse];
+  node2-> node3;
+  node4 [label="2",shape=ellipse];
+  node2-> node4;
+  node5->node2;
+  node1 -> node5 [style=dotted];
+  node0 -> node1;
+  node6 [label="p/f proc_return",shape=box];
+  node13 [label=":=",shape=box];
+  node7 [label="sum[]",shape=ellipse];
+  node8 [label="2",shape=ellipse];
+  node7-> node8;
+  node9 [label="3",shape=ellipse];
+  node7-> node9;
+  node13->node7;
+  node10 [label="sum[]",shape=ellipse];
+  node11 [label="2",shape=ellipse];
+  node10-> node11;
+  node12 [label="4",shape=ellipse];
+  node10-> node12;
+  node13->node10;
+  node6 -> node13 [style=dotted];
+  node0 -> node6;
+}
