@@ -95,22 +95,85 @@ class CParser {
     /// @name methods for recursive-descent parsing
     /// @{
 
+    /// @brief main function module.
+    /// @retval return all tokens are parsed successfully
     CAstModule*           module(void);
-    void                  subroutineDecl(CAstScope *);
-    void                  varDeclParam(CAstScope *, CSymProc *, int);
-    void                  varDecl(CAstScope *);
-    const CType*          type(bool);
-    CAstStatement*        statSequence(CAstScope *);
+    
+    /// @brief function for subroutineDecl(in ENBF)
+    /// @param s current scope.
+    void                  subroutineDecl(CAstScope *s);
+
+    /// @brief function for declaration of subroutine(function/procedure) parameter.
+    /// @param s current scope
+    /// @param proc current procedure symbol.
+    /// @index index
+    void                  varDeclParam(CAstScope *s, CSymProc *proc, int index);
+
+    /// @brief function for variable declaration.
+    /// @param s current scope.
+    void                  varDecl(CAstScope *s);
+
+    /// @brief function for getting type.
+    /// @param isParam check if parameter calls type.
+    /// @retval return CType.
+    const CType*          type(bool isParam);
+
+    /// @brief function for statement sequence.
+    /// @param s current scope
+    /// @retval return head of statSeequence.
+    CAstStatement*        statSequence(CAstScope *s);
+
+    /// @brief function for statement
+    /// @param s current scope
+    /// @retval return statement.
     CAstStatement*        statement(CAstScope *);
-    CAstStatCall*         subroutineCall(CAstScope *, CToken);
-    CAstStatAssign*       assignment(CAstScope *, CToken);
-    CAstStatIf*           ifStatement(CAstScope *);
-    CAstStatWhile*        whileStatement(CAstScope *);
-    CAstStatReturn*       returnStatement(CAstScope *);
-    CAstExpression*       expression(CAstScope *);
-    CAstExpression*       simpleexpr(CAstScope *);
-    CAstExpression*       term(CAstScope *);
-    CAstExpression*       factor(CAstScope *);
+
+    /// @brief function for subroutine call.
+    /// @param s current scope
+    /// @param ident identifier.
+    /// @retval return CAstStatCall node.
+    CAstStatCall*         subroutineCall(CAstScope *s, CToken ident);
+
+    /// @brief function for assignment.
+    /// @param s current scope
+    /// @param ident identifier.
+    /// @retval return CAstStatAssign node.
+    CAstStatAssign*       assignment(CAstScope *s, CToken ident);
+
+    /// @brief function for if statement.
+    /// @param s current scope
+    /// @retval return CAstStatIf node.
+    CAstStatIf*           ifStatement(CAstScope *s);
+
+    /// @brief function for while statement.
+    /// @param s current scope
+    /// @retval return CAstStatWhile node.
+    CAstStatWhile*        whileStatement(CAstScope *s);
+
+    /// @brief function for return statement.
+    /// @param s current scope.
+    /// @retval return CAstStatReturn node.
+    CAstStatReturn*       returnStatement(CAstScope *s);
+
+    /// @brief function for expression(in EBNF).
+    /// @param s current scope.
+    /// @retval return expression.
+    CAstExpression*       expression(CAstScope *s);
+
+    /// @brief function for simpleexpr(in EBNF).
+    /// @param s current scope
+    /// @retval return simpleexpr.
+    CAstExpression*       simpleexpr(CAstScope *s);
+
+    /// @brief function for term(in EBNF).
+    /// @param s current scope.
+    /// @retval return term.
+    CAstExpression*       term(CAstScope *s);
+
+    /// @breif function for factor(in EBNF).
+    /// @param s current scope.
+    /// @retval return factor.
+    CAstExpression*       factor(CAstScope *s);
 
     /// @}
 
