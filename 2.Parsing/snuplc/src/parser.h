@@ -106,7 +106,7 @@ class CParser {
     /// @brief function for declaration of subroutine(function/procedure) parameter.
     /// @param s current scope
     /// @param proc current procedure symbol.
-    /// @index index
+    /// @param index
     void                  varDeclParam(CAstScope *s, CSymProc *proc, int index);
 
     /// @brief function for variable declaration.
@@ -170,7 +170,7 @@ class CParser {
     /// @retval return term.
     CAstExpression*       term(CAstScope *s);
 
-    /// @breif function for factor(in EBNF).
+    /// @brief function for factor(in EBNF).
     /// @param s current scope.
     /// @retval return factor.
     CAstExpression*       factor(CAstScope *s);
