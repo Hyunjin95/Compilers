@@ -4,8 +4,8 @@ digraph AST {
   edge  [fontname="Times New Roman",fontsize=10];
 
   node0 [label="m hello",shape=box];
-  node2 [label="call mod",shape=box];
-  node0 -> node2 [style=dotted];
-  node1 [label="p/f mod",shape=box];
+  node1 [label="p/f a",shape=box];
   node0 -> node1;
+  node2 [label="p/f b",shape=box];
+  node0 -> node2;
 }

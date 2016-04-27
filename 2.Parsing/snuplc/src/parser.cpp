@@ -188,10 +188,14 @@ CAstModule* CParser::module() {
   if(_scanner->Peek().GetType() == tVar) {
     Consume(tVar);
     varDecl(m);
-    while(_scanner->Peek().GetType() == tSemicolon) {
-      Consume(tSemicolon);
-      if(_scanner->Peek().GetType() == tIdent)
+    Consume(tSemicolon);
+
+    while(1) {
+      if(_scanner->Peek().GetType() == tIdent) {
         varDecl(m);
+        Consume(tSemicolon);
+      }
+      else break;
     }
   }
 
@@ -262,9 +266,13 @@ void CParser::subroutineDecl(CAstScope *s) {
 
       if(_scanner->Peek().GetType() == tIdent) {
         varDeclParam(procedure, symproc, 0);
-        while(_scanner->Peek().GetType() == tSemicolon) {
-          Consume(tSemicolon);
-          varDeclParam(procedure, symproc, symproc->GetNParams());
+
+        while(1) {
+          if(_scanner->Peek().GetType() == tSemicolon) {
+            Consume(tSemicolon);
+            varDeclParam(procedure, symproc, symproc->GetNParams());
+          }
+          else break;
         }
       }
 
@@ -282,10 +290,14 @@ void CParser::subroutineDecl(CAstScope *s) {
     if(_scanner->Peek().GetType() == tVar) {
       Consume(tVar);
       varDecl(procedure);
-      while(_scanner->Peek().GetType() == tSemicolon) {
-        Consume(tSemicolon);
-        if(_scanner->Peek().GetType() == tIdent)
+      Consume(tSemicolon);
+
+      while(1) {
+        if(_scanner->Peek().GetType() == tIdent) {
           varDecl(procedure);
+          Consume(tSemicolon);
+        }
+        else break;
       }
     }
 
@@ -368,10 +380,10 @@ void CParser::subroutineDecl(CAstScope *s) {
         }
 
         // for multiple parameter declaration.
-        while(_scanner->Peek().GetType() == tSemicolon) {
-          Consume(tSemicolon);
-        
-          if(_scanner->Peek().GetType() == tIdent) {
+        while(1) {
+          if(_scanner->Peek().GetType() == tSemicolon) {
+            Consume(tSemicolon);
+
             CToken t_loop;
             vector<string> vars_loop;
             const CType *var_type_loop;
@@ -407,15 +419,16 @@ void CParser::subroutineDecl(CAstScope *s) {
             var_type_loop = type(true);
   
             int tmp_idx = idx;
-            idx += vars_loop.size();
             
             // Add parameters into vector 'params'.
             for(int i = vars_loop.size() - 1; i >= 0; i--) {
-              CSymParam *param = new CSymParam(i+tmp_idx, vars_loop[i], var_type_loop);
-              params.push_back(param);
+              CSymParam *param_loop = new CSymParam(i+tmp_idx, vars_loop[i], var_type_loop);
+              params.push_back(param_loop);
               vars_loop.pop_back();
+              idx++;
             }
           }
+          else break;
         }
       }
 
@@ -432,12 +445,14 @@ void CParser::subroutineDecl(CAstScope *s) {
     assert(symproc != NULL);
 
     // Add parameters into symproc.
-    for(int i = params.size() - 1; i >= 0; i--) {
+    for(int i = 0; i < params.size(); i++) {
       CSymParam *param = params[i];
       symproc->AddParam(param);
       function->GetSymbolTable()->AddSymbol(param);
-      params.pop_back();
     }
+
+    while(!params.empty())
+      params.pop_back();
 
     s->GetSymbolTable()->AddSymbol(symproc);
     
@@ -448,10 +463,14 @@ void CParser::subroutineDecl(CAstScope *s) {
     if(_scanner->Peek().GetType() == tVar) {
       Consume(tVar);
       varDecl(function);
-      while(_scanner->Peek().GetType() == tSemicolon) {
-        Consume(tSemicolon);
-        if(_scanner->Peek().GetType() == tIdent)
+      Consume(tSemicolon);
+
+      while(1) {
+        if(_scanner->Peek().GetType() == tIdent) {
           varDecl(function);
+          Consume(tSemicolon);
+        }
+        else break;
       }
     }
 
@@ -661,13 +680,14 @@ CAstStatement* CParser::statSequence(CAstScope *s) {
   //
   // statSequence ::= [ statement { ";" statement } ].
   // FIRST(statement) = {tIF, tWhile, tReturn, tIdent}.
+  // FOLLOW(statSequence) = {tEnd, tElse, tRBrak}.
   //
 
   CAstStatement *head = NULL;
   CAstStatement *tail = NULL;
 
   EToken tt = _scanner->Peek().GetType();
-  
+
   switch(tt) {
     case tIf:
     case tWhile:
@@ -676,17 +696,25 @@ CAstStatement* CParser::statSequence(CAstScope *s) {
       head = tail = statement(s);
       assert(head != NULL);
 
-      // for multiple statement.
-      while(_scanner->Peek().GetType() == tSemicolon) {
-        CAstStatement *st = NULL;
-        Consume(tSemicolon);
-        st = statement(s);
-          
-        assert(st != NULL);
+      // for multiple statements.
+      while(1) {
+        if(_scanner->Peek().GetType() == tEnd ||
+           _scanner->Peek().GetType() == tElse) {
+          break;
+        }
+        else {
+          Consume(tSemicolon);
 
-        tail->SetNext(st);
-        tail = st;
+          CAstStatement *st = NULL;
+          st = statement(s);
+          
+          assert(st != NULL);
+          
+          tail->SetNext(st);
+          tail = st;
+        }
       }
+
       break;
 
     default:
@@ -881,7 +909,7 @@ CAstStatIf* CParser::ifStatement(CAstScope *s) {
 
   // ifbody
   ifbody = statSequence(s);
-  
+
   // elsebody
   if(_scanner->Peek().GetType() == tElse) {
     Consume(tElse);

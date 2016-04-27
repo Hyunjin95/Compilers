@@ -1,9 +1,8 @@
 module hello;
 
-procedure mod();
+function a(p1, p2: boolean; p3, p4: integer;): integer;
 begin
-end mod;
+end a;
 
 begin
-mod()
 end hello.
