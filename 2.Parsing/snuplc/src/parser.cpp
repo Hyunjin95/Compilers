@@ -680,7 +680,7 @@ CAstStatement* CParser::statSequence(CAstScope *s) {
   //
   // statSequence ::= [ statement { ";" statement } ].
   // FIRST(statement) = {tIF, tWhile, tReturn, tIdent}.
-  // FOLLOW(statSequence) = {tEnd, tElse, tRBrak}.
+  // FOLLOW(statSequence) = {tEnd, tElse}.
   //
 
   CAstStatement *head = NULL;
