@@ -914,7 +914,6 @@ CAstStatWhile* CParser::whileStatement(CAstScope *s) {
 
   // whilebody
   body = statSequence(s);
-  assert(body != NULL);
 
   Consume(tEnd);
 
