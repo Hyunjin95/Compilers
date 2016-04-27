@@ -648,7 +648,7 @@ const CType* CParser::type(bool isParam) {
     assert(type != NULL);
     nelems.pop_back();
 
-    // Arrays are dereferenced in parameter.
+    // Arrays are addressed in parameter.
     if(i == 0 && isParam)
       type = dynamic_cast<const CType *>(tm->GetPointer(type));
   }
@@ -775,7 +775,7 @@ CAstStatCall* CParser::subroutineCall(CAstScope *s, CToken ident) {
     CAstExpression *expr = expression(s);
     assert(expr != NULL);
 
-    // Arrays are referenced.
+    // Arrays are addressed.
     if(expr->GetType()->IsArray())
       expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
 
@@ -786,7 +786,7 @@ CAstStatCall* CParser::subroutineCall(CAstScope *s, CToken ident) {
       expr = expression(s);
       assert(expr != NULL);
 
-      // Arrays are referenced.
+      // Arrays are addressed.
       if(expr->GetType()->IsArray())
         expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
 
@@ -1170,7 +1170,7 @@ CAstExpression* CParser::factor(CAstScope *s) {
           CAstExpression *expr = expression(s);
           assert(expr != NULL);
  
-          // If array, then dereference.
+          // If array, then addressed.
           if(expr->GetType()->IsArray())
             expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
 
@@ -1181,7 +1181,7 @@ CAstExpression* CParser::factor(CAstScope *s) {
             expr = expression(s);
             assert(expr != NULL);
  
-            // If array, then dereference.
+            // If array, then addressed.
             if(expr->GetType()->IsArray())
               expr = new CAstSpecialOp(expr->GetToken(), opAddress, expr, NULL);
 
