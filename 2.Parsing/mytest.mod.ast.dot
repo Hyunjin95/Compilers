@@ -4,8 +4,22 @@ digraph AST {
   edge  [fontname="Times New Roman",fontsize=10];
 
   node0 [label="m hello",shape=box];
-  node1 [label="p/f a",shape=box];
+  node3 [label="if",shape=box];
+  node2 [label="true",shape=ellipse];
+  node3->node2;
+  node0 -> node3 [style=dotted];
+  node5 [label="while",shape=box];
+  node4 [label="true",shape=ellipse];
+  node5->node4;
+  node3 -> node5 [style=dotted];
+  node7 [label="if",shape=box];
+  node6 [label="true",shape=ellipse];
+  node7->node6;
+  node5 -> node7 [style=dotted];
+  node9 [label="while",shape=box];
+  node8 [label="true",shape=ellipse];
+  node9->node8;
+  node7 -> node9 [style=dotted];
+  node1 [label="p/f a0",shape=box];
   node0 -> node1;
-  node2 [label="p/f b",shape=box];
-  node0 -> node2;
 }
