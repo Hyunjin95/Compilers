@@ -1,6 +1,9 @@
 module hello;
-var x: integer;
+
+procedure mod();
 begin
-x := -1;
-x := +1
+end mod;
+
+begin
+mod()
 end hello.
