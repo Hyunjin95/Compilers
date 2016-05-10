@@ -1,0 +1,13 @@
+digraph AST {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  node0 [label="m multiple_variable_declaration3",shape=box];
+  node1 [label="p/f print",shape=box];
+  node2 [label="call WriteInt",shape=box];
+  node3 [label="X",shape=ellipse];
+  node2->node3;
+  node1 -> node2 [style=dotted];
+  node0 -> node1;
+}
