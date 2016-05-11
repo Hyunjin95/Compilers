@@ -115,8 +115,9 @@ class CParser {
 
     /// @brief function for getting type.
     /// @param isParam check if parameter calls type.
+    /// @param isFunction check if function calls type.
     /// @retval return CType.
-    const CType*          type(bool isParam);
+    const CType*          type(bool isParam, bool isFunction = false);
 
     /// @brief function for statement sequence.
     /// @param s current scope

@@ -1,0 +1,15 @@
+digraph AST {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  node0 [label="m test",shape=box];
+  node4 [label=":=",shape=box];
+  node2 [label="b",shape=ellipse];
+  node4->node2;
+  node3 [label="call a",shape=box];
+  node4->node3;
+  node0 -> node4 [style=dotted];
+  node1 [label="p/f a",shape=box];
+  node0 -> node1;
+}
