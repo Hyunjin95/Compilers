@@ -971,10 +971,10 @@ bool CAstBinaryOp::TypeCheck(CToken *t, string *msg) const
         *msg = "or: type mismatch.\n  left  operand: " + left.str() + "\n  right operand: " + right.str();
       }
       else if(oper == opEqual) {
-        *msg = "equal: type mismatch.\n  left  operand: " + left.str() + "\n  right operand: " + right.str();
+        *msg = "=: type mismatch.\n  left  operand: " + left.str() + "\n  right operand: " + right.str();
       }
       else if(oper == opNotEqual) {
-        *msg = "notEqual: type mismatch.\n  left  operand: " + left.str() + "\n  right operand: " + right.str();
+        *msg = "#: type mismatch.\n  left  operand: " + left.str() + "\n  right operand: " + right.str();
       }
       else if(oper == opBiggerThan) {
         *msg = ">: type mismatch.\n  left  operand: " + left.str() + "\n  right operand: " + right.str();
