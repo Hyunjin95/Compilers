@@ -73,7 +73,7 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a8d3b3514bb26761dd840a43899a60c98"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a8d3b3514bb26761dd840a43899a60c98">SetError</a> (<a class="el" href="classCToken.html">CToken</a> t, const string message)</td></tr>
 <tr class="memdesc:a8d3b3514bb26761dd840a43899a60c98"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets the token causing a parse error along with a message  <a href="#a8d3b3514bb26761dd840a43899a60c98">More...</a><br /></td></tr>
 <tr class="separator:a8d3b3514bb26761dd840a43899a60c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af036593159f9387e1f9604e2790a8d86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#af036593159f9387e1f9604e2790a8d86">Consume</a> (<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08">EToken</a> <a class="el" href="classCParser.html#a49248a8ff80560d0d1ddf8d48032f6c9">type</a>, <a class="el" href="classCToken.html">CToken</a> *token=NULL)</td></tr>
+<tr class="memitem:af036593159f9387e1f9604e2790a8d86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#af036593159f9387e1f9604e2790a8d86">Consume</a> (<a class="el" href="scanner_8h.html#a9093554967c90043b2a4a74c028f3f08">EToken</a> <a class="el" href="classCParser.html#a976fb7c13e94eb38ef1736197a8debda">type</a>, <a class="el" href="classCToken.html">CToken</a> *token=NULL)</td></tr>
 <tr class="memdesc:af036593159f9387e1f9604e2790a8d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">consume a token given type and optionally store the token  <a href="#af036593159f9387e1f9604e2790a8d86">More...</a><br /></td></tr>
 <tr class="separator:af036593159f9387e1f9604e2790a8d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79fb208a17e733f5ce3ca866bce7387f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a79fb208a17e733f5ce3ca866bce7387f">InitSymbolTable</a> (<a class="el" href="classCSymtab.html">CSymtab</a> *s)</td></tr>
@@ -92,9 +92,9 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:af798aa3590d0f9d2eecd715501d2d007"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#af798aa3590d0f9d2eecd715501d2d007">varDecl</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
 <tr class="memdesc:af798aa3590d0f9d2eecd715501d2d007"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for variable declaration.  <a href="#af798aa3590d0f9d2eecd715501d2d007">More...</a><br /></td></tr>
 <tr class="separator:af798aa3590d0f9d2eecd715501d2d007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49248a8ff80560d0d1ddf8d48032f6c9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classCType.html">CType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a49248a8ff80560d0d1ddf8d48032f6c9">type</a> (bool isParam)</td></tr>
-<tr class="memdesc:a49248a8ff80560d0d1ddf8d48032f6c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for getting type.  <a href="#a49248a8ff80560d0d1ddf8d48032f6c9">More...</a><br /></td></tr>
-<tr class="separator:a49248a8ff80560d0d1ddf8d48032f6c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a976fb7c13e94eb38ef1736197a8debda"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classCType.html">CType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#a976fb7c13e94eb38ef1736197a8debda">type</a> (bool isParam, bool isFunction=false)</td></tr>
+<tr class="memdesc:a976fb7c13e94eb38ef1736197a8debda"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for getting type.  <a href="#a976fb7c13e94eb38ef1736197a8debda">More...</a><br /></td></tr>
+<tr class="separator:a976fb7c13e94eb38ef1736197a8debda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab80b3a1e6c92caee041d937a5c98b492"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCAstStatement.html">CAstStatement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCParser.html#ab80b3a1e6c92caee041d937a5c98b492">statSequence</a> (<a class="el" href="classCAstScope.html">CAstScope</a> *s)</td></tr>
 <tr class="memdesc:ab80b3a1e6c92caee041d937a5c98b492"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for statement sequence.  <a href="#ab80b3a1e6c92caee041d937a5c98b492">More...</a><br /></td></tr>
 <tr class="separator:ab80b3a1e6c92caee041d937a5c98b492"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,7 +255,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00830">830</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00840">840</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -347,7 +347,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00976">976</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l01009">1009</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -387,7 +387,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l01131">1131</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l01164">1164</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -514,7 +514,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00890">890</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00923">923</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -642,7 +642,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00951">951</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00984">984</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -727,7 +727,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l01015">1015</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l01048">1048</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -767,7 +767,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00727">727</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00735">735</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -807,7 +807,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00679">679</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00687">687</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -858,7 +858,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00775">775</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00783">783</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -932,11 +932,11 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l01094">1094</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l01127">1127</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a49248a8ff80560d0d1ddf8d48032f6c9"></a>
+<a class="anchor" id="a976fb7c13e94eb38ef1736197a8debda"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -947,8 +947,18 @@ License</h1>
           <td class="memname">const <a class="el" href="classCType.html">CType</a> * CParser::type </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>isParam</em></td><td>)</td>
+          <td class="paramname"><em>isParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isFunction</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -962,6 +972,7 @@ License</h1>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">isParam</td><td>check if parameter calls type. </td></tr>
+    <tr><td class="paramname">isFunction</td><td>check if function calls type. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1098,7 +1109,7 @@ License</h1>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00924">924</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p>Definition at line <a class="el" href="parser_8cpp_source.html#l00957">957</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1134,7 @@ License</h1>
 
 <p>error flag </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00188">188</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00189">189</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -1147,7 +1158,7 @@ License</h1>
 
 <p>error token </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00186">186</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00187">187</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -1171,7 +1182,7 @@ License</h1>
 
 <p>error message </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00187">187</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00188">188</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -1195,7 +1206,7 @@ License</h1>
 
 <p>root node of the program </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00182">182</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00183">183</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -1219,7 +1230,7 @@ License</h1>
 
 <p><a class="el" href="classCScanner.html" title="scanner ">CScanner</a> instance. </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00181">181</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00182">182</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -1243,7 +1254,7 @@ License</h1>
 
 <p>current token </p>
 
-<p>Definition at line <a class="el" href="parser_8h_source.html#l00183">183</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p>Definition at line <a class="el" href="parser_8h_source.html#l00184">184</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -1254,7 +1265,7 @@ License</h1>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue May 10 2016 13:22:04 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 14 2016 19:30:02 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

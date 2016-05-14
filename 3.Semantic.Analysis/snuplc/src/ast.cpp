@@ -418,7 +418,7 @@ bool CAstStatAssign::TypeCheck(CToken *t, string *msg) const
     return false;
   }
 
-  // Assignment between different type is not aloowed in SnuPL/1.
+  // Assignment between different type is not allowed in SnuPL/1.
   if(!_lhs->GetType()->Match(_rhs->GetType())) {
     if(t != NULL)
       *t = GetToken();
