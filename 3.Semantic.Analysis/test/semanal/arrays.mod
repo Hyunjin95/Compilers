@@ -61,7 +61,7 @@ begin
 
   p2(B);                          // pass
   p2(b);                          // pass
-  p2(c);                          // fail
+//  p2(c);                          // fail
 
   a[0][0][0] := 0
 end p2;

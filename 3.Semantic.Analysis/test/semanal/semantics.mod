@@ -92,11 +92,11 @@ end UseBeforeDef;
 
 
 // multiple definitions
-//procedure MultipleDef(i, i: integer); // fail (parameter - parameter)
+//procedure MultipleDef(i,i: integer); // fail (parameter - parameter)
 procedure MultipleDef(i: integer);
 //var i: integer;               // fail (parameter - local var)
+  var l: integer;
 //    m,m: integer;             // fail (local var - local var)
-//    var m,m: integer;
 begin
   i := 1
 end MultipleDef;
@@ -126,7 +126,6 @@ begin
 //  a := true + false;        // fail
 //  a := b + c;               // fail
 //  a := a > b;               // fail
-
   a := !!!b;                // pass
   a := a && (!b);           // pass
 
@@ -186,12 +185,12 @@ end NoReturn;
 
 function IntReturn(): integer;
 begin
-//  return 1 < 2              // fail
+//  return 1 > 2              // fail
 end IntReturn;
 
 function BoolReturn(): boolean;
 begin
-  return 1 + 2              // fail
+//  return 1 + 2              // fail
 end BoolReturn;
 
 
@@ -216,7 +215,7 @@ procedure While();
 var a,b: integer;
 begin
 //  while (a)    // fail
-  while(true)
+  while (a>0)
   do
     b := b-1
   end

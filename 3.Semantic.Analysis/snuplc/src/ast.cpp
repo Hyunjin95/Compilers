@@ -402,20 +402,6 @@ bool CAstStatAssign::TypeCheck(CToken *t, string *msg) const
     return false;
   }
 
-  if(!_lhs->GetType()->Match(_rhs->GetType())) {
-    if(t != NULL)
-      *t = GetToken();
-    if(msg != NULL) {
-      ostringstream left, right;
-      _lhs->GetType()->print(left);
-      _rhs->GetType()->print(right);
-
-      *msg = "incompatible types in assignment:\n  LHS: " + left.str() + "\n  RHS: " + right.str();
-    }
-
-    return false;
-  }
-
   if(_lhs->GetType()->IsArray()) {
     if(t != NULL)
       *t = GetToken();
@@ -425,6 +411,20 @@ bool CAstStatAssign::TypeCheck(CToken *t, string *msg) const
       _rhs->GetType()->print(right);
 
       *msg = "assignments to compound types are not supported.\n  LHS: " + left.str() + "\n  RHS: " + right.str();
+    }
+
+    return false;
+  }
+
+  if(!_lhs->GetType()->Match(_rhs->GetType())) {
+    if(t != NULL)
+      *t = GetToken();
+    if(msg != NULL) {
+      ostringstream left, right;
+      _lhs->GetType()->print(left);
+      _rhs->GetType()->print(right);
+
+      *msg = "incompatible types in assignment:\n  LHS: " + left.str() + "\n  RHS: " + right.str();
     }
 
     return false;

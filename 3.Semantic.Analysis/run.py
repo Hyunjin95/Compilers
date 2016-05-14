@@ -27,7 +27,7 @@ def main():
               print("running", f)
               print("diff reference and yours")
 
-              ref = subprocess.Popen(["./reference/3_test_parser", f], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+              ref = subprocess.Popen(["./reference/3_test_parser.simple", f], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
               refout.write(ref.stdout.read().decode())
               refout.write(ref.stderr.read().decode())
 
@@ -75,7 +75,7 @@ def main():
               print("running", f)
               print("diff reference and yours")
 
-              ref = subprocess.Popen(["./reference/3_test_parser", f], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+              ref = subprocess.Popen(["./reference/3_test_parser.simple", f], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
               refout.write(ref.stdout.read().decode())
               refout.write(ref.stderr.read().decode())
 

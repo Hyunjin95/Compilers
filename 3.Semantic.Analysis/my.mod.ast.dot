@@ -4,14 +4,14 @@ digraph AST {
   edge  [fontname="Times New Roman",fontsize=10];
 
   node0 [label="m test",shape=box];
-  node10 [label=":=",shape=box];
-  node7 [label="b[]",shape=ellipse];
-  node8 [label="2",shape=ellipse];
-  node7-> node8;
-  node10->node7;
-  node9 [label="3",shape=ellipse];
-  node10->node9;
-  node0 -> node10 [style=dotted];
-  node3 [label="p/f a",shape=box];
-  node0 -> node3;
+  node5 [label=":=",shape=box];
+  node2 [label="b[]",shape=ellipse];
+  node3 [label="2",shape=ellipse];
+  node2-> node3;
+  node5->node2;
+  node4 [label="3",shape=ellipse];
+  node5->node4;
+  node0 -> node5 [style=dotted];
+  node1 [label="p/f a",shape=box];
+  node0 -> node1;
 }
