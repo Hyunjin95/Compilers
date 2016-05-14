@@ -657,7 +657,7 @@ const CType* CParser::type(bool isParam, bool isFunction) {
       nelems.push_back(atoi(nelem.GetValue().c_str()));
     }
     else {
-      // open arrays are allowed in parameter.
+      // open arrays are allowed only in parameter.
       if(isParam)
         nelems.push_back(-1);
       else
@@ -792,12 +792,14 @@ CAstStatCall* CParser::subroutineCall(CAstScope *s, CToken ident) {
 
   // Check undefined procedure/function call.
   if(symtab->FindSymbol(ident.GetValue(), sLocal) == NULL && symtab->FindSymbol(ident.GetValue(), sGlobal) != NULL) {
+    // Check if symbol is procedure.
     if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sGlobal)) == NULL)
       SetError(ident, "invalid procedure/function identifier.");
     
     call = new CAstFunctionCall(ident, dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sGlobal)));
   }
   else if(symtab->FindSymbol(ident.GetValue(), sLocal) != NULL) {
+    // Check if symbol is procedure.
     if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sLocal)) == NULL)
         SetError(ident, "invalid procedure/function identifier.");
     
@@ -849,6 +851,7 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
     const CSymbol *tmpsym = symtab->FindSymbol(ident.GetValue(), sLocal);
 
     if(tmpsym == NULL && symtab->FindSymbol(ident.GetValue(), sGlobal) != NULL) {
+      // Check if symbol is procedure.
       if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sGlobal)) != NULL) {
         SetError(ident, "designator expected.");
       }
@@ -856,6 +859,7 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
       lhs = new CAstDesignator(ident, symtab->FindSymbol(ident.GetValue(), sGlobal));
     }
     else if(tmpsym != NULL) {
+      // Check if symbol is procedure.
       if(dynamic_cast<const CSymProc *>(tmpsym) != NULL) {
         SetError(ident, "designator expected.");
       }
@@ -872,6 +876,7 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
     CAstArrayDesignator *arraylhs;
 
     if(tmpsym == NULL && symtab->FindSymbol(ident.GetValue(), sGlobal) != NULL) {
+      // Check if symbol is procedure.
       if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(ident.GetValue(), sGlobal)) != NULL) {
         SetError(ident, "designator expected.");
       }
@@ -879,6 +884,7 @@ CAstStatAssign* CParser::assignment(CAstScope *s, CToken ident) {
       arraylhs = new CAstArrayDesignator(ident, symtab->FindSymbol(ident.GetValue(), sGlobal));
     }
     else if(tmpsym != NULL) {
+      // Check if symbol is procedure.
       if(dynamic_cast<const CSymProc *>(tmpsym) != NULL) {
         SetError(ident, "designator expected.");
       }
@@ -1064,7 +1070,7 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
 
     CAstExpression *tmp = term(s);
 
-    // integer negation.
+    // If term is constant, then negate it. -> Simple.
     if(dynamic_cast<CAstConstant *>(tmp) != NULL && tmp->GetType()->IsInt()) {
       if(eOp == opNeg)
         dynamic_cast<CAstConstant *>(tmp)->SetValue(-dynamic_cast<CAstConstant *>(tmp)->GetValue());
@@ -1203,12 +1209,14 @@ CAstExpression* CParser::factor(CAstScope *s) {
 
         // If subroutineCall calls undefined procedure/function, then set error.
         if(symtab->FindSymbol(t.GetValue(),sLocal) == NULL && symtab->FindSymbol(t.GetValue(), sGlobal) != NULL) {
+          // Check if symbol is procedure.
           if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sGlobal)) == NULL)
             SetError(t, "invalid procedure/function identifier.");
 
           f = new CAstFunctionCall(t, dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sGlobal)));
         }
         else if(symtab->FindSymbol(t.GetValue(), sLocal) != NULL) {
+          // Check if symbol is procedure.
           if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sLocal)) == NULL)
             SetError(t, "invalid procedure/function identifier.");
 
@@ -1250,12 +1258,14 @@ CAstExpression* CParser::factor(CAstScope *s) {
           CAstArrayDesignator *f;
 
           if(symtab->FindSymbol(t.GetValue(), sLocal) == NULL && symtab->FindSymbol(t.GetValue(), sGlobal) != NULL) {
+            // Check if symbol is procedure.
             if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sGlobal)) != NULL)
               SetError(t, "designator expected.");
 
             f = new CAstArrayDesignator(t, symtab->FindSymbol(t.GetValue(), sGlobal));
           }
           else if(symtab->FindSymbol(t.GetValue(), sLocal) != NULL) {
+            // Check if symbol is procedure.
             if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sLocal)) != NULL)
               SetError(t, "designator expected");
 
@@ -1281,12 +1291,14 @@ CAstExpression* CParser::factor(CAstScope *s) {
         } // non-array case.
         else {
           if(symtab->FindSymbol(t.GetValue(), sLocal) == NULL && symtab->FindSymbol(t.GetValue(), sGlobal) != NULL) {
+            // Check if symbol is procedure.
             if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sGlobal)) != NULL) {
               SetError(t, "designator expected.");
             }
             n = new CAstDesignator(t, symtab->FindSymbol(t.GetValue(), sGlobal));
           }
           else if(symtab->FindSymbol(t.GetValue(), sLocal) != NULL) {
+            // Check if symbol is procedure.
             if(dynamic_cast<const CSymProc *>(symtab->FindSymbol(t.GetValue(), sLocal)) != NULL) {
               SetError(t, "designator expected.");
             }

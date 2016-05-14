@@ -398,10 +398,12 @@ CAstExpression* CAstStatAssign::GetRHS(void) const
 
 bool CAstStatAssign::TypeCheck(CToken *t, string *msg) const
 {
+  // check lhs and rhs.
   if(!_lhs->TypeCheck(t, msg) || !_rhs->TypeCheck(t, msg)) {
     return false;
   }
 
+  // Array assignment is not allowed in SnuPL/1.
   if(_lhs->GetType()->IsArray()) {
     if(t != NULL)
       *t = GetToken();
@@ -416,6 +418,7 @@ bool CAstStatAssign::TypeCheck(CToken *t, string *msg) const
     return false;
   }
 
+  // Assignment between different type is not aloowed in SnuPL/1.
   if(!_lhs->GetType()->Match(_rhs->GetType())) {
     if(t != NULL)
       *t = GetToken();
@@ -668,9 +671,11 @@ CAstStatement* CAstStatIf::GetElseBody(void) const
 
 bool CAstStatIf::TypeCheck(CToken *t, string *msg) const
 {
+  // Check condition.
   if(!_cond->TypeCheck(t, msg))
     return false;
 
+  // Condition should be boolean.
   if(!_cond->GetType()->IsBoolean()) {
     if(t != NULL)
       *t = _cond->GetToken();
@@ -681,6 +686,8 @@ bool CAstStatIf::TypeCheck(CToken *t, string *msg) const
   }
 
   CAstStatement *sif = _ifBody;
+
+  // Check true body.
   while(sif != NULL) {
     if(!sif->TypeCheck(t, msg))
       return false;
@@ -689,6 +696,7 @@ bool CAstStatIf::TypeCheck(CToken *t, string *msg) const
   }
 
   CAstStatement *selse = _elseBody;
+  // Check false body.
   while(selse != NULL) {
     if(!selse->TypeCheck(t, msg))
       return false;
@@ -796,9 +804,11 @@ CAstStatement* CAstStatWhile::GetBody(void) const
 
 bool CAstStatWhile::TypeCheck(CToken *t, string *msg) const
 {
+  // Check condition.
   if(!_cond->TypeCheck(t, msg))
     return false;
 
+  // Condition should be boolean.
   if(!_cond->GetType()->IsBoolean()) {
     if(t != NULL)
       *t = _cond->GetToken();
@@ -810,6 +820,7 @@ bool CAstStatWhile::TypeCheck(CToken *t, string *msg) const
 
   CAstStatement *s = GetBody();
 
+  // Check body.
   while(s != NULL) {
     if(!s->TypeCheck(t, msg))
       return false;
@@ -941,9 +952,12 @@ bool CAstBinaryOp::TypeCheck(CToken *t, string *msg) const
 {
   EOperation oper = GetOperation();
 
+  // Check lhs and rhs.
   if(!_left->TypeCheck(t, msg) || !_right->TypeCheck(t, msg))
     return false;
 
+  // If GetType returns null, then BinaryOp has something wrong.
+  // Type check is implmented in GetType().
   if(!GetType()) {
     if(t != NULL)
       *t = GetToken();
@@ -952,6 +966,7 @@ bool CAstBinaryOp::TypeCheck(CToken *t, string *msg) const
       _left->GetType()->print(left);
       _right->GetType()->print(right);
 
+      // Error message is different among types.
       if(oper == opAdd) {
         *msg = "add: type mismatch.\n  left  operand: " + left.str() + "\n  right operand: " + right.str();
       }
@@ -1003,6 +1018,7 @@ const CType* CAstBinaryOp::GetType(void) const
 
   // case '+', '-', '*', '/'
   if(oper == opAdd || oper == opSub || oper == opMul || oper == opDiv) {
+    // lhs and rhs should be integer.
     if(_left->GetType()->IsInt() && _right->GetType()->IsInt())
       return tm->GetInt();
 
@@ -1010,6 +1026,7 @@ const CType* CAstBinaryOp::GetType(void) const
   }
   // case '&&' , '||'
   else if(oper == opAnd || oper == opOr) {
+    // lhs and rhs should be boolean.
     if(_left->GetType()->IsBoolean() && _right->GetType()->IsBoolean())
       return tm->GetBool();
 
@@ -1017,6 +1034,7 @@ const CType* CAstBinaryOp::GetType(void) const
   }
   // case '=', '#'
   else if(oper == opEqual || oper == opNotEqual) {
+    // lhs and rhs should have same type.
     if(_left->GetType()->IsBoolean() && _right->GetType()->IsBoolean() ||
        _left->GetType()->IsChar() && _right->GetType()->IsChar() ||
        _left->GetType()->IsInt() && _right->GetType()->IsInt())
@@ -1026,6 +1044,7 @@ const CType* CAstBinaryOp::GetType(void) const
   }
   // case '>', '>=', '<', '<='
   else {
+    // lhs and rhs should have same type.
     if(_left->GetType()->IsInt() && _right->GetType()->IsInt() ||
        _left->GetType()->IsChar() && _right->GetType()->IsChar())
       return tm->GetBool();
@@ -1102,9 +1121,11 @@ bool CAstUnaryOp::TypeCheck(CToken *t, string *msg) const
   CAstExpression *e = GetOperand();
   EOperation oper = GetOperation();
 
+  // Check expression.
   if(!e->TypeCheck(t, msg))
     return false;
 
+  // Type check is implemented in GetType().
   if(!GetType()) {
     if(t != NULL)
       *t = GetToken();
@@ -1112,6 +1133,7 @@ bool CAstUnaryOp::TypeCheck(CToken *t, string *msg) const
       ostringstream operand;
       e->GetType()->print(operand);
 
+      // Different error messages among types.
       if(oper == opNeg) {
         *msg = "neg: type mismatch.\n  operand:       " + operand.str() + "\n";
       }
@@ -1136,11 +1158,13 @@ const CType* CAstUnaryOp::GetType(void) const
   CAstExpression *e = GetOperand();
 
   if(oper == opNeg || oper == opPos) { //case '+' || '-'
+    // expression should be integer.
     if(e->GetType()->IsInt())
       return tm->GetInt();
     else return NULL;
   }
   else { // case '!'
+    // expression should be boolean.
     if(e->GetType()->IsBoolean())
       return tm->GetBool();
   
@@ -1212,9 +1236,11 @@ CAstExpression* CAstSpecialOp::GetOperand(void) const
 
 bool CAstSpecialOp::TypeCheck(CToken *t, string *msg) const
 {
+  // Check operand.
   if(!GetOperand()->TypeCheck(t, msg))
     return false;
 
+  // Type check is implemented in GetType().
   if(GetType() == NULL) {
     if(t != NULL)
       *t = GetOperand()->GetToken();
@@ -1236,7 +1262,7 @@ const CType* CAstSpecialOp::GetType(void) const
   if(oper == opAddress) {
     return tm->GetPointer(GetOperand()->GetType());
   }
-  // we don't implement '*' , '(cast)'.
+  // Currently, we don't implement '*' , '(cast)' in SnuPL/1.
   else if(oper == opDeref) {
     return NULL;
   }
@@ -1315,7 +1341,7 @@ CAstExpression* CAstFunctionCall::GetArg(int index) const
 
 bool CAstFunctionCall::TypeCheck(CToken *t, string *msg) const
 {
-  // Arguments number check
+  // Arguments number check(less)
   if(GetNArgs() < _symbol->GetNParams()) {
     if(t != NULL)
       *t = GetToken();
@@ -1324,6 +1350,7 @@ bool CAstFunctionCall::TypeCheck(CToken *t, string *msg) const
 
     return false;
   }
+  // Arguments number check(more)
   else if(GetNArgs() > _symbol->GetNParams()) {
     if(t != NULL)
       *t = GetToken();
@@ -1333,14 +1360,17 @@ bool CAstFunctionCall::TypeCheck(CToken *t, string *msg) const
     return false;
   }
 
+  // Check each argumetns.
   for(int i = 0; i < GetNArgs(); i++) {
     CAstExpression *e = GetArg(i);
 
+    // expression type check.
     if(!e->TypeCheck(t, msg))
       return false;
 
     const CSymParam *p = _symbol->GetParam(i);
 
+    // Arguments should have same types with they are defined.
     if(!p->GetDataType()->Match(e->GetType())) {
       if(t != NULL)
         *t = e->GetToken();
@@ -1520,6 +1550,7 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
 {
   assert(_done);
 
+  // type of array should be pointer and array.
   if(!_symbol->GetDataType()->IsPointer() && !_symbol->GetDataType()->IsArray()) {
     if(t != NULL)
       *t = GetToken();
@@ -1529,8 +1560,11 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
     return false;
   }
   else {
+    // Array case.
     if(_symbol->GetDataType()->IsArray()) {
       const CArrayType *ty = dynamic_cast<const CArrayType *>(_symbol->GetDataType());
+     
+      // Dimention number check.
       if(ty->GetNDim() < _idx.size()) {
         if(t != NULL) {
           *t = GetToken();
@@ -1541,9 +1575,11 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
         return false;
       }
     }
+    // Pointer case.
     else if(_symbol->GetDataType()->IsPointer()) {
       const CPointerType *p = dynamic_cast<const CPointerType *>(_symbol->GetDataType());
 
+      // Dimention number check.
       if(dynamic_cast<const CArrayType *>(p->GetBaseType())->GetNDim() < _idx.size()) {
         if(t != NULL)
           *t = GetToken();
@@ -1555,12 +1591,15 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
     }
   }
 
+  // Each dimention check.
   for(int i = 0; i < _idx.size(); i++) {
     CAstExpression *s = GetIndex(i);
     
+    // expression type check.
     if(!s->TypeCheck(t, msg))
       return false;
 
+    // Each should be integer.
     if(!s->GetType()->IsInt()) {
       if(t != NULL)
         *t = s->GetToken();
@@ -1571,6 +1610,7 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
     }
   }
 
+  // GetType() checks type. Therefore, if GetType() is null, it means something's wrong.
   if(GetType() == NULL) {
     if(t != NULL)
       *t = GetToken();
