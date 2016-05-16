@@ -1077,8 +1077,9 @@ CAstExpression* CParser::simpleexpr(CAstScope *s) {
       
       n = tmp;
     }
-    else
+    else {
       n = new CAstUnaryOp(tOp, eOp, tmp);
+    }
 
     while(_scanner->Peek().GetType() == tTermOp) {
       CAstExpression *l = n, *r;

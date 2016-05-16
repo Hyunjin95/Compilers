@@ -39,6 +39,10 @@ def main():
               reflines = refin.readlines()
               youlines = youin.readlines()
 
+              for i in range(len(reflines)):
+                  reflines[i] = reflines[i].replace('tRBrak', 'tRSBrak')
+                  reflines[i] = reflines[i].replace('tVarDecl', 'tVar')
+
               d = difflib.Differ()
               diff = d.compare(reflines, youlines)
               cnt = 0
@@ -86,6 +90,10 @@ def main():
             with open("ref", "r") as refin, open("you", "r") as youin:
               reflines = refin.readlines()
               youlines = youin.readlines()
+
+              for i in range(len(reflines)):
+                  reflines[i] = reflines[i].replace('tRBrak', 'tRSBrak')
+                  reflines[i] = reflines[i].replace('tVarDecl', 'tVar')
 
               d = difflib.Differ()
               diff = d.compare(reflines, youlines)
