@@ -4,5 +4,7 @@ digraph IR {
   edge  [fontname="Times New Roman",fontsize=10];
 
   // scope 'a'
-  a_cb [label="a\r  0:     if     e = 1 goto 3\l  1:     goto   2_if_false\l  2: 3:\l  3:     if     f = 1 goto 1_if_true\l  4:     goto   2_if_false\l  5: 1_if_true:\l  6:     assign b <- 3\l  7:     goto   0\l  8: 2_if_false:\l  9:     assign c <- 2\l 10: 0:\l",shape=box]
+  a_cb [label="a\r  0:     &()    t0 <- _str_2\l  1:     param  0 <- t0\l  2:     call   WriteStr\l",shape=box]
+  // scope 'fun'
+  fun_cb [label="fun\r  0:     &()    t0 <- _str_1\l  1:     param  0 <- t0\l  2:     call   WriteStr\l",shape=box]
 };

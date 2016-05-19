@@ -1,13 +1,15 @@
 module a;
 
-var b,c: integer;
-   d: char;
-   e,f, g: boolean;
+var a: integer;
+   b: char;
+   c: boolean;
+   arr: integer[5];
+
+function fun(a, b: integer):boolean;
+begin
+  WriteStr("Hello, world")
+end fun;
 
 begin
-  if(e && f) then
-    b := 3
-  else
-    c := 2
-  end
+  WriteStr("Hello, world")
 end a.
