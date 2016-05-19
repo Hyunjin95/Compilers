@@ -4,7 +4,5 @@ digraph IR {
   edge  [fontname="Times New Roman",fontsize=10];
 
   // scope 'a'
-  a_cb [label="a\r  0:     &()    t0 <- _str_2\l  1:     param  0 <- t0\l  2:     call   WriteStr\l",shape=box]
-  // scope 'fun'
-  fun_cb [label="fun\r  0:     &()    t0 <- _str_1\l  1:     param  0 <- t0\l  2:     call   WriteStr\l",shape=box]
+  a_cb [label="a\r  0:     &()    t0 <- _str_1\l  1:     param  0 <- t0\l  2:     call   WriteStr\l",shape=box]
 };

@@ -5,11 +5,6 @@ var a: integer;
    c: boolean;
    arr: integer[5];
 
-function fun(a, b: integer):boolean;
 begin
-  WriteStr("Hello, world")
-end fun;
-
-begin
-  WriteStr("Hello, world")
+  WriteStr("Hello, World\n") 
 end a.
