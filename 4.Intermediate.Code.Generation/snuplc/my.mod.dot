@@ -4,5 +4,5 @@ digraph IR {
   edge  [fontname="Times New Roman",fontsize=10];
 
   // scope 'a'
-  a_cb [label="a\r  0:     &()    t0 <- _str_1\l  1:     param  0 <- t0\l  2:     call   WriteStr\l",shape=box]
+  a_cb [label="a\r  0:     if     c = 1 goto 4\l  1:     goto   3\l  2: 4:\l  3:     if     d = 1 goto 2_if_false\l  4: 3:\l  5:     if     e = 1 goto 2_if_false\l  6:     goto   0\l  7: 2_if_false:\l  8: 0:\l",shape=box]
 };
