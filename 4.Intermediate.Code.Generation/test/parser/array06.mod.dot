@@ -1,0 +1,14 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'array06'
+  array06_cb [label="array06\r  0:     call   Test\l",shape=box]
+  // scope 'Print'
+  Print_cb [label="Print\r  0:     param  1 <- 1\l  1:     param  0 <- A\l  2:     call   t0 <- DIM\l  3:     assign N <- t0\l  4:     param  1 <- 2\l  5:     param  0 <- A\l  6:     call   t1 <- DIM\l  7:     assign M <- t1\l  8:     assign i <- 0\l  9: 4_while_cond:\l 10:     if     i < N goto 5_while_body\l 11:     goto   3\l 12: 5_while_body:\l 13:     assign j <- 0\l 14: 9_while_cond:\l 15:     if     j < M goto 10_while_body\l 16:     goto   8\l 17: 10_while_body:\l 18:     param  1 <- 2\l 19:     param  0 <- A\l 20:     call   t2 <- DIM\l 21:     mul    t3 <- i, t2\l 22:     add    t4 <- t3, j\l 23:     mul    t5 <- t4, 4\l 24:     param  0 <- A\l 25:     call   t6 <- DOFS\l 26:     add    t7 <- t5, t6\l 27:     add    t8 <- A, t7\l 28:     param  0 <- @t8\l 29:     call   WriteInt\l 30:     call   WriteLn\l 31:     add    t9 <- j, 1\l 32:     assign j <- t9\l 33:     goto   9_while_cond\l 34: 8:\l 35:     add    t10 <- i, 1\l 36:     assign i <- t10\l 37:     goto   4_while_cond\l 38: 3:\l",shape=box]
+  // scope 'Init'
+  Init_cb [label="Init\r  0:     param  1 <- 1\l  1:     param  0 <- a\l  2:     call   t0 <- DIM\l  3:     assign N <- t0\l  4:     param  1 <- 2\l  5:     param  0 <- a\l  6:     call   t1 <- DIM\l  7:     assign M <- t1\l  8:     assign c <- 0\l  9:     assign i <- 0\l 10: 5_while_cond:\l 11:     if     i < N goto 6_while_body\l 12:     goto   4\l 13: 6_while_body:\l 14:     assign j <- 0\l 15: 10_while_cond:\l 16:     if     j < M goto 11_while_body\l 17:     goto   9\l 18: 11_while_body:\l 19:     param  1 <- 2\l 20:     param  0 <- a\l 21:     call   t2 <- DIM\l 22:     mul    t3 <- i, t2\l 23:     add    t4 <- t3, j\l 24:     mul    t5 <- t4, 4\l 25:     param  0 <- a\l 26:     call   t6 <- DOFS\l 27:     add    t7 <- t5, t6\l 28:     add    t8 <- a, t7\l 29:     assign @t8 <- c\l 30:     add    t9 <- c, 1\l 31:     assign c <- t9\l 32:     add    t10 <- j, 1\l 33:     assign j <- t10\l 34:     goto   10_while_cond\l 35: 9:\l 36:     add    t11 <- i, 1\l 37:     assign i <- t11\l 38:     goto   5_while_cond\l 39: 4:\l 40:     param  0 <- a\l 41:     call   Print\l",shape=box]
+  // scope 'Test'
+  Test_cb [label="Test\r  0:     param  0 <- 11111111\l  1:     call   WriteInt\l  2:     call   WriteLn\l  3:     &()    t0 <- x\l  4:     param  0 <- t0\l  5:     call   Print\l  6:     param  0 <- 22222222\l  7:     call   WriteInt\l  8:     call   WriteLn\l  9:     &()    t1 <- x\l 10:     param  0 <- t1\l 11:     call   Init\l",shape=box]
+};

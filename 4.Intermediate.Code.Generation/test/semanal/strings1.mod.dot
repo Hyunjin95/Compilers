@@ -1,0 +1,16 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'strings'
+  strings_cb [label="strings\r  0:     call   foo\l  1:     &()    t0 <- _str_2\l  2:     param  0 <- t0\l  3:     call   bar\l  4:     call   not_fun\l",shape=box]
+  // scope 'foo'
+  foo_cb [label="foo\r  0:     &()    t0 <- _str_1\l  1:     param  0 <- t0\l  2:     call   WriteStr\l  3:     call   WriteLn\l",shape=box]
+  // scope 'bar'
+  bar_cb [label="bar\r  0:     param  0 <- str\l  1:     call   WriteStr\l  2:     call   WriteLn\l",shape=box]
+  // scope 'foobar'
+  foobar_cb [label="foobar\r  0:     &()    t0 <- s\l  1:     param  0 <- t0\l  2:     call   WriteStr\l  3:     call   WriteLn\l",shape=box]
+  // scope 'not_fun'
+  not_fun_cb [label="not_fun\r  0:     &()    t0 <- s\l  1:     mul    t1 <- 0, 1\l  2:     &()    t2 <- s\l  3:     param  0 <- t2\l  4:     call   t3 <- DOFS\l  5:     add    t4 <- t1, t3\l  6:     add    t5 <- t0, t4\l  7:     assign @t5 <- 72\l  8:     &()    t6 <- s\l  9:     mul    t7 <- 1, 1\l 10:     &()    t8 <- s\l 11:     param  0 <- t8\l 12:     call   t9 <- DOFS\l 13:     add    t10 <- t7, t9\l 14:     add    t11 <- t6, t10\l 15:     assign @t11 <- 101\l 16:     &()    t12 <- s\l 17:     mul    t13 <- 2, 1\l 18:     &()    t14 <- s\l 19:     param  0 <- t14\l 20:     call   t15 <- DOFS\l 21:     add    t16 <- t13, t15\l 22:     add    t17 <- t12, t16\l 23:     assign @t17 <- 108\l 24:     &()    t18 <- s\l 25:     mul    t19 <- 3, 1\l 26:     &()    t20 <- s\l 27:     param  0 <- t20\l 28:     call   t21 <- DOFS\l 29:     add    t22 <- t19, t21\l 30:     add    t23 <- t18, t22\l 31:     assign @t23 <- 108\l 32:     &()    t24 <- s\l 33:     mul    t25 <- 4, 1\l 34:     &()    t26 <- s\l 35:     param  0 <- t26\l 36:     call   t27 <- DOFS\l 37:     add    t28 <- t25, t27\l 38:     add    t29 <- t24, t28\l 39:     assign @t29 <- 111\l 40:     &()    t30 <- s\l 41:     mul    t31 <- 5, 1\l 42:     &()    t32 <- s\l 43:     param  0 <- t32\l 44:     call   t33 <- DOFS\l 45:     add    t34 <- t31, t33\l 46:     add    t35 <- t30, t34\l 47:     assign @t35 <- 0\l 48:     &()    t36 <- s\l 49:     param  0 <- t36\l 50:     call   WriteStr\l 51:     call   WriteLn\l",shape=box]
+};
