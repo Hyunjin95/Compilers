@@ -5,20 +5,16 @@ var a,b,c: integer;
    arr: integer[7][9][11];
    barr: boolean[3][5][7];
 
-procedure bar(arr:integer[]);
-begin
-end bar;
 
-function foo(arr:boolean[][][]): integer;
-begin
-//  arr[a+3][b+5][c+7] := 3
-
-  d := arr[a+3][2][3] && arr[b+3][c+2][1]
-//    bar(arr[a+3][b+5])
-end foo;
-
+   function foo(a, b:integer[]): boolean;
+   begin
+    a := b
+   end foo;
 
 begin
-  d := barr[a+3][2][3] && true
-
+  if(!foo(arr[a+c][b*c], arr[1][1]) && foo(arr[3][5], arr[1][1])) then
+    arr[3][5][1] := 3
+    else
+    arr[5][3][1] := 2
+    end
 end a.
