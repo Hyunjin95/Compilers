@@ -1562,11 +1562,17 @@ CTacAddr* CAstSpecialOp::ToTac(CCodeBlock *cb)
 {
   // Call ToTac of operand.
   CTacAddr *src = GetOperand()->ToTac(cb);
-  // set type to pointer to src data type.
-  CTacAddr *tmp = cb->CreateTemp(CTypeManager::Get()->GetPointer(dynamic_cast<CTacName *>(src)->GetSymbol()->GetDataType()));
 
-  cb->AddInstr(new CTacInstr(opAddress, tmp, src));
+  // set type to pointer to data type.
+  const CType *type = dynamic_cast<const CTacName *>(src)->GetSymbol()->GetDataType();
+
+  if(dynamic_cast<CAstArrayDesignator *>(GetOperand()) && type->IsScalar()) {
+    // set type to pointer to base type.
+    type = dynamic_cast<const CArrayType *>(GetOperand()->GetType())->GetBaseType();
+  }
   
+  CTacAddr *tmp = cb->CreateTemp(CTypeManager::Get()->GetPointer(type));
+  cb->AddInstr(new CTacInstr(opAddress, tmp, src));
   return tmp;
 }
 
