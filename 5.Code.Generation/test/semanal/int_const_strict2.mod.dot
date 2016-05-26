@@ -1,0 +1,10 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'int_const_strict'
+  int_const_strict_cb [label="int_const_strict\r",shape=box]
+  // scope 'strict'
+  strict_cb [label="strict\r  0:     assign i <- -2147483647\l  1:     assign i <- 2147483647\l  2:     assign i <- 0\l",shape=box]
+};

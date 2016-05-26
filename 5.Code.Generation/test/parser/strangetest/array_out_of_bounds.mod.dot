@@ -1,0 +1,10 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'array_out_of_bounds'
+  array_out_of_bounds_cb [label="array_out_of_bounds\r  0:     &()    t0 <- Y\l  1:     param  1 <- 2\l  2:     &()    t1 <- Y\l  3:     param  0 <- t1\l  4:     call   t2 <- DIM\l  5:     mul    t3 <- 100, t2\l  6:     add    t4 <- t3, 0\l  7:     mul    t5 <- t4, 4\l  8:     &()    t6 <- Y\l  9:     param  0 <- t6\l 10:     call   t7 <- DOFS\l 11:     add    t8 <- t5, t7\l 12:     add    t9 <- t0, t8\l 13:     &()    t10 <- @t9\l 14:     param  1 <- t10\l 15:     &()    t11 <- X\l 16:     param  1 <- 2\l 17:     &()    t12 <- X\l 18:     param  0 <- t12\l 19:     call   t13 <- DIM\l 20:     mul    t14 <- 100, t13\l 21:     add    t15 <- t14, 0\l 22:     mul    t16 <- t15, 4\l 23:     &()    t17 <- X\l 24:     param  0 <- t17\l 25:     call   t18 <- DOFS\l 26:     add    t19 <- t16, t18\l 27:     add    t20 <- t11, t19\l 28:     &()    t21 <- @t20\l 29:     param  0 <- t21\l 30:     call   f\l",shape=box]
+  // scope 'f'
+  f_cb [label="f\r  0:     mul    t0 <- 200, 4\l  1:     param  0 <- B\l  2:     call   t1 <- DOFS\l  3:     add    t2 <- t0, t1\l  4:     add    t3 <- B, t2\l  5:     mul    t4 <- 200, 4\l  6:     param  0 <- A\l  7:     call   t5 <- DOFS\l  8:     add    t6 <- t4, t5\l  9:     add    t7 <- A, t6\l 10:     assign @t7 <- @t3\l",shape=box]
+};

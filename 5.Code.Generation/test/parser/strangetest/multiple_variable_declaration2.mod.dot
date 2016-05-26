@@ -1,0 +1,10 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'multiple_variable_declaration2'
+  multiple_variable_declaration2_cb [label="multiple_variable_declaration2\r",shape=box]
+  // scope 'print'
+  print_cb [label="print\r  0:     param  0 <- X\l  1:     call   WriteInt\l",shape=box]
+};

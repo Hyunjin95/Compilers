@@ -1,0 +1,10 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'null_string'
+  null_string_cb [label="null_string\r  0:     call   write\l",shape=box]
+  // scope 'write'
+  write_cb [label="write\r  0:     &()    t0 <- _str_1\l  1:     param  0 <- t0\l  2:     call   WriteStr\l  3:     &()    t1 <- _str_2\l  4:     param  0 <- t1\l  5:     call   WriteStr\l  6:     &()    t2 <- _str_3\l  7:     param  0 <- t2\l  8:     call   WriteStr\l  9:     param  0 <- 0\l 10:     call   WriteChar\l 11:     param  0 <- 9\l 12:     call   WriteChar\l 13:     param  0 <- 10\l 14:     call   WriteChar\l 15:     call   WriteLn\l",shape=box]
+};

@@ -1,0 +1,10 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'global_local_different_type'
+  global_local_different_type_cb [label="global_local_different_type\r  0:     param  0 <- 99\l  1:     call   f\l",shape=box]
+  // scope 'f'
+  f_cb [label="f\r  0:     assign x <- c\l  1:     param  0 <- x\l  2:     call   WriteChar\l",shape=box]
+};

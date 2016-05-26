@@ -1,0 +1,10 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'int_const_relaxed'
+  int_const_relaxed_cb [label="int_const_relaxed\r",shape=box]
+  // scope 'relaxed'
+  relaxed_cb [label="relaxed\r  0:     assign i <- -2147483648\l  1:     assign i <- -2147483647\l  2:     assign i <- 2147483647\l  3:     add    t0 <- -2147483648, -2147483648\l  4:     assign i <- t0\l  5:     add    t1 <- -2147483648, 3\l  6:     assign i <- t1\l  7:     mul    t2 <- -2147483648, 3\l  8:     assign i <- t2\l  9:     neg    t3 <- 1\l 10:     neg    t4 <- t3\l 11:     neg    t5 <- t4\l 12:     assign i <- t5\l 13:     assign i <- 0\l",shape=box]
+};
