@@ -1,19 +1,28 @@
 module test;
 
 
-var t0 : integer;
+var t : integer;
 
     a : integer[100][100];
 
 
+    function foo(): integer;
+    var v: integer;
     begin
 
-    t0 := 999;
+    if ((v < v) && (v > a[v][v])) then else end;
+    return t
+    end foo;
+
+    begin
+
+    t := 999;
 
 
-    if ((t0 < t0) && (t0 > a[t0][t0])) then else end;
+    if ((t < t) && (t > a[t][t])) then else end;
 
 
-    WriteInt(t0)
+    WriteInt(t);
+    WriteInt(foo())
 
   end test.
