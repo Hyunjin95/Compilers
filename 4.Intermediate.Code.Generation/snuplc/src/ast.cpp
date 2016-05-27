@@ -549,8 +549,11 @@ void CAstStatCall::toDot(ostream &out, int indent) const
 
 CTacAddr* CAstStatCall::ToTac(CCodeBlock *cb, CTacLabel *next)
 {
-  // All IR creation is implemented in CAstFunctionCall.
-  return _call->ToTac(cb);
+  // All IR codes generation is implemented in CAstFunctionCall.
+  _call->ToTac(cb);
+  cb->AddInstr(new CTacInstr(opGoto, next));
+  
+  return NULL;
 }
 
 
