@@ -549,8 +549,11 @@ void CAstStatCall::toDot(ostream &out, int indent) const
 
 CTacAddr* CAstStatCall::ToTac(CCodeBlock *cb, CTacLabel *next)
 {
-  // All IR creation is implemented in CAstFunctionCall.
-  return _call->ToTac(cb);
+  // All IR codes generation is implemented in CAstFunctionCall.
+  _call->ToTac(cb);
+  cb->AddInstr(new CTacInstr(opGoto, next));
+  
+  return NULL;
 }
 
 
@@ -1875,6 +1878,12 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
 
         return false;
       }
+      else if(ty->GetNDim() > _idx.size()) {
+        if(t != NULL) *t = GetToken();
+        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
+
+        return false;
+      }
     }
     // Pointer case.
     else if(_symbol->GetDataType()->IsPointer()) {
@@ -1886,6 +1895,12 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
           *t = GetToken();
         if(msg != NULL)
           *msg = "invalid array expression.";
+
+        return false;
+      }
+      else if(dynamic_cast<const CArrayType *>(p->GetBaseType())->GetNDim() > _idx.size()) {
+        if(t != NULL) *t = GetToken();
+        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
 
         return false;
       }
@@ -2284,6 +2299,13 @@ CAstStringConstant::CAstStringConstant(CToken t, const string value,
 
   ostringstream o;
   o << "_str_" << ++_idx;
+
+  // Check duplicated name
+  while(s->GetSymbolTable()->FindSymbol(o.str(), sGlobal)) {
+    o.str("");
+
+    o << "_str_" << ++_idx;
+  }
 
   _sym = new CSymGlobal(o.str(), _type);
   _sym->SetData(_value);
