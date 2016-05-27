@@ -1878,12 +1878,12 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
 
         return false;
       }
-      else if(ty->GetNDim() > _idx.size()) {
-        if(t != NULL) *t = GetToken();
-        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
+//      else if(ty->GetNDim() > _idx.size()) {
+//        if(t != NULL) *t = GetToken();
+//        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
 
-        return false;
-      }
+//        return false;
+//      }
     }
     // Pointer case.
     else if(_symbol->GetDataType()->IsPointer()) {
@@ -1898,12 +1898,12 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
 
         return false;
       }
-      else if(dynamic_cast<const CArrayType *>(p->GetBaseType())->GetNDim() > _idx.size()) {
-        if(t != NULL) *t = GetToken();
-        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
+//      else if(dynamic_cast<const CArrayType *>(p->GetBaseType())->GetNDim() > _idx.size()) {
+//        if(t != NULL) *t = GetToken();
+//        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
 
-        return false;
-      }
+//        return false;
+//      }
     }
   }
 

@@ -91,6 +91,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af4e22fa71fa3b1fe73bb361a0fc4ec8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">transformation into TAC</div></td></tr>
 <tr class="memitem:afea5b8856b81de13f09f385a932c4d5d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classCTacAddr.html">CTacAddr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCAstStatement.html#afea5b8856b81de13f09f385a932c4d5d">ToTac</a> (<a class="el" href="classCCodeBlock.html">CCodeBlock</a> *cb, <a class="el" href="classCTacLabel.html">CTacLabel</a> *next)</td></tr>
+<tr class="memdesc:afea5b8856b81de13f09f385a932c4d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create Three-Address codes.  <a href="#afea5b8856b81de13f09f385a932c4d5d">More...</a><br /></td></tr>
 <tr class="separator:afea5b8856b81de13f09f385a932c4d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classCAstNode"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classCAstNode')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classCAstNode.html">CAstNode</a></td></tr>
 <tr class="memitem:aedf455a66b4f7d6561b6aebcd515a814 inherit pub_methods_classCAstNode"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCAstNode.html#aedf455a66b4f7d6561b6aebcd515a814">CAstNode</a> (<a class="el" href="classCToken.html">CToken</a> token)</td></tr>
@@ -137,7 +138,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>AST statement node. </p>
 <p>node representing a statement </p>
 
-<p>Definition at line <a class="el" href="ast_8h_source.html#l00395">395</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p>Definition at line <a class="el" href="ast_8h_source.html#l00398">398</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab5ca8d71ef8f7a6cdc6835ba12d159e2"></a>
 <div class="memitem">
@@ -159,7 +160,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00364">364</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00367">367</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
 
 </div>
 </div>
@@ -185,7 +186,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00369">369</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00372">372</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
 
 </div>
 </div>
@@ -206,7 +207,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>get the next <em>statement</em> </p>
 
-<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00379">379</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00382">382</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
 
 </div>
 </div>
@@ -226,7 +227,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>set the next <em>statement</em> </p>
 
-<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00374">374</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00377">377</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
 
 </div>
 </div>
@@ -262,9 +263,18 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Create Three-Address codes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>code block </td></tr>
+    <tr><td class="paramname">next</td><td>next label to be run. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented in <a class="el" href="classCAstStatWhile.html#a978aa641c4fc53026fd450c9edb65250">CAstStatWhile</a>, <a class="el" href="classCAstStatIf.html#ad43ae6cb4534fecb6e0b3cf28ee8dd96">CAstStatIf</a>, <a class="el" href="classCAstStatReturn.html#ab7906222701d30230bfedbf3a613ed86">CAstStatReturn</a>, <a class="el" href="classCAstStatCall.html#a47b6db8af6362d2c149253d180435c0d">CAstStatCall</a>, and <a class="el" href="classCAstStatAssign.html#ac35143022b4a553fa9cf6c64fb043cdd">CAstStatAssign</a>.</p>
 
-<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00384">384</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ast_8cpp_source.html#l00387">387</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
 
 </div>
 </div>
@@ -341,7 +351,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>next statement </p>
 
-<p>Definition at line <a class="el" href="ast_8h_source.html#l00440">440</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p>Definition at line <a class="el" href="ast_8h_source.html#l00446">446</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 </div>
 </div>
@@ -352,7 +362,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 18 2016 11:14:44 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri May 27 2016 17:43:01 for SnuPL Compiler by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
