@@ -422,8 +422,8 @@ CTacTemp* CScope::CreateTemp(const CType *type)
   ostringstream tmp;
   tmp << "t" << _temp_id++;
 
-  // Check duplicate name
-  if(GetSymbolTable()->FindSymbol(tmp.str(), sLocal) || GetSymbolTable()->FindSymbol(tmp.str(), sGlobal)) {
+  // Check duplicated name
+  while(GetSymbolTable()->FindSymbol(tmp.str(), sLocal) || GetSymbolTable()->FindSymbol(tmp.str(), sGlobal)) {
     tmp.str("");
 
     tmp << "t" << _temp_id++;

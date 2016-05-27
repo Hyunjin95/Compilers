@@ -4,7 +4,7 @@ digraph IR {
   edge  [fontname="Times New Roman",fontsize=10];
 
   // scope 'a'
-  a_cb [label="a\r",shape=box]
-  // scope 'proc'
-  proc_cb [label="proc\r  0:     assign a <- b\l",shape=box]
+  a_cb [label="a\r  0: 1_while_cond:\l  1:     if     3 > 4 goto 4\l  2:     goto   5\l  3: 4:\l  4:     assign t0 <- 1\l  5:     goto   6\l  6: 5:\l  7:     assign t0 <- 0\l  8: 6:\l  9:     param  1 <- t0\l 10:     param  0 <- 99\l 11:     call   t1 <- f1\l 12:     if     t1 # 97 goto 2_while_body\l 13:     goto   0\l 14: 2_while_body:\l 15:     goto   1_while_cond\l 16: 0:\l",shape=box]
+  // scope 'f1'
+  f1_cb [label="f1\r  0:     return 97\l",shape=box]
 };

@@ -1,9 +1,14 @@
 module a;
 
-procedure proc(a, b:integer[]);
+var i : integer;
+
+function f1(c:char; b:boolean) : char;
 begin
-  a := b
-end proc;
+return 'a'
+end f1;
 
 begin
+while ( f1('c', 3 > 4) # 'a' )
+do
+end
 end a.
