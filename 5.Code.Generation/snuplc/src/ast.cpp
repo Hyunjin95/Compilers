@@ -1569,10 +1569,10 @@ CTacAddr* CAstSpecialOp::ToTac(CCodeBlock *cb)
   // set type to pointer to data type.
   const CType *type = dynamic_cast<const CTacName *>(src)->GetSymbol()->GetDataType();
 
-  if(dynamic_cast<CAstArrayDesignator *>(GetOperand()) && type->IsScalar()) {
-    // set type to pointer to base type.
-    type = dynamic_cast<const CArrayType *>(GetOperand()->GetType())->GetBaseType();
-  }
+//  if(dynamic_cast<CAstArrayDesignator *>(GetOperand()) && type->IsScalar()) {
+//    // set type to pointer to base type.
+//    type = dynamic_cast<const CArrayType *>(GetOperand()->GetType())->GetBaseType();
+//  }
   
   CTacAddr *tmp = cb->CreateTemp(CTypeManager::Get()->GetPointer(type));
   cb->AddInstr(new CTacInstr(opAddress, tmp, src));
@@ -2030,7 +2030,7 @@ CTacAddr* CAstArrayDesignator::ToTac(CCodeBlock *cb)
       CTacAddr *tmp_param2 = cb->CreateTemp(CTypeManager::Get()->GetInt());
       cb->AddInstr(new CTacInstr(opMul, tmp_param2, res_tmp, tmp_param));
 
-      if(i < _idx.size()) {
+//      if(i < _idx.size()) {
         // If an index exists, then call ToTac to get new index expression.
         CTacAddr *idx_i = GetIndex(i)->ToTac(cb);
 
@@ -2039,14 +2039,14 @@ CTacAddr* CAstArrayDesignator::ToTac(CCodeBlock *cb)
         cb->AddInstr(new CTacInstr(opAdd, tmp_param3, tmp_param2, idx_i));
 
         res_tmp = tmp_param3;
-      }
-      else {
-        // If array index doesn't exist, then just add 0.
-        CTacAddr *tmp_param3 = cb->CreateTemp(CTypeManager::Get()->GetInt());
-        cb->AddInstr(new CTacInstr(opAdd, tmp_param3, tmp_param2, new CTacConst(0)));
+//      }
+//      else {
+//        // If array index doesn't exist, then just add 0.
+//        CTacAddr *tmp_param3 = cb->CreateTemp(CTypeManager::Get()->GetInt());
+//        cb->AddInstr(new CTacInstr(opAdd, tmp_param3, tmp_param2, new CTacConst(0)));
 
-        res_tmp = tmp_param3;
-      }   
+//        res_tmp = tmp_param3;
+//      }   
     }
  
     // Multiply by array element size(integer: 4, boolean/character: 1)
@@ -2099,7 +2099,7 @@ CTacAddr* CAstArrayDesignator::ToTac(CCodeBlock *cb)
       CTacAddr *tmp_param3 = cb->CreateTemp(CTypeManager::Get()->GetInt());
       cb->AddInstr(new CTacInstr(opMul, tmp_param3, res_tmp, tmp_param2));
 
-      if(i < _idx.size()) {
+//      if(i < _idx.size()) {
         // If an index exists, then call ToTac to get new index expression.
         CTacAddr *idx_i = GetIndex(i)->ToTac(cb);
         
@@ -2108,14 +2108,14 @@ CTacAddr* CAstArrayDesignator::ToTac(CCodeBlock *cb)
         cb->AddInstr(new CTacInstr(opAdd, tmp_param4, tmp_param3, idx_i));
         
         res_tmp = tmp_param4;
-      }
-      else {
+//      }
+//      else {
         // If array index doesn't exist, then just add 0.
-        CTacAddr *tmp_param4 = cb->CreateTemp(CTypeManager::Get()->GetInt());
-        cb->AddInstr(new CTacInstr(opAdd, tmp_param4, tmp_param3, new CTacConst(0)));
+//        CTacAddr *tmp_param4 = cb->CreateTemp(CTypeManager::Get()->GetInt());
+//        cb->AddInstr(new CTacInstr(opAdd, tmp_param4, tmp_param3, new CTacConst(0)));
         
-        res_tmp = tmp_param4;
-      }
+//        res_tmp = tmp_param4;
+//      }
     }
 
     // Multiply by array element size(integer: 4, boolean/character: 1)
