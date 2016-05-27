@@ -1,0 +1,12 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'test'
+  test_cb [label="test\r  0:     &()    t0 <- A\l  1:     param  1 <- 2\l  2:     &()    t1 <- A\l  3:     param  0 <- t1\l  4:     call   t2 <- DIM\l  5:     mul    t3 <- 0, t2\l  6:     add    t4 <- t3, 3\l  7:     param  1 <- 3\l  8:     &()    t5 <- A\l  9:     param  0 <- t5\l 10:     call   t6 <- DIM\l 11:     mul    t7 <- t4, t6\l 12:     add    t8 <- t7, 5\l 13:     mul    t9 <- t8, 4\l 14:     &()    t10 <- A\l 15:     param  0 <- t10\l 16:     call   t11 <- DOFS\l 17:     add    t12 <- t9, t11\l 18:     add    t13 <- t0, t12\l 19:     assign @t13 <- 999\l 20:     &()    t14 <- A\l 21:     param  1 <- 2\l 22:     &()    t15 <- A\l 23:     param  0 <- t15\l 24:     call   t16 <- DIM\l 25:     mul    t17 <- 1, t16\l 26:     add    t18 <- t17, 0\l 27:     param  1 <- 3\l 28:     &()    t19 <- A\l 29:     param  0 <- t19\l 30:     call   t20 <- DIM\l 31:     mul    t21 <- t18, t20\l 32:     add    t22 <- t21, 0\l 33:     mul    t23 <- t22, 4\l 34:     &()    t24 <- A\l 35:     param  0 <- t24\l 36:     call   t25 <- DOFS\l 37:     add    t26 <- t23, t25\l 38:     add    t27 <- t14, t26\l 39:     &()    t28 <- @t27\l 40:     param  0 <- t28\l 41:     call   t29 <- g\l 42:     param  0 <- t29\l 43:     call   WriteInt\l",shape=box]
+  // scope 'f'
+  f_cb [label="f\r  0:     mul    t1 <- 5, 4\l  1:     param  0 <- a\l  2:     call   t3 <- DOFS\l  3:     add    t5 <- t1, t3\l  4:     add    t7 <- a, t5\l  5:     return @t7\l",shape=box]
+  // scope 'g'
+  g_cb [label="g\r  0:     param  1 <- 2\l  1:     param  0 <- a\l  2:     call   t1 <- DIM\l  3:     mul    t3 <- 3, t1\l  4:     add    t5 <- t3, 0\l  5:     mul    t7 <- t5, 4\l  6:     param  0 <- a\l  7:     call   t9 <- DOFS\l  8:     add    t11 <- t7, t9\l  9:     add    t13 <- a, t11\l 10:     &()    t15 <- @t13\l 11:     param  0 <- t15\l 12:     call   t17 <- f\l 13:     return t17\l",shape=box]
+};

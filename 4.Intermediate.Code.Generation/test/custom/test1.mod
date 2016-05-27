@@ -30,6 +30,6 @@ var B : boolean[1][2][3];
 
   A[0][3][5] := 999;
 
-  WriteInt(g(A[1][3]))
+  WriteInt(g(A[1]))
 
   end test.

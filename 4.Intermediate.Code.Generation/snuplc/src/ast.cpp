@@ -1875,6 +1875,12 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
 
         return false;
       }
+      else if(ty->GetNDim() > _idx.size()) {
+        if(t != NULL) *t = GetToken();
+        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
+
+        return false;
+      }
     }
     // Pointer case.
     else if(_symbol->GetDataType()->IsPointer()) {
@@ -1886,6 +1892,12 @@ bool CAstArrayDesignator::TypeCheck(CToken *t, string *msg) const
           *t = GetToken();
         if(msg != NULL)
           *msg = "invalid array expression.";
+
+        return false;
+      }
+      else if(dynamic_cast<const CArrayType *>(p->GetBaseType())->GetNDim() > _idx.size()) {
+        if(t != NULL) *t = GetToken();
+        if(msg != NULL) *msg = "incomplete array expression (sub-arrays are not supported).";
 
         return false;
       }
@@ -2284,6 +2296,13 @@ CAstStringConstant::CAstStringConstant(CToken t, const string value,
 
   ostringstream o;
   o << "_str_" << ++_idx;
+
+  // Check duplicate name
+  while(s->GetSymbolTable()->FindSymbol(o.str(), sGlobal) != NULL) {
+    o.str("");
+
+    o << "_str_" << ++_idx;
+  }
 
   _sym = new CSymGlobal(o.str(), _type);
   _sym->SetData(_value);
