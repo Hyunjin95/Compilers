@@ -2299,6 +2299,13 @@ CAstStringConstant::CAstStringConstant(CToken t, const string value,
 
   ostringstream o;
   o << "_str_" << ++_idx;
+ 
+  // Check duplicated name
+//  while(s->GetSymbolTable()->FindSymbol(o.str(), sGlobal)) {
+//    o.str("");
+//
+//    o << "_str_" << ++_idx;
+//  }
 
   _sym = new CSymGlobal(o.str(), _type);
   _sym->SetData(_value);
