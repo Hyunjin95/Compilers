@@ -1,22 +1,17 @@
 module test;
 
+var i : integer;
 
-var _str_1 : integer;
-
-    a : integer[100][100];
+procedure proc();
+var _str_1: integer;
+begin
+ _str_1 := 3
+end proc;
 
 
     begin
-
-    _str_1 := 999;
-
-
-    WriteStr("hello\n");
-
-
-    if ((_str_1 < _str_1) && (_str_1 > (_str_1+_str_1))) then else end;
-
-
-    WriteInt(_str_1)
+    WriteStr("Hello");
+    i := 3;
+    proc()
 
   end test.
