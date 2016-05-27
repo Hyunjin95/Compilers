@@ -2298,7 +2298,7 @@ CAstStringConstant::CAstStringConstant(CToken t, const string value,
   o << "_str_" << ++_idx;
 
   // Check duplicated name
-  while(s->GetSymbolTable()->FindSymbol(o.str(), sGlobal) != NULL) {
+  while(s->GetSymbolTable()->FindSymbol(o.str(), sGlobal)) {
     o.str("");
 
     o << "_str_" << ++_idx;

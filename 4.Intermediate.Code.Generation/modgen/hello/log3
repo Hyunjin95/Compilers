@@ -1,0 +1,161 @@
+[31m-       [ $t0       <int>       ]
+[0m[32m+       [ $t11      <int>       ]
+[0m[31m-       [ $t2       <char>       ]
+[0m[32m+       [ $t12      <int>       ]
+[0m[31m-       [ $t3       <bool>       ]
+[0m[32m+       [ $t13      <bool>       ]
+[0m[31m-       [ $t4       <bool>       ]
+[0m[31m-       [ $t5       <int>       ]
+[0m[32m+       [ $t3       <int>       ]
+[0m[31m-       [ $t6       <int>       ]
+[0m[32m+       [ $t5       <char>       ]
+[0m[32m+       [ $t9       <bool>       ]
+[0m[31m-         0:     mul    t0 <- 22985, 29779
+[0m[32m+         0:     mul    t1 <- 22985, 29779
+[0m[31m-         1:     add    t1 <- t0, 51280
+[0m[32m+         1:     add    t3 <- t1, 51280
+[0m[31m-         2:     assign v3 <- t1
+[0m[32m+         2:     assign v3 <- t3
+[0m[31m-         3:     call   t2 <- dummyCHARfunc
+[0m[32m+         3:     call   t5 <- dummyCHARfunc
+[0m[31m-         6:     assign t3 <- 1
+[0m[32m+         6:     assign t7 <- 1
+[0m[31m-         8:     assign t3 <- 0
+[0m[32m+         8:     assign t7 <- 0
+[0m[31m-        10:     assign v4 <- t3
+[0m[32m+        10:     assign v4 <- t7
+[0m[31m-        11:     call   t4 <- dummyBOOLfunc
+[0m[32m+        11:     call   t9 <- dummyBOOLfunc
+[0m[31m-        21:     sub    t5 <- 40547, 66226
+[0m[32m+        21:     sub    t11 <- 40547, 66226
+[0m[31m-        22:     sub    t6 <- t5, 9102
+[0m[32m+        22:     sub    t12 <- t11, 9102
+[0m[31m-        23:     return t6
+[0m[32m+        23:     return t12
+[0m[31m-        37:     assign t7 <- 1
+[0m[32m+        37:     assign t13 <- 1
+[0m[31m-        40:     assign t7 <- 0
+[0m[32m+        40:     assign t13 <- 0
+[0m[31m-        42:     assign v4 <- t7
+[0m[32m+        42:     assign v4 <- t13
+[0m[31m-       [ $t0       <bool>       ]
+[0m[32m+       [ $t1       <bool>       ]
+[0m[31m-       [ $t1       <int>       ]
+[0m[31m-       [ $t10      <ptr(4) to <array 63 of <array 17 of <array 43 of <array 18 of <array 100 of <int>>>>>>>       ]
+[0m[31m-       [ $t2       <int>       ]
+[0m[32m+       [ $t12      <int>       ]
+[0m[32m+       [ $t13      <int>       ]
+[0m[32m+       [ $t14      <ptr(4) to <array 20 of <array 92 of <array 32 of <array 37 of <array 46 of <char>>>>>>>       ]
+[0m[32m+       [ $t15      <ptr(4) to <array 47 of <array 89 of <array 67 of <array 68 of <array 29 of <char>>>>>>>       ]
+[0m[32m+       [ $t16      <ptr(4) to <array 63 of <array 17 of <array 43 of <array 18 of <array 100 of <int>>>>>>>       ]
+[0m[32m+       [ $t17      <int>       ]
+[0m[31m-       [ $t4       <char>       ]
+[0m[31m-       [ $t6       <int>       ]
+[0m[32m+       [ $t9       <char>       ]
+[0m[31m-       [ $t8       <ptr(4) to <array 20 of <array 92 of <array 32 of <array 37 of <array 46 of <char>>>>>>>       ]
+[0m[31m-       [ $t9       <ptr(4) to <array 47 of <array 89 of <array 67 of <array 68 of <array 29 of <char>>>>>>>       ]
+[0m[31m-         1:     call   t0 <- dummyBOOLfunc
+[0m[32m+         1:     call   t1 <- dummyBOOLfunc
+[0m[31m-         2:     if     t0 = 1 goto 2_while_body
+[0m[32m+         2:     if     t1 = 1 goto 2_while_body
+[0m[31m-        23:     call   t1 <- dummyINTfunc
+[0m[32m+        23:     call   t3 <- dummyINTfunc
+[0m[31m-        28:     add    t2 <- 91954, 46809
+[0m[32m+        28:     add    t5 <- 91954, 46809
+[0m[31m-        29:     sub    t3 <- t2, 62584
+[0m[32m+        29:     sub    t7 <- t5, 62584
+[0m[31m-        30:     return t3
+[0m[32m+        30:     return t7
+[0m[31m-        34:     call   t4 <- dummyCHARfunc
+[0m[32m+        34:     call   t9 <- dummyCHARfunc
+[0m[31m-        40:     div    t5 <- 86407, 80732
+[0m[32m+        40:     div    t11 <- 86407, 80732
+[0m[31m-        41:     add    t6 <- t5, 7600
+[0m[32m+        41:     add    t12 <- t11, 7600
+[0m[31m-        42:     sub    t7 <- t6, 26130
+[0m[32m+        42:     sub    t13 <- t12, 26130
+[0m[31m-        43:     return t7
+[0m[32m+        43:     return t13
+[0m[31m-        55:     &()    t8 <- v5
+[0m[32m+        55:     &()    t14 <- v5
+[0m[31m-        56:     param  2 <- t8
+[0m[32m+        56:     param  2 <- t14
+[0m[31m-        57:     &()    t9 <- v4
+[0m[32m+        57:     &()    t15 <- v4
+[0m[31m-        58:     param  1 <- t9
+[0m[32m+        58:     param  1 <- t15
+[0m[31m-        59:     &()    t10 <- v3
+[0m[32m+        59:     &()    t16 <- v3
+[0m[31m-        60:     param  0 <- t10
+[0m[32m+        60:     param  0 <- t16
+[0m[31m-        61:     call   t11 <- f0
+[0m[32m+        61:     call   t17 <- f0
+[0m[31m-        62:     assign v2 <- t11
+[0m[32m+        62:     assign v2 <- t17
+[0m[31m-       [ $t0       <bool>       ]
+[0m[31m-       [ $t10      <int>       ]
+[0m[32m+       [ $t11      <bool>       ]
+[0m[31m-       [ $t2       <bool>       ]
+[0m[32m+       [ $t12      <bool>       ]
+[0m[31m-       [ $t3       <char>       ]
+[0m[32m+       [ $t13      <char>       ]
+[0m[31m-       [ $t4       <bool>       ]
+[0m[32m+       [ $t14      <bool>       ]
+[0m[32m+       [ $t15      <bool>       ]
+[0m[32m+       [ $t16      <int>       ]
+[0m[32m+       [ $t3       <bool>       ]
+[0m[31m-       [ $t6       <bool>       ]
+[0m[31m-       [ $t8       <bool>       ]
+[0m[31m-         0:     assign t0 <- 1
+[0m[32m+         0:     assign t1 <- 1
+[0m[31m-         2:     assign t0 <- 0
+[0m[32m+         2:     assign t1 <- 0
+[0m[31m-         6:     assign t1 <- 1
+[0m[32m+         6:     assign t3 <- 1
+[0m[31m-         8:     assign t1 <- 0
+[0m[32m+         8:     assign t3 <- 0
+[0m[31m-        10:     if     t0 # t1 goto 1
+[0m[32m+        10:     if     t1 # t3 goto 1
+[0m[31m-        13:     assign t2 <- 1
+[0m[32m+        13:     assign t5 <- 1
+[0m[31m-        16:     assign t2 <- 0
+[0m[32m+        16:     assign t5 <- 0
+[0m[31m-        18:     return t2
+[0m[32m+        18:     return t5
+[0m[31m-        19:     call   t3 <- dummyCHARfunc
+[0m[32m+        19:     call   t7 <- dummyCHARfunc
+[0m[31m-        23:     assign t4 <- 1
+[0m[32m+        23:     assign t9 <- 1
+[0m[31m-        26:     assign t4 <- 0
+[0m[32m+        26:     assign t9 <- 0
+[0m[31m-        28:     return t4
+[0m[32m+        28:     return t9
+[0m[31m-        39:     assign t5 <- 1
+[0m[32m+        39:     assign t11 <- 1
+[0m[31m-        41:     assign t5 <- 0
+[0m[32m+        41:     assign t11 <- 0
+[0m[31m-        43:     return t5
+[0m[32m+        43:     return t11
+[0m[31m-        44:     call   t6 <- dummyBOOLfunc
+[0m[32m+        44:     call   t12 <- dummyBOOLfunc
+[0m[31m-        46:     call   t7 <- dummyCHARfunc
+[0m[32m+        46:     call   t13 <- dummyCHARfunc
+[0m[31m-        47:     if     98 > t7 goto 42_while_body
+[0m[32m+        47:     if     98 > t13 goto 42_while_body
+[0m[31m-        56:     assign t8 <- 1
+[0m[32m+        56:     assign t14 <- 1
+[0m[31m-        58:     assign t8 <- 0
+[0m[32m+        58:     assign t14 <- 0
+[0m[31m-        60:     if     t8 = 1 goto 46
+[0m[32m+        60:     if     t14 = 1 goto 46
+[0m[31m-        63:     assign t9 <- 1
+[0m[32m+        63:     assign t15 <- 1
+[0m[31m-        66:     assign t9 <- 0
+[0m[32m+        66:     assign t15 <- 0
+[0m[31m-        68:     return t9
+[0m[32m+        68:     return t15
+[0m[31m-        69:     div    t10 <- 47865, 16120
+[0m[32m+        69:     div    t16 <- 47865, 16120
+[0m[31m-        70:     assign v1 <- t10
+[0m[32m+        70:     assign v1 <- t16
+[0m
