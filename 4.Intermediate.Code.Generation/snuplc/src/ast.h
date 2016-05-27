@@ -234,8 +234,11 @@ class CAstScope : public CAstNode {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
 
+    /// @brief Get current code block.
     virtual CCodeBlock* GetCodeBlock(void) const;
 
     /// @}
@@ -431,6 +434,9 @@ class CAstStatement : public CAstNode {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param next next label to be run.
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *next);
 
     /// @}
@@ -511,6 +517,9 @@ class CAstStatAssign : public CAstStatement {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param next next label to be run.
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *next);
 
     /// @}
@@ -587,7 +596,10 @@ class CAstStatCall : public CAstStatement {
 
     /// @name transformation into TAC
     /// @{
-
+    
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param next next label to be run.
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *next);
 
     /// @}
@@ -667,6 +679,9 @@ class CAstStatReturn : public CAstStatement {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param next next label to be run.
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *next);
 
     /// @}
@@ -749,6 +764,9 @@ class CAstStatIf : public CAstStatement {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param next next label to be run.
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *next);
 
     /// @}
@@ -826,6 +844,9 @@ class CAstStatWhile : public CAstStatement {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param next next label to be run.
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *next);
 
     /// @}
@@ -872,7 +893,14 @@ class CAstExpression : public CAstNode {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
 
     /// @}
@@ -975,8 +1003,15 @@ class CAstBinaryOp : public CAstOperation {
 
     /// @name transformation into TAC
     /// @{
-
+ 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
 
     /// @}
@@ -1053,7 +1088,14 @@ class CAstUnaryOp : public CAstOperation {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
 
     /// @}
@@ -1133,7 +1175,9 @@ class CAstSpecialOp : public CAstOperation {
 
     /// @name transformation into TAC
     /// @{
-
+ 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
 
     /// @}
@@ -1218,8 +1262,15 @@ class CAstFunctionCall : public CAstExpression {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
-    virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
+    virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue, CTacLabel *lfalse);
 
     /// @}
 
@@ -1312,7 +1363,14 @@ class CAstDesignator : public CAstOperand {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
 
     /// @}
@@ -1404,7 +1462,14 @@ class CAstArrayDesignator : public CAstDesignator {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
 
     /// @}
@@ -1485,7 +1550,14 @@ class CAstConstant : public CAstOperand {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
 
     /// @}
@@ -1564,7 +1636,14 @@ class CAstStringConstant : public CAstOperand {
     /// @name transformation into TAC
     /// @{
 
+    /// @brief Create Three-Address codes
+    /// @param cb code block
     virtual CTacAddr* ToTac(CCodeBlock *cb);
+
+    /// @brief Create Three-Address codes
+    /// @param cb code block
+    /// @param ltrue label to be run if true
+    /// @param lfalse label to be run if false
     virtual CTacAddr* ToTac(CCodeBlock *cb, CTacLabel *ltrue,CTacLabel *lfalse);
 
     /// @}
