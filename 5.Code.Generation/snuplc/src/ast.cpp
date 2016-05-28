@@ -1569,10 +1569,10 @@ CTacAddr* CAstSpecialOp::ToTac(CCodeBlock *cb)
   // set type to pointer to data type.
   const CType *type = dynamic_cast<const CTacName *>(src)->GetSymbol()->GetDataType();
 
-//  if(dynamic_cast<CAstArrayDesignator *>(GetOperand()) && type->IsScalar()) {
-//    // set type to pointer to base type.
-//    type = dynamic_cast<const CArrayType *>(GetOperand()->GetType())->GetBaseType();
-//  }
+  if(dynamic_cast<CAstArrayDesignator *>(GetOperand()) && type->IsScalar()) {
+    // set type to pointer to base type.
+    type = dynamic_cast<const CArrayType *>(GetOperand()->GetType())->GetBaseType();
+  }
   
   CTacAddr *tmp = cb->CreateTemp(CTypeManager::Get()->GetPointer(type));
   cb->AddInstr(new CTacInstr(opAddress, tmp, src));
@@ -2068,7 +2068,7 @@ CTacAddr* CAstArrayDesignator::ToTac(CCodeBlock *cb)
     cb->AddInstr(new CTacInstr(opAdd, tmp_add2, new CTacName(_symbol), tmp_add1));
 
     // Return reference of the result temporary variable.
-    return new CTacReference(dynamic_cast<CTacName *>(tmp_add2)->GetSymbol());
+    return new CTacReference(dynamic_cast<CTacName *>(tmp_add2)->GetSymbol(), _symbol);
   }
   else { // array case
     // Create temp that address of array is saved in it.
@@ -2141,7 +2141,7 @@ CTacAddr* CAstArrayDesignator::ToTac(CCodeBlock *cb)
     cb->AddInstr(new CTacInstr(opAdd, tmp_add2, tmp, tmp_add1));
 
     // Return reference of the result temporary variable.
-    return new CTacReference(dynamic_cast<CTacName *>(tmp_add2)->GetSymbol());
+    return new CTacReference(dynamic_cast<CTacName *>(tmp_add2)->GetSymbol(), _symbol);
   }
 }
 
