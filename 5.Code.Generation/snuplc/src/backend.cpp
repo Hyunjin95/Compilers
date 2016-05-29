@@ -133,10 +133,19 @@ void CBackendx86::EmitCode(void)
        << _ind << ".extern WriteLn" << endl
        << endl;
 
-  // TODO
-  // forall s in subscopes do
-  //   EmitScope(s)
-  // EmitScope(program)
+  // Set current scope to module.
+  SetScope(_m);
+
+  const vector<CScope *> subscopes = _curr_scope->GetSubscopes();
+
+  // for all subscope, EmitScope(s).
+  for(int i = 0; i < subscopes.size(); i++) {
+    CScope *s = subscopes.at(i);
+    EmitScope(s);
+  }
+
+  // EmitScope module.
+  EmitScope(_m);
 
   _out << _ind << "# end of text section" << endl
        << _ind << "#-----------------------------------------" << endl
@@ -197,6 +206,16 @@ void CBackendx86::EmitScope(CScope *scope)
   //   EmitInstruction(i)
   //
   // emit function epilogue
+
+  ComputeStackOffsets(scope);
+
+
+  const list<CTacInstr *> instrs = scope->GetCodeBlock()->GetInstr();
+
+  for(int i = 0; i < instrs.size(); i++) {
+    CTacInstr *instr = instr.at(i);
+    EmitInstruction(i);
+  }
 
   _out << endl;
 }
@@ -468,6 +487,7 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
 {
   assert(symtab != NULL);
   vector<CSymbol*> slist = symtab->GetSymbols();
+  int size = 4;
 
   // TODO
   // foreach local symbol l in slist do
