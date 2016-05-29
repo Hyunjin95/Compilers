@@ -144,7 +144,7 @@ void CBackendx86::EmitCode(void)
     EmitScope(s);
   }
 
-  // EmitScope module.
+  // EmitScope program.
   EmitScope(_m);
 
   _out << _ind << "# end of text section" << endl
@@ -207,11 +207,12 @@ void CBackendx86::EmitScope(CScope *scope)
   //
   // emit function epilogue
 
-  ComputeStackOffsets(scope);
+//  ComputeStackOffsets(scope);
 
 
   const list<CTacInstr *> instrs = scope->GetCodeBlock()->GetInstr();
 
+  // for all instruction, EmitInstruction(i)
   for(int i = 0; i < instrs.size(); i++) {
     CTacInstr *instr = instr.at(i);
     EmitInstruction(i);
@@ -327,35 +328,52 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
   switch (op) {
     // binary operators
     // dst = src1 op src2
-    // TODO
+    case opAdd:
+      EmitInstruction("# opAdd", 
+    case opSub:
+    case opMul:
+    case opDiv:
+    case opAnd:
+    case opOr:
+      EmitInstruction(
+
     // unary operators
     // dst = op src1
-    // TODO
+    case opNeg:
+    case opPos:
+    case opNot:
 
     // memory operations
     // dst = src1
-    // TODO
+    case opAssign:
 
     // pointer operations
     // dst = &src1
-    // TODO
+    case opAddress:
+
     // dst = *src1
     case opDeref:
       // opDeref not generated for now
       EmitInstruction("# opDeref", "not implemented", cmt.str());
       break;
 
-
     // unconditional branching
     // goto dst
-    // TODO
+    case opGoto:
 
     // conditional branching
     // if src1 relOp src2 then goto dst
-    // TODO
+    case opEqual:
+    case opNotEqual:
+    case opLessThan:
+    case opLessEqual:
+    case opBiggerEqual:
+    case opBiggerThan:
 
     // function call-related operations
-    // TODO
+    case opCall:
+    case opReturn:
+    case opParam:
 
     // special
     case opLabel:
