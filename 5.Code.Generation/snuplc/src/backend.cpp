@@ -211,11 +211,11 @@ void CBackendx86::EmitScope(CScope *scope)
 
 
   const list<CTacInstr *> instrs = scope->GetCodeBlock()->GetInstr();
-
+  
   // for all instruction, EmitInstruction(i)
-  for(int i = 0; i < instrs.size(); i++) {
-    CTacInstr *instr = instr.at(i);
-    EmitInstruction(i);
+  list<CTacInstr *>::const_iterator instr = instrs.begin();
+  while (instr != instrs.end()) {
+    EmitInstruction(*instr++);
   }
 
   _out << endl;
@@ -329,27 +329,33 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // binary operators
     // dst = src1 op src2
     case opAdd:
-      EmitInstruction("# opAdd", 
     case opSub:
     case opMul:
     case opDiv:
     case opAnd:
     case opOr:
-      EmitInstruction(
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
 
     // unary operators
     // dst = op src1
     case opNeg:
     case opPos:
     case opNot:
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
 
     // memory operations
     // dst = src1
     case opAssign:
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
 
     // pointer operations
     // dst = &src1
     case opAddress:
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
 
     // dst = *src1
     case opDeref:
@@ -360,6 +366,8 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // unconditional branching
     // goto dst
     case opGoto:
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
 
     // conditional branching
     // if src1 relOp src2 then goto dst
@@ -369,11 +377,15 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     case opLessEqual:
     case opBiggerEqual:
     case opBiggerThan:
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
 
     // function call-related operations
     case opCall:
     case opReturn:
     case opParam:
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
 
     // special
     case opLabel:
@@ -441,9 +453,13 @@ string CBackendx86::Operand(const CTac *op)
 {
   string operand;
 
-  // TODO
-  // return a string representing op
-  // hint: take special care of references (op of type CTacReference)
+  // CTacReference
+  if(dynamic_cast<const CTacReference *>(op)) {
+    operand = dynamic_cast<const CTacReference *>(op)->GetDerefSymbol()->GetName();
+  }
+  else { // Others
+    operand = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetName();
+  }
 
   return operand;
 }
