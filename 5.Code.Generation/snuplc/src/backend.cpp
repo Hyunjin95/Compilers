@@ -207,11 +207,29 @@ void CBackendx86::EmitScope(CScope *scope)
   //
   // emit function epilogue
 
-//  ComputeStackOffsets(scope);
+  // TODO: offsets need to modified
+  int size = ComputeStackOffsets(scope->GetSymbolTable(), 8, -12);
+
+  // Emit function prologue
+  _out << left << _ind << "# prologue" << endl;
+
+  EmitInstruction("pushl", "%ebp");
+  EmitInstruction("movl", "%esp, %ebp");
+  EmitInstruction("pushl", "%ebx", "save callee saved registers");
+  EmitInstruction("pushl", "%esi");
+  EmitInstruction("pushl", "%edi");
+  // TODO: minus value need to modified
+  EmitInstruction("subl", "$" + to_string(size) + ", %esp", "make room for locals");
+  _out << endl;
+
+  // TODO: These codes have to analyzed.
+  EmitInstruction("xorl", "%eax, %eax", "memset local stack area to 0");
+  EmitInstruction("movl", "%eax, 0(%esp)");
 
   const list<CTacInstr *> instrs = scope->GetCodeBlock()->GetInstr();
  
   // for all instruction, EmitInstruction(i)
+  _out << endl << left << _ind << "# function body" << endl;
   list<CTacInstr *>::const_iterator instr = instrs.begin();
   while (instr != instrs.end()) {
     EmitInstruction(*instr++);
@@ -506,6 +524,7 @@ int CBackendx86::OperandSize(CTac *t) const
 {
   int size = 4;
 
+  
   // TODO
   // compute the size for operand t of type CTacName
   // Hint: you need to take special care of references (incl. references to pointers!)
@@ -520,20 +539,56 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
 {
   assert(symtab != NULL);
   vector<CSymbol*> slist = symtab->GetSymbols();
-  int size = 4;
+  int size = 0;
 
-  // TODO
-  // foreach local symbol l in slist do
-  //   compute aligned offset on stack and store in symbol l
-  //   set base register to %ebp
-  //
-  // foreach parameter p in slist do
-  //   compute offset on stack and store in symbol p
-  //   set base register to %ebp
-  //
+  for(int i = 0; i < slist.size(); i++) {
+    CSymbol *sym = slist.at(i);
+
+    // parameter
+    if(dynamic_cast<CSymParam *>(sym)) {
+      CSymParam *sym_param = dynamic_cast<CSymParam *>(sym);
+
+      int off_param = param_ofs + (sym_param->GetIndex())*4;
+
+      // Set offset
+      sym->SetOffset(off_param);
+
+      // Set base register to %ebp
+      sym->SetBaseRegister("%ebp");
+    } // local
+    else if(dynamic_cast<CSymLocal *>(sym)) {
+      CSymLocal *sym_local = dynamic_cast<CSymLocal *>(sym);
+
+      int off_local = local_ofs - sym_local->GetDataType()->GetSize();
+      size += sym_local->GetDataType()->GetSize();
+      local_ofs = off_local;
+
+      // Set offset
+      sym->SetOffset(off_local);
+
+      // Set base register to %ebp
+      sym->SetBaseRegister("%ebp");
+    }
+  }
+
   // align size
-  //
+  while(size%4 != 0) {
+    size++;
+  }
+
   // dump stack frame to assembly file
+  _out << _ind << "# stack offsets:" << endl;
+  for(int i = 0; i < slist.size(); i++) {
+    CSymbol *sym = slist.at(i);
+    if(dynamic_cast<CSymParam *>(sym) || dynamic_cast<CSymLocal *>(sym)) {
+      stringstream ss;
+      sym->print(ss);
+      _out << _ind << "#" << setw(7) << right << to_string(sym->GetOffset()) << "(" << sym->GetBaseRegister() << ")"
+        << setw(4) << right << sym->GetDataType()->GetSize() << "  " << ss.str() << endl;
+    }
+  }
+
+  _out << endl;
 
   return size;
 }

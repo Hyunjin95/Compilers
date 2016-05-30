@@ -1,17 +1,10 @@
-module a;
+module test;
 
-var arr: integer[5][3];
-
-function hello(b:integer; t:boolean; q,w,e,r: char): integer;
-var i: char;
+function hello(): integer;
+  var a,b,c,d,e,f,g,h: integer;
+      i: integer[3];
 begin
-  if(true) then
-    i := 'c'
-  else
-    i := 'd'
-  end
 end hello;
 
 begin
-  arr[3][2] := -3
-end a.
+end test.

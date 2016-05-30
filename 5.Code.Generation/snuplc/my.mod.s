@@ -1,5 +1,5 @@
 ##################################################
-# a
+# test
 #
 
     #-----------------------------------------
@@ -20,27 +20,66 @@
 
     # scope hello
 hello:
-    # ???   not implemented         #   0:     assign i <- 99
-    # ???   not implemented         #   1:     goto   0
-    # ???   not implemented         #   2:     assign i <- 100
-l_a_0:
+    # stack offsets:
+    #    -16(%ebp)   4  [ $a        <int> %ebp-16 ]
+    #    -20(%ebp)   4  [ $b        <int> %ebp-20 ]
+    #    -24(%ebp)   4  [ $c        <int> %ebp-24 ]
+    #    -28(%ebp)   4  [ $d        <int> %ebp-28 ]
+    #    -32(%ebp)   4  [ $e        <int> %ebp-32 ]
+    #    -36(%ebp)   4  [ $f        <int> %ebp-36 ]
+    #    -40(%ebp)   4  [ $g        <int> %ebp-40 ]
+    #    -44(%ebp)   4  [ $h        <int> %ebp-44 ]
+    #    -80(%ebp)  20  [ $i        <array 3 of <int>> %ebp-80 ]
 
-    # scope a
+    # prologue
+    pushl   %ebp                   
+    movl    %esp, %ebp             
+    pushl   %ebx                    # save callee saved registers
+    pushl   %esi                   
+    pushl   %edi                   
+    subl    $68, %esp               # make room for locals
+
+    cld                             # memset local stack area to 0
+    xorl    %eax, %eax             
+    movl    $17, %ecx              
+    mov     %esp, %edi             
+    rep     stosl                  
+    movl    $1,-80(%ebp)            # local array 'i': 1 dimensions
+    movl    $3,-76(%ebp)            #   dimension 1: 3 elements
+
+    # function body
+
+l_hello_exit:
+    # epilogue
+    addl    $68, %esp               # remove locals
+    popl    %edi                   
+    popl    %esi                   
+    popl    %ebx                   
+    popl    %ebp                   
+    ret                            
+
+    # scope test
 main:
-    # ???   not implemented         #   0:     &()    t0 <- arr
-    # ???   not implemented         #   1:     param  1 <- 2
-    # ???   not implemented         #   2:     &()    t1 <- arr
-    # ???   not implemented         #   3:     param  0 <- t1
-    # ???   not implemented         #   4:     call   t2 <- DIM
-    # ???   not implemented         #   5:     mul    t3 <- 3, t2
-    # ???   not implemented         #   6:     add    t4 <- t3, 2
-    # ???   not implemented         #   7:     mul    t5 <- t4, 4
-    # ???   not implemented         #   8:     &()    t6 <- arr
-    # ???   not implemented         #   9:     param  0 <- t6
-    # ???   not implemented         #  10:     call   t7 <- DOFS
-    # ???   not implemented         #  11:     add    t8 <- t5, t7
-    # ???   not implemented         #  12:     add    t9 <- t0, t8
-    # ???   not implemented         #  13:     assign @t9 <- -3
+    # stack offsets:
+
+    # prologue
+    pushl   %ebp                   
+    movl    %esp, %ebp             
+    pushl   %ebx                    # save callee saved registers
+    pushl   %esi                   
+    pushl   %edi                   
+    subl    $0, %esp                # make room for locals
+
+    # function body
+
+l_test_exit:
+    # epilogue
+    addl    $0, %esp                # remove locals
+    popl    %edi                   
+    popl    %esi                   
+    popl    %ebx                   
+    popl    %ebp                   
+    ret                            
 
     # end of text section
     #-----------------------------------------
@@ -51,12 +90,6 @@ main:
     .data
     .align 4
 
-    # scope: a
-arr:                                # <array 5 of <array 3 of <int>>>
-    .long    2
-    .long    5
-    .long    3
-    .skip   60
 
 
     # end of global data section

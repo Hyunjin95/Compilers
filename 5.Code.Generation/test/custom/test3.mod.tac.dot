@@ -1,0 +1,10 @@
+digraph IR {
+  graph [fontname="Times New Roman",fontsize=10];
+  node  [fontname="Courier New",fontsize=10];
+  edge  [fontname="Times New Roman",fontsize=10];
+
+  // scope 'test'
+  test_cb [label="test\r  0:     &()    t0 <- _str_1\l  1:     param  0 <- t0\l  2:     call   WriteStr\l  3:     assign i <- 3\l  4:     call   proc\l",shape=box]
+  // scope 'proc'
+  proc_cb [label="proc\r  0:     assign _str_1 <- 3\l",shape=box]
+}
