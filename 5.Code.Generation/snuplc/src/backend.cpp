@@ -132,7 +132,7 @@ void CBackendx86::EmitCode(void)
        << _ind << ".extern WriteChar" << endl
        << _ind << ".extern WriteLn" << endl
        << endl;
-
+/*
   // Set current scope to module.
   SetScope(_m);
 
@@ -146,7 +146,7 @@ void CBackendx86::EmitCode(void)
 
   // EmitScope program.
   EmitScope(_m);
-
+*/
   _out << _ind << "# end of text section" << endl
        << _ind << "#-----------------------------------------" << endl
        << endl;
@@ -208,16 +208,15 @@ void CBackendx86::EmitScope(CScope *scope)
   // emit function epilogue
 
 //  ComputeStackOffsets(scope);
-
-
+/*
   const list<CTacInstr *> instrs = scope->GetCodeBlock()->GetInstr();
-  
+ 
   // for all instruction, EmitInstruction(i)
   list<CTacInstr *>::const_iterator instr = instrs.begin();
   while (instr != instrs.end()) {
     EmitInstruction(*instr++);
   }
-
+*/
   _out << endl;
 }
 
@@ -454,12 +453,12 @@ string CBackendx86::Operand(const CTac *op)
   string operand;
 
   // CTacReference
-  if(dynamic_cast<const CTacReference *>(op)) {
-    operand = dynamic_cast<const CTacReference *>(op)->GetDerefSymbol()->GetName();
-  }
-  else { // Others
-    operand = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetName();
-  }
+//  if(dynamic_cast<const CTacReference *>(op)) {
+//    operand = dynamic_cast<const CTacReference *>(op)->GetDerefSymbol()->GetName();
+//  }
+//  else { // Others
+//    operand = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetName();
+//  }
 
   return operand;
 }

@@ -2,12 +2,16 @@ module a;
 
 var arr: integer[5][3];
 
-function hello(b:integer; t:boolean[3]): integer;
+function hello(b:integer; t:boolean; q,w,e,r: char): integer;
 var i: char;
 begin
-end hello;
+  if(true) then
+  i := 'c'
+  else
+  i := 'd'
+  end
+  end hello;
 
-// hello
-begin
+  begin
   arr[3][2] := -3
-end a.
+  end a.

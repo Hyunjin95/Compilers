@@ -375,7 +375,6 @@ void CParser::subroutineDecl(CAstScope *s) {
         for(int i = vars.size() - 1; i >= 0; i--) {
           CSymParam *param = new CSymParam(i, vars[i], var_type);
           params.push_back(param);
-          vars.pop_back();
           idx++;
         }
 
@@ -404,9 +403,16 @@ void CParser::subroutineDecl(CAstScope *s) {
               Consume(tComma);
               Consume(tIdent, &t_loop);
 
+              for(int i = 0; i < params.size(); i++) {
+                if(params[i]->GetName() == t_loop.GetValue()) {
+                  SetError(t_loop, "duplicate variable declaration '" + t_loop.GetValue() + "'.");
+                  break;
+                }
+              }
+
               // Check duplicate parameter declaration.
               for(int i = 0; i < vars_loop.size(); i++) {
-                if(params[i]->GetName() == t_loop.GetValue() || vars_loop[i] == t_loop.GetValue()) {
+                if(vars_loop[i] == t_loop.GetValue()) {
                   SetError(t_loop, "duplicate variable declaration '" + t_loop.GetValue() + "'.");
                   break;
                 }
