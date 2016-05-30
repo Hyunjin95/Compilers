@@ -6,12 +6,12 @@ function hello(b:integer; t:boolean; q,w,e,r: char): integer;
 var i: char;
 begin
   if(true) then
-  i := 'c'
+    i := 'c'
   else
-  i := 'd'
+    i := 'd'
   end
-  end hello;
+end hello;
 
-  begin
+begin
   arr[3][2] := -3
-  end a.
+end a.
