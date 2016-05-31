@@ -1,8 +1,8 @@
 module test;
 
 function hello(): integer;
-  var a,b,c,d,e,f,g,h: integer;
-      i: integer[3];
+  var 
+      i,j: integer[10][10];
 begin
 end hello;
 
