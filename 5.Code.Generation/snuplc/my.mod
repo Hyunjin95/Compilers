@@ -1,9 +1,9 @@
 module test;
 
-function hello(a,b: integer; c,d: char): integer;
-var arr:integer[3];
+function hello(a,b: integer[3]; c,d: char): integer;
+var arr:char[1];
 begin
-  arr[2] := 77
+  a[0] := 2
 end hello;
 
 

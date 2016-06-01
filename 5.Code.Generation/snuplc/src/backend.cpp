@@ -478,7 +478,7 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
       Load(i->GetSrc(1), "%eax", cmt.str());
       Load(i->GetSrc(2), "%ebx");
       EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction(Imm(i->GetOperation()), Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      EmitInstruction(Condition(i->GetOperation()), Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
       break;
 
     // function call-related operations
@@ -486,7 +486,7 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     {
       int params = dynamic_cast<const CSymProc *>(dynamic_cast<CTacName *>(i->GetSrc(1))->GetSymbol())->GetNParams();
 
-      EmitInstruction("call", dynamic_cast<CTacName *>(i->GetSrc(1))->GetSymbol()->GetName());
+      EmitInstruction("call", dynamic_cast<CTacName *>(i->GetSrc(1))->GetSymbol()->GetName(), cmt.str());
       if(params > 0) {
         EmitInstruction("addl", "$" + to_string(params*4) + ", %esp");
       }
@@ -570,14 +570,18 @@ string CBackendx86::Operand(const CTac *op)
 {
   string operand;
 
-  // TODO: reference case.
-
   // CTacReference
   if(dynamic_cast<const CTacReference *>(op)) {
-    operand = dynamic_cast<const CTacReference *>(op)->GetDerefSymbol()->GetName();
+    int offset = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetOffset(); 
+    const CSymbol *sym = dynamic_cast<const CTacReference *>(op)->GetSymbol();
+
+    // Add Instruction for temporary variable of array
+    EmitInstruction("movl", to_string(offset) + "(" + sym->GetBaseRegister() + "), %edi");
+
+    operand = "(%edi)";
   }
   else if(dynamic_cast<const CTacConst *>(op)) { // const case
-    operand = "$" + to_string(dynamic_cast<const CTacConst *>(op)->GetValue());
+    operand = Imm(dynamic_cast<const CTacConst *>(op)->GetValue());
   }
   else { // Others
     int offset = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetOffset();
