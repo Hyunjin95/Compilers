@@ -229,34 +229,8 @@ void CBackendx86::EmitScope(CScope *scope)
     EmitInstruction("rep", "stosl");
   }
 
-  // Get Symbol list
-  vector<CSymbol*> slist = scope->GetSymbolTable()->GetSymbols();
-
-  for(int i = 0; i < slist.size(); i++) {
-    CSymbol *sym = slist.at(i);
-
-    // Find local arrays
-    if(!dynamic_cast<CSymParam *>(sym) && dynamic_cast<CSymLocal *>(sym)) {
-      if(dynamic_cast<CSymLocal *>(sym)->GetDataType()->IsArray()) {
-        const CArrayType *local_arr = dynamic_cast<const CArrayType *>(dynamic_cast<CSymLocal *>(sym)->GetDataType());
-
-        // Get dimension number.
-        int dim_num = local_arr->GetNDim();
-
-        // Emit prologue instructions for array
-        EmitInstruction("movl", "$" + to_string(dim_num) + "," + to_string(sym->GetOffset()) + "(" + sym->GetBaseRegister() + ")",
-            "local array '" + sym->GetName() + "': " + to_string(dim_num) + " dimensions");
-
-        for(int j = 0; j < dim_num; j++) {
-          EmitInstruction("movl",
-              "$" + to_string(local_arr->GetNElem()) + "," + to_string(sym->GetOffset() + 4 + j*4) + "(" + sym->GetBaseRegister() + ")",
-              "  dimension " + to_string(j+1) + ": " + to_string(local_arr->GetNElem()) + " elements");
-
-          local_arr = dynamic_cast<const CArrayType *>(local_arr->GetInnerType());
-        }
-      }
-    }
-  }
+  // Emit local data(array)
+  EmitLocalData(scope);
 
   // Get instruction list
   const list<CTacInstr *> instrs = scope->GetCodeBlock()->GetInstr();
@@ -361,7 +335,34 @@ void CBackendx86::EmitLocalData(CScope *scope)
 {
   assert(scope != NULL);
 
-  // TODO TODO!
+  // Get Symbol list
+  vector<CSymbol*> slist = scope->GetSymbolTable()->GetSymbols();
+
+  for(int i = 0; i < slist.size(); i++) {
+    CSymbol *sym = slist.at(i);
+
+    // Find local arrays
+    if(!dynamic_cast<CSymParam *>(sym) && dynamic_cast<CSymLocal *>(sym)) {
+      if(dynamic_cast<CSymLocal *>(sym)->GetDataType()->IsArray()) {
+        const CArrayType *local_arr = dynamic_cast<const CArrayType *>(dynamic_cast<CSymLocal *>(sym)->GetDataType());
+
+        // Get dimension number.
+        int dim_num = local_arr->GetNDim();
+
+        // Emit prologue instructions for array
+        EmitInstruction("movl", "$" + to_string(dim_num) + "," + to_string(sym->GetOffset()) + "(" + sym->GetBaseRegister() + ")",
+            "local array '" + sym->GetName() + "': " + to_string(dim_num) + " dimensions");
+
+        for(int j = 0; j < dim_num; j++) {
+          EmitInstruction("movl",
+              "$" + to_string(local_arr->GetNElem()) + "," + to_string(sym->GetOffset() + 4 + j*4) + "(" + sym->GetBaseRegister() + ")",
+              "  dimension " + to_string(j+1) + ": " + to_string(local_arr->GetNElem()) + " elements");
+
+          local_arr = dynamic_cast<const CArrayType *>(local_arr->GetInnerType());
+        }
+      }
+    }
+  }
 }
 
 void CBackendx86::EmitCodeBlock(CCodeBlock *cb)

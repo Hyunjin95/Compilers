@@ -1,11 +1,8 @@
 module test;
 
 function hello(asdf:integer[3]): integer;
-var i,j: integer;
+var i,j: integer[1][2][3][4][5][6][7];
 begin
-  i := 3;
-i := j;
-i := asdf[1]
 end hello;
 
 begin
