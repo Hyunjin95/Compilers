@@ -631,8 +631,8 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
     if(dynamic_cast<CSymParam *>(sym) || dynamic_cast<CSymLocal *>(sym)) {
       stringstream ss;
       sym->print(ss);
-      _out << _ind << "#" << setw(7) << right << to_string(sym->GetOffset()) << "(" << sym->GetBaseRegister() << ")"
-        << right << setw(5) << sym->GetDataType()->GetSize() << "  " << ss.str() << endl;
+      _out << _ind << "#" << "   " << right << setw(4) << to_string(sym->GetOffset()) << "(" << sym->GetBaseRegister() << ")"
+        << right << "  " << setw(2) << sym->GetDataType()->GetSize() << "  " << ss.str() << endl;
     }
   }
 
