@@ -198,16 +198,6 @@ void CBackendx86::EmitScope(CScope *scope)
   _out << _ind << "# scope " << scope->GetName() << endl
        << label << ":" << endl;
 
-  // TODO
-  // ComputeStackOffsets(scope)
-  //
-  // emit function prologue
-  //
-  // forall i in instructions do
-  //   EmitInstruction(i)
-  //
-  // emit function epilogue
-
   // Get Stack offset size.
   int size = ComputeStackOffsets(scope->GetSymbolTable(), 8, -12);
 
@@ -220,17 +210,18 @@ void CBackendx86::EmitScope(CScope *scope)
   EmitInstruction("pushl", "%esi");
   EmitInstruction("pushl", "%edi");
   EmitInstruction("subl", "$" + to_string(size) + ", %esp", "make room for locals");
-  _out << endl;
 
-  // Initialize local stack area
+  // Initialize local stack area when size < 20
   if(size < 20 && size > 0) {
+    _out << endl;
     EmitInstruction("xorl", "%eax, %eax", "memset local stack area to 0");
     
     for(int i = size / 4; i > 0; i--) {
       EmitInstruction("movl", "%eax, " + to_string((i-1)*4) + "(%esp)");
     }
   }
-  else if(size >= 20) {
+  else if(size >= 20) { // Initialize local stack area when size >= 20
+    _out << endl;
     EmitInstruction("cld", "", "memset local stack area to 0");
     EmitInstruction("xorl", "%eax, %eax");
     EmitInstruction("movl", "$" + to_string((size/4)) + ", %ecx");
@@ -244,7 +235,7 @@ void CBackendx86::EmitScope(CScope *scope)
   for(int i = 0; i < slist.size(); i++) {
     CSymbol *sym = slist.at(i);
 
-    // Find local array
+    // Find local arrays
     if(!dynamic_cast<CSymParam *>(sym) && dynamic_cast<CSymLocal *>(sym)) {
       if(dynamic_cast<CSymLocal *>(sym)->GetDataType()->IsArray()) {
         const CArrayType *local_arr = dynamic_cast<const CArrayType *>(dynamic_cast<CSymLocal *>(sym)->GetDataType());
@@ -252,6 +243,7 @@ void CBackendx86::EmitScope(CScope *scope)
         // Get dimension number.
         int dim_num = local_arr->GetNDim();
 
+        // Emit prologue instructions for array
         EmitInstruction("movl", "$" + to_string(dim_num) + "," + to_string(sym->GetOffset()) + "(" + sym->GetBaseRegister() + ")",
             "local array '" + sym->GetName() + "': " + to_string(dim_num) + " dimensions");
 
@@ -275,6 +267,15 @@ void CBackendx86::EmitScope(CScope *scope)
   while (instr != instrs.end()) {
     EmitInstruction(*instr++);
   }
+
+  // Emit function epilogue.
+  _out << endl << Label("exit") << ":" << endl << _ind << "# epilogue" << endl;
+  EmitInstruction("addl", "$" + to_string(size) + ", %esp", "remove locals");
+  EmitInstruction("popl", "%edi");
+  EmitInstruction("popl", "%esi");
+  EmitInstruction("popl", "%ebx");
+  EmitInstruction("popl", "%ebp");
+  EmitInstruction("ret", "");
 
   _out << endl;
 }
