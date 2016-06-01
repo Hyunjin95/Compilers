@@ -392,8 +392,12 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     case opMul:
     case opDiv:
     case opAnd:
+      // opAnd instructions are replaced to another instruction in phase 4.
+      EmitInstruction("# opAnd", "not implemented", cmt.str());
+      break;
     case opOr:
-      EmitInstruction("# ???", "not implemented", cmt.str());
+      // opOr instructions are replaced to another instruction in phase 4.
+      EmitInstruction("# opOr", "not implemented", cmt.str());
       break;
 
     // unary operators
@@ -401,7 +405,8 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     case opNeg:
     case opPos:
     case opNot:
-      EmitInstruction("# ???", "not implemented", cmt.str());
+      // opNot instructions are replaced to another instruction in phase 4.
+      EmitInstruction("# opNot", "not implemented", cmt.str());
       break;
 
     // memory operations
@@ -415,11 +420,14 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     case opAddress:
       EmitInstruction("# ???", "not implemented", cmt.str());
       break;
-
     // dst = *src1
     case opDeref:
       // opDeref not generated for now
       EmitInstruction("# opDeref", "not implemented", cmt.str());
+      break;
+    case opCast:
+      // opCast not generated for now
+      EmitInstruction("# opCast", "not implemented", cmt.str());
       break;
 
     // unconditional branching
@@ -566,12 +574,29 @@ int CBackendx86::OperandSize(CTac *t) const
 {
   int size = 4;
 
-  
-  // TODO
-  // compute the size for operand t of type CTacName
-  // Hint: you need to take special care of references (incl. references to pointers!)
-  //       and arrays. Compare your output to that of the reference implementation
-  //       if you are not sure.
+  // non reference case.
+  if(!dynamic_cast<CTacReference *>(t)) {
+    const CSymbol *sym = dynamic_cast<CTacName *>(t)->GetSymbol();
+
+    // if not array, just return its size
+    if(!sym->GetDataType()->IsArray()) {
+      size = sym->GetDataType()->GetSize();
+    }
+    else { // array returns size of base type.
+      size = dynamic_cast<const CArrayType *>(sym->GetDataType())->GetBaseType()->GetSize();
+    }
+  }
+  else { // reference case: array, pointer
+    const CSymbol *sym = dynamic_cast<CTacReference *>(t)->GetDerefSymbol();
+    
+    // array returns size of base type.
+    if(sym->GetDataType()->IsArray()) {
+      size = dynamic_cast<const CArrayType *>(sym->GetDataType())->GetBaseType()->GetSize();
+    } // pointer returns size of base type of base type(array)
+    else if(sym->GetDataType()->IsPointer()) {
+      size = dynamic_cast<const CArrayType *>(dynamic_cast<const CPointerType *>(sym->GetDataType())->GetBaseType())->GetBaseType()->GetSize();
+    }
+  }
 
   return size;
 }
