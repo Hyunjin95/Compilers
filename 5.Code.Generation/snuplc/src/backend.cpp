@@ -446,7 +446,8 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // pointer operations
     // dst = &src1
     case opAddress:
-      EmitInstruction("# ???", "not implemented", cmt.str());
+      EmitInstruction("leal", Operand(i->GetSrc(1)) + ", %eax", cmt.str());
+      Store(i->GetDest(), 'a');
       break;
     // dst = *src1
     case opDeref:
@@ -469,40 +470,15 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // conditional branching
     // if src1 relOp src2 then goto dst
     case opEqual:
-      Load(i->GetSrc(1), "%eax", cmt.str());
-      Load(i->GetSrc(2), "%ebx");
-      EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction("je", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
-      break;
     case opNotEqual:
-      Load(i->GetSrc(1), "%eax", cmt.str());
-      Load(i->GetSrc(2), "%ebx");
-      EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction("jne", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
-      break;
     case opLessThan:
-      Load(i->GetSrc(1), "%eax", cmt.str());
-      Load(i->GetSrc(2), "%ebx");
-      EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction("jl", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
-      break;
     case opLessEqual:
-      Load(i->GetSrc(1), "%eax", cmt.str());
-      Load(i->GetSrc(2), "%ebx");
-      EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction("jle", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
-      break;
     case opBiggerEqual:
-      Load(i->GetSrc(1), "%eax", cmt.str());
-      Load(i->GetSrc(2), "%ebx");
-      EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction("jge", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
-      break;
     case opBiggerThan:
       Load(i->GetSrc(1), "%eax", cmt.str());
       Load(i->GetSrc(2), "%ebx");
       EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction("jg", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      EmitInstruction(Imm(i->GetOperation()), Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
       break;
 
     // function call-related operations

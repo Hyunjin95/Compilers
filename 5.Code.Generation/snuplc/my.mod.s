@@ -22,18 +22,16 @@
 hello:
     # stack offsets:
     #      8(%ebp)   4  [ %a        <int> %ebp+8 ]
+    #    -32(%ebp)  20  [ $arr      <array 3 of <int>> %ebp-32 ]
     #     12(%ebp)   4  [ %b        <int> %ebp+12 ]
-    #    -13(%ebp)   1  [ $b1       <bool> %ebp-13 ]
-    #    -14(%ebp)   1  [ $b2       <bool> %ebp-14 ]
-    #    -15(%ebp)   1  [ $b3       <bool> %ebp-15 ]
     #     16(%ebp)   1  [ %c        <char> %ebp+16 ]
-    #    -16(%ebp)   1  [ $c1       <char> %ebp-16 ]
-    #    -17(%ebp)   1  [ $c2       <char> %ebp-17 ]
     #     20(%ebp)   1  [ %d        <char> %ebp+20 ]
-    #    -24(%ebp)   4  [ $i1       <int> %ebp-24 ]
-    #    -28(%ebp)   4  [ $i2       <int> %ebp-28 ]
-    #    -32(%ebp)   4  [ $i3       <int> %ebp-32 ]
-    #    -33(%ebp)   1  [ $t0       <bool> %ebp-33 ]
+    #    -36(%ebp)   4  [ $t0       <ptr(4) to <array 3 of <int>>> %ebp-36 ]
+    #    -40(%ebp)   4  [ $t1       <int> %ebp-40 ]
+    #    -44(%ebp)   4  [ $t2       <ptr(4) to <array 3 of <int>>> %ebp-44 ]
+    #    -48(%ebp)   4  [ $t3       <int> %ebp-48 ]
+    #    -52(%ebp)   4  [ $t4       <int> %ebp-52 ]
+    #    -56(%ebp)   4  [ $t5       <int> %ebp-56 ]
 
     # prologue
     pushl   %ebp                   
@@ -41,34 +39,44 @@ hello:
     pushl   %ebx                    # save callee saved registers
     pushl   %esi                   
     pushl   %edi                   
-    subl    $24, %esp               # make room for locals
+    subl    $44, %esp               # make room for locals
 
     cld                             # memset local stack area to 0
     xorl    %eax, %eax             
-    movl    $6, %ecx               
+    movl    $11, %ecx              
     mov     %esp, %edi             
     rep     stosl                  
+    movl    $1,-32(%ebp)            # local array 'arr': 1 dimensions
+    movl    $3,-28(%ebp)            #   dimension 1: 3 elements
 
     # function body
-    movl    -24(%ebp), %eax         #   0:     if     i1 > i2 goto 1
-    movl    -28(%ebp), %ebx        
-    cmpl    %ebx, %eax             
-    jg      l_hello_1              
-    jmp     l_hello_2               #   1:     goto   2
-l_hello_1:
-    movl    $1, %eax                #   3:     assign t0 <- 1
-    movb    %al, -33(%ebp)         
-    jmp     l_hello_3               #   4:     goto   3
-l_hello_2:
-    movl    $0, %eax                #   6:     assign t0 <- 0
-    movb    %al, -33(%ebp)         
-l_hello_3:
-    movzbl  -33(%ebp), %eax         #   8:     assign b1 <- t0
-    movb    %al, -13(%ebp)         
+    leal    -32(%ebp), %eax         #   0:     &()    t0 <- arr
+    movl    %eax, -36(%ebp)        
+    movl    $2, %eax                #   1:     mul    t1 <- 2, 4
+    movl    $4, %ebx               
+    imull   %ebx                   
+    movl    %eax, -40(%ebp)        
+    leal    -32(%ebp), %eax         #   2:     &()    t2 <- arr
+    movl    %eax, -44(%ebp)        
+    movl    -44(%ebp), %eax         #   3:     param  0 <- t2
+    pushl   %eax                   
+    call    DOFS                   
+    addl    $4, %esp               
+    movl    %eax, -48(%ebp)        
+    movl    -40(%ebp), %eax         #   5:     add    t4 <- t1, t3
+    movl    -48(%ebp), %ebx        
+    addl    %ebx, %eax             
+    movl    %eax, -52(%ebp)        
+    movl    -36(%ebp), %eax         #   6:     add    t5 <- t0, t4
+    movl    -52(%ebp), %ebx        
+    addl    %ebx, %eax             
+    movl    %eax, -56(%ebp)        
+    movl    $77, %eax               #   7:     assign @t5 <- 77
+    movl    %eax, arr              
 
 l_hello_exit:
     # epilogue
-    addl    $24, %esp               # remove locals
+    addl    $44, %esp               # remove locals
     popl    %edi                   
     popl    %esi                   
     popl    %ebx                   
