@@ -409,6 +409,7 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     case opDiv:
       Load(i->GetSrc(1), "%eax", cmt.str());
       Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("cdq");
       EmitInstruction("idivl", "%ebx");
       Store(i->GetDest(), 'a');
       break;
@@ -478,7 +479,7 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
       Load(i->GetSrc(1), "%eax", cmt.str());
       Load(i->GetSrc(2), "%ebx");
       EmitInstruction("cmpl", "%ebx, %eax");
-      EmitInstruction(Condition(i->GetOperation()), Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      EmitInstruction("j" + Condition(i->GetOperation()), Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
       break;
 
     // function call-related operations
@@ -579,14 +580,22 @@ string CBackendx86::Operand(const CTac *op)
     EmitInstruction("movl", to_string(offset) + "(" + sym->GetBaseRegister() + "), %edi");
 
     operand = "(%edi)";
+
+    // Global case.
+    if(sym->GetSymbolType() == stGlobal) operand = sym->GetName();
   }
   else if(dynamic_cast<const CTacConst *>(op)) { // const case
     operand = Imm(dynamic_cast<const CTacConst *>(op)->GetValue());
   }
   else { // Others
-    int offset = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetOffset();
-    string baseReg = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetBaseRegister();
+    const CSymbol *sym = dynamic_cast<const CTacName *>(op)->GetSymbol();
+    int offset = sym->GetOffset();
+    string baseReg = sym->GetBaseRegister();
+
     operand = to_string(offset) + "(" + baseReg + ")";
+
+    // Global case.
+    if(sym->GetSymbolType() == stGlobal) operand = sym->GetName();
   }
 
   return operand;
@@ -644,7 +653,6 @@ int CBackendx86::OperandSize(CTac *t) const
   // non reference case.
   if(!dynamic_cast<CTacReference *>(t)) {
     const CSymbol *sym = dynamic_cast<CTacName *>(t)->GetSymbol();
-
 
     // if not array, just return its size
     if(!sym->GetDataType()->IsArray()) {
