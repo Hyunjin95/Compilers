@@ -133,10 +133,8 @@ void CBackendx86::EmitCode(void)
        << _ind << ".extern WriteLn" << endl
        << endl;
 
-  // Set current scope to module.
-  SetScope(_m);
-
-  const vector<CScope *> subscopes = _curr_scope->GetSubscopes();
+  // Get subscopes.
+  const vector<CScope *> subscopes = _m->GetSubscopes();
 
   // for all subscope, EmitScope(s).
   for(int i = 0; i < subscopes.size(); i++) {
@@ -193,6 +191,9 @@ void CBackendx86::EmitScope(CScope *scope)
   if (scope->GetParent() == NULL) label = "main";
   else label = scope->GetName();
 
+  // Set current scope to SCOPE.
+  SetScope(scope);
+
   // label
   _out << _ind << "# scope " << scope->GetName() << endl
        << label << ":" << endl;
@@ -207,7 +208,7 @@ void CBackendx86::EmitScope(CScope *scope)
   //
   // emit function epilogue
 
-  // TODO: offsets need to modified
+  // Get Stack offset size.
   int size = ComputeStackOffsets(scope->GetSymbolTable(), 8, -12);
 
   // Emit function prologue
@@ -218,14 +219,54 @@ void CBackendx86::EmitScope(CScope *scope)
   EmitInstruction("pushl", "%ebx", "save callee saved registers");
   EmitInstruction("pushl", "%esi");
   EmitInstruction("pushl", "%edi");
-  // TODO: minus value need to modified
   EmitInstruction("subl", "$" + to_string(size) + ", %esp", "make room for locals");
   _out << endl;
 
-  // TODO: These codes have to analyzed.
-  EmitInstruction("xorl", "%eax, %eax", "memset local stack area to 0");
-  EmitInstruction("movl", "%eax, 0(%esp)");
+  // Initialize local stack area
+  if(size < 20 && size > 0) {
+    EmitInstruction("xorl", "%eax, %eax", "memset local stack area to 0");
+    
+    for(int i = size / 4; i > 0; i--) {
+      EmitInstruction("movl", "%eax, " + to_string((i-1)*4) + "(%esp)");
+    }
+  }
+  else if(size >= 20) {
+    EmitInstruction("cld", "", "memset local stack area to 0");
+    EmitInstruction("xorl", "%eax, %eax");
+    EmitInstruction("movl", "$" + to_string((size/4)) + ", %ecx");
+    EmitInstruction("mov", "%esp, %edi");
+    EmitInstruction("rep", "stosl");
+  }
 
+  // Get Symbol list
+  vector<CSymbol*> slist = scope->GetSymbolTable()->GetSymbols();
+
+  for(int i = 0; i < slist.size(); i++) {
+    CSymbol *sym = slist.at(i);
+
+    // Find local array
+    if(!dynamic_cast<CSymParam *>(sym) && dynamic_cast<CSymLocal *>(sym)) {
+      if(dynamic_cast<CSymLocal *>(sym)->GetDataType()->IsArray()) {
+        const CArrayType *local_arr = dynamic_cast<const CArrayType *>(dynamic_cast<CSymLocal *>(sym)->GetDataType());
+
+        // Get dimension number.
+        int dim_num = local_arr->GetNDim();
+
+        EmitInstruction("movl", "$" + to_string(dim_num) + "," + to_string(sym->GetOffset()) + "(" + sym->GetBaseRegister() + ")",
+            "local array '" + sym->GetName() + "': " + to_string(dim_num) + " dimensions");
+
+        for(int j = 0; j < dim_num; j++) {
+          EmitInstruction("movl",
+              "$" + to_string(local_arr->GetNElem()) + "," + to_string(sym->GetOffset() + 4 + j*4) + "(" + sym->GetBaseRegister() + ")",
+              "  dimension " + to_string(j+1) + ": " + to_string(local_arr->GetNElem()) + " elements");
+
+          local_arr = dynamic_cast<const CArrayType *>(local_arr->GetInnerType());
+        }
+      }
+    }
+  }
+
+  // Get instruction list
   const list<CTacInstr *> instrs = scope->GetCodeBlock()->GetInstr();
  
   // for all instruction, EmitInstruction(i)
@@ -558,9 +599,18 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
     } // local
     else if(dynamic_cast<CSymLocal *>(sym)) {
       CSymLocal *sym_local = dynamic_cast<CSymLocal *>(sym);
-
-      int off_local = local_ofs - sym_local->GetDataType()->GetSize();
       size += sym_local->GetDataType()->GetSize();
+      
+      int off_local = local_ofs - sym_local->GetDataType()->GetSize();
+
+      // 4-byte alignment
+      if(sym_local->GetDataType()->IsInt() || sym_local->GetDataType()->IsPointer() || sym_local->GetDataType()->IsArray()) {
+        while(off_local % 4 != 0) {
+          off_local--;
+          size++;
+        }
+      }
+
       local_ofs = off_local;
 
       // Set offset
@@ -571,11 +621,9 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
     }
   }
 
-  // align size
-  while(size%4 != 0) {
-    size++;
-  }
-
+  // 4-byte alignment
+  while(size % 4 != 0) size++;
+  
   // dump stack frame to assembly file
   _out << _ind << "# stack offsets:" << endl;
   for(int i = 0; i < slist.size(); i++) {
@@ -584,7 +632,7 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
       stringstream ss;
       sym->print(ss);
       _out << _ind << "#" << setw(7) << right << to_string(sym->GetOffset()) << "(" << sym->GetBaseRegister() << ")"
-        << setw(4) << right << sym->GetDataType()->GetSize() << "  " << ss.str() << endl;
+        << right << setw(5) << sym->GetDataType()->GetSize() << "  " << ss.str() << endl;
     }
   }
 
