@@ -53,7 +53,7 @@ hello:
     movl    -24(%ebp), %eax         #   0:     if     i1 > i2 goto 1
     movl    -28(%ebp), %ebx        
     cmpl    %ebx, %eax             
-    jg      l_hello_1              
+    jge     l_hello_1              
     jmp     l_hello_2               #   1:     goto   2
 l_hello_1:
     movl    $1, %eax                #   3:     assign t0 <- 1

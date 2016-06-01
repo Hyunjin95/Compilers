@@ -229,7 +229,7 @@ void CBackendx86::EmitScope(CScope *scope)
     EmitInstruction("rep", "stosl");
   }
 
-  // Emit local data(array)
+  // Emit local data(for arrays)
   EmitLocalData(scope);
 
   // Get instruction list
@@ -389,9 +389,29 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // binary operators
     // dst = src1 op src2
     case opAdd:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("addl", "%ebx, %eax");
+      Store(i->GetDest(), 'a');
+      break;
     case opSub:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("subl", "%ebx, %eax");
+      Store(i->GetDest(), 'a');
+      break;
     case opMul:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("imull", "%ebx");
+      Store(i->GetDest(), 'a');
+      break;
     case opDiv:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("idivl", "%ebx");
+      Store(i->GetDest(), 'a');
+      break;
     case opAnd:
       // opAnd instructions are replaced to another instruction in phase 4.
       EmitInstruction("# opAnd", "not implemented", cmt.str());
@@ -404,7 +424,13 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // unary operators
     // dst = op src1
     case opNeg:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      EmitInstruction("negl", "%eax");
+      Store(i->GetDest(), 'a');
+      break;
     case opPos:
+      EmitInstruction("# ???", "not implemented", cmt.str());
+      break;
     case opNot:
       // opNot instructions are replaced to another instruction in phase 4.
       EmitInstruction("# opNot", "not implemented", cmt.str());
@@ -413,7 +439,8 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // memory operations
     // dst = src1
     case opAssign:
-      EmitInstruction("# ???", "not implemented", cmt.str());
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Store(i->GetDest(), 'a');
       break;
 
     // pointer operations
@@ -434,25 +461,71 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
     // unconditional branching
     // goto dst
     case opGoto:
-      EmitInstruction("# ???", "not implemented", cmt.str());
+    {
+      EmitInstruction("jmp", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()), cmt.str());
       break;
+    }
 
     // conditional branching
     // if src1 relOp src2 then goto dst
     case opEqual:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("cmpl", "%ebx, %eax");
+      EmitInstruction("je", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      break;
     case opNotEqual:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("cmpl", "%ebx, %eax");
+      EmitInstruction("jne", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      break;
     case opLessThan:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("cmpl", "%ebx, %eax");
+      EmitInstruction("jl", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      break;
     case opLessEqual:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("cmpl", "%ebx, %eax");
+      EmitInstruction("jle", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      break;
     case opBiggerEqual:
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("cmpl", "%ebx, %eax");
+      EmitInstruction("jge", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
+      break;
     case opBiggerThan:
-      EmitInstruction("# ???", "not implemented", cmt.str());
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      Load(i->GetSrc(2), "%ebx");
+      EmitInstruction("cmpl", "%ebx, %eax");
+      EmitInstruction("jg", Label(dynamic_cast<CTacLabel *>(i->GetDest())->GetLabel()));
       break;
 
     // function call-related operations
     case opCall:
+    {
+      int params = dynamic_cast<const CSymProc *>(dynamic_cast<CTacName *>(i->GetSrc(1))->GetSymbol())->GetNParams();
+
+      EmitInstruction("call", dynamic_cast<CTacName *>(i->GetSrc(1))->GetSymbol()->GetName());
+      if(params > 0) {
+        EmitInstruction("addl", "$" + to_string(params*4) + ", %esp");
+      }
+      if(i->GetDest()) {
+        Store(i->GetDest(), 'a');
+      }
+      break;
+    }
     case opReturn:
+      if(i->GetSrc(1)) Load(i->GetSrc(1), "%eax", cmt.str());
+      EmitInstruction("jmp", Label("exit"));
+      break;
     case opParam:
-      EmitInstruction("# ???", "not implemented", cmt.str());
+      Load(i->GetSrc(1), "%eax", cmt.str());
+      EmitInstruction("pushl", "%eax");
       break;
 
     // special
@@ -521,12 +594,19 @@ string CBackendx86::Operand(const CTac *op)
 {
   string operand;
 
+  // TODO: reference case.
+
   // CTacReference
   if(dynamic_cast<const CTacReference *>(op)) {
     operand = dynamic_cast<const CTacReference *>(op)->GetDerefSymbol()->GetName();
   }
+  else if(dynamic_cast<const CTacConst *>(op)) { // const case
+    operand = "$" + to_string(dynamic_cast<const CTacConst *>(op)->GetValue());
+  }
   else { // Others
-    operand = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetName();
+    int offset = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetOffset();
+    string baseReg = dynamic_cast<const CTacName *>(op)->GetSymbol()->GetBaseRegister();
+    operand = to_string(offset) + "(" + baseReg + ")";
   }
 
   return operand;
@@ -575,9 +655,16 @@ int CBackendx86::OperandSize(CTac *t) const
 {
   int size = 4;
 
+  // Constant.
+  if(dynamic_cast<CTacConst *>(t)) {
+    size = 4;
+    return size;
+  }
+  
   // non reference case.
   if(!dynamic_cast<CTacReference *>(t)) {
     const CSymbol *sym = dynamic_cast<CTacName *>(t)->GetSymbol();
+
 
     // if not array, just return its size
     if(!sym->GetDataType()->IsArray()) {
@@ -586,6 +673,8 @@ int CBackendx86::OperandSize(CTac *t) const
     else { // array returns size of base type.
       size = dynamic_cast<const CArrayType *>(sym->GetDataType())->GetBaseType()->GetSize();
     }
+
+    return size;
   }
   else { // reference case: array, pointer
     const CSymbol *sym = dynamic_cast<CTacReference *>(t)->GetDerefSymbol();
@@ -597,9 +686,9 @@ int CBackendx86::OperandSize(CTac *t) const
     else if(sym->GetDataType()->IsPointer()) {
       size = dynamic_cast<const CArrayType *>(dynamic_cast<const CPointerType *>(sym->GetDataType())->GetBaseType())->GetBaseType()->GetSize();
     }
-  }
 
-  return size;
+    return size;
+  }
 }
 
 size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
