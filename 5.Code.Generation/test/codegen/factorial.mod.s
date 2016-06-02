@@ -22,9 +22,9 @@
 fact:
     # stack offsets:
     #      8(%ebp)   4  [ %n        <int> %ebp+8 ]
-    #    -16(%ebp)   4  [ $t0       <int> %ebp-16 ]
-    #    -20(%ebp)   4  [ $t1       <int> %ebp-20 ]
-    #    -24(%ebp)   4  [ $t2       <int> %ebp-24 ]
+    #    -16(%ebp)   4  [ $t10      <int> %ebp-16 ]
+    #    -20(%ebp)   4  [ $t8       <int> %ebp-20 ]
+    #    -24(%ebp)   4  [ $t9       <int> %ebp-24 ]
 
     # prologue
     pushl   %ebp                   
@@ -60,20 +60,20 @@ l_fact_6_if_true:
     jmp     l_fact_exit            
     jmp     l_fact_5                #  10:     goto   5
 l_fact_7_if_false:
-    movl    8(%ebp), %eax           #  12:     sub    t0 <- n, 1
+    movl    8(%ebp), %eax           #  12:     sub    t8 <- n, 1
     movl    $1, %ebx               
     subl    %ebx, %eax             
-    movl    %eax, -16(%ebp)        
-    movl    -16(%ebp), %eax         #  13:     param  0 <- t0
-    pushl   %eax                   
-    call    fact                    #  14:     call   t1 <- fact
-    addl    $4, %esp               
     movl    %eax, -20(%ebp)        
-    movl    8(%ebp), %eax           #  15:     mul    t2 <- n, t1
-    movl    -20(%ebp), %ebx        
-    imull   %ebx                   
+    movl    -20(%ebp), %eax         #  13:     param  0 <- t8
+    pushl   %eax                   
+    call    fact                    #  14:     call   t9 <- fact
+    addl    $4, %esp               
     movl    %eax, -24(%ebp)        
-    movl    -24(%ebp), %eax         #  16:     return t2
+    movl    8(%ebp), %eax           #  15:     mul    t10 <- n, t9
+    movl    -24(%ebp), %ebx        
+    imull   %ebx                   
+    movl    %eax, -16(%ebp)        
+    movl    -16(%ebp), %eax         #  16:     return t10
     jmp     l_fact_exit            
 l_fact_5:
 l_fact_0:
@@ -92,7 +92,7 @@ ReadNumber:
     # stack offsets:
     #    -16(%ebp)   4  [ $i        <int> %ebp-16 ]
     #      8(%ebp)   4  [ %str      <ptr(4) to <array of <char>>> %ebp+8 ]
-    #    -20(%ebp)   4  [ $t0       <int> %ebp-20 ]
+    #    -20(%ebp)   4  [ $t8       <int> %ebp-20 ]
 
     # prologue
     pushl   %ebp                   
@@ -111,9 +111,9 @@ ReadNumber:
     pushl   %eax                   
     call    WriteStr                #   1:     call   WriteStr
     addl    $4, %esp               
-    call    ReadInt                 #   2:     call   t0 <- ReadInt
+    call    ReadInt                 #   2:     call   t8 <- ReadInt
     movl    %eax, -20(%ebp)        
-    movl    -20(%ebp), %eax         #   3:     assign i <- t0
+    movl    -20(%ebp), %eax         #   3:     assign i <- t8
     movl    %eax, -16(%ebp)        
     movl    -16(%ebp), %eax         #   4:     return i
     jmp     l_ReadNumber_exit      

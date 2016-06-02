@@ -23,12 +23,12 @@ primefactor:
     # stack offsets:
     #    -16(%ebp)   4  [ $f        <int> %ebp-16 ]
     #      8(%ebp)   4  [ %n        <int> %ebp+8 ]
-    #    -20(%ebp)   4  [ $t0       <ptr(4) to <array 2 of <char>>> %ebp-20 ]
-    #    -24(%ebp)   4  [ $t1       <int> %ebp-24 ]
-    #    -28(%ebp)   4  [ $t2       <int> %ebp-28 ]
-    #    -32(%ebp)   4  [ $t3       <ptr(4) to <array 2 of <char>>> %ebp-32 ]
-    #    -36(%ebp)   4  [ $t4       <int> %ebp-36 ]
-    #    -40(%ebp)   4  [ $t5       <int> %ebp-40 ]
+    #    -20(%ebp)   4  [ $t10      <int> %ebp-20 ]
+    #    -24(%ebp)   4  [ $t5       <ptr(4) to <array 2 of <char>>> %ebp-24 ]
+    #    -28(%ebp)   4  [ $t6       <int> %ebp-28 ]
+    #    -32(%ebp)   4  [ $t7       <int> %ebp-32 ]
+    #    -36(%ebp)   4  [ $t8       <ptr(4) to <array 2 of <char>>> %ebp-36 ]
+    #    -40(%ebp)   4  [ $t9       <int> %ebp-40 ]
 
     # prologue
     pushl   %ebp                   
@@ -60,9 +60,9 @@ l_primefactor_2_if_false:
     je      l_primefactor_6_if_true
     jmp     l_primefactor_7_if_false #   7:     goto   7_if_false
 l_primefactor_6_if_true:
-    leal    _str_1, %eax            #   9:     &()    t0 <- _str_1
-    movl    %eax, -20(%ebp)        
-    movl    -20(%ebp), %eax         #  10:     param  0 <- t0
+    leal    _str_1, %eax            #   9:     &()    t5 <- _str_1
+    movl    %eax, -24(%ebp)        
+    movl    -24(%ebp), %eax         #  10:     param  0 <- t5
     pushl   %eax                   
     call    WriteStr                #  11:     call   WriteStr
     addl    $4, %esp               
@@ -81,24 +81,24 @@ l_primefactor_13_while_cond:
     jle     l_primefactor_14_while_body
     jmp     l_primefactor_12        #  19:     goto   12
 l_primefactor_14_while_body:
-    movl    8(%ebp), %eax           #  21:     div    t1 <- n, f
+    movl    8(%ebp), %eax           #  21:     div    t6 <- n, f
     movl    -16(%ebp), %ebx        
     cdq                            
     idivl   %ebx                   
-    movl    %eax, -24(%ebp)        
-    movl    -24(%ebp), %eax         #  22:     mul    t2 <- t1, f
+    movl    %eax, -28(%ebp)        
+    movl    -28(%ebp), %eax         #  22:     mul    t7 <- t6, f
     movl    -16(%ebp), %ebx        
     imull   %ebx                   
-    movl    %eax, -28(%ebp)        
-    movl    -28(%ebp), %eax         #  23:     if     t2 = n goto 17_if_true
+    movl    %eax, -32(%ebp)        
+    movl    -32(%ebp), %eax         #  23:     if     t7 = n goto 17_if_true
     movl    8(%ebp), %ebx          
     cmpl    %ebx, %eax             
     je      l_primefactor_17_if_true
     jmp     l_primefactor_18_if_false #  24:     goto   18_if_false
 l_primefactor_17_if_true:
-    leal    _str_2, %eax            #  26:     &()    t3 <- _str_2
-    movl    %eax, -32(%ebp)        
-    movl    -32(%ebp), %eax         #  27:     param  0 <- t3
+    leal    _str_2, %eax            #  26:     &()    t8 <- _str_2
+    movl    %eax, -36(%ebp)        
+    movl    -36(%ebp), %eax         #  27:     param  0 <- t8
     pushl   %eax                   
     call    WriteStr                #  28:     call   WriteStr
     addl    $4, %esp               
@@ -106,20 +106,20 @@ l_primefactor_17_if_true:
     pushl   %eax                   
     call    WriteInt                #  30:     call   WriteInt
     addl    $4, %esp               
-    movl    8(%ebp), %eax           #  31:     div    t4 <- n, f
+    movl    8(%ebp), %eax           #  31:     div    t9 <- n, f
     movl    -16(%ebp), %ebx        
     cdq                            
     idivl   %ebx                   
-    movl    %eax, -36(%ebp)        
-    movl    -36(%ebp), %eax         #  32:     assign n <- t4
+    movl    %eax, -40(%ebp)        
+    movl    -40(%ebp), %eax         #  32:     assign n <- t9
     movl    %eax, 8(%ebp)          
     jmp     l_primefactor_16        #  33:     goto   16
 l_primefactor_18_if_false:
-    movl    -16(%ebp), %eax         #  35:     add    t5 <- f, 1
+    movl    -16(%ebp), %eax         #  35:     add    t10 <- f, 1
     movl    $1, %ebx               
     addl    %ebx, %eax             
-    movl    %eax, -40(%ebp)        
-    movl    -40(%ebp), %eax         #  36:     assign f <- t5
+    movl    %eax, -20(%ebp)        
+    movl    -20(%ebp), %eax         #  36:     assign f <- t10
     movl    %eax, -16(%ebp)        
 l_primefactor_16:
     jmp     l_primefactor_13_while_cond #  38:     goto   13_while_cond

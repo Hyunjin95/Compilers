@@ -23,9 +23,9 @@ test:
     # stack offsets:
     #      8(%ebp)   4  [ %a        <ptr(4) to <array of <bool>>> %ebp+8 ]
     #    -16(%ebp)   4  [ $i        <int> %ebp-16 ]
-    #    -17(%ebp)   1  [ $t0       <bool> %ebp-17 ]
-    #    -24(%ebp)   4  [ $t1       <int> %ebp-24 ]
-    #    -28(%ebp)   4  [ $t10      <int> %ebp-28 ]
+    #    -17(%ebp)   1  [ $t1       <bool> %ebp-17 ]
+    #    -24(%ebp)   4  [ $t10      <int> %ebp-24 ]
+    #    -28(%ebp)   4  [ $t11      <int> %ebp-28 ]
     #    -32(%ebp)   4  [ $t2       <int> %ebp-32 ]
     #    -36(%ebp)   4  [ $t3       <int> %ebp-36 ]
     #    -40(%ebp)   4  [ $t4       <int> %ebp-40 ]
@@ -65,38 +65,38 @@ l_test_3_while_body:
     jg      l_test_6               
     jmp     l_test_7                #   6:     goto   7
 l_test_6:
-    movl    $1, %eax                #   8:     assign t0 <- 1
+    movl    $1, %eax                #   8:     assign t1 <- 1
     movb    %al, -17(%ebp)         
     jmp     l_test_8                #   9:     goto   8
 l_test_7:
-    movl    $0, %eax                #  11:     assign t0 <- 0
+    movl    $0, %eax                #  11:     assign t1 <- 0
     movb    %al, -17(%ebp)         
 l_test_8:
-    movl    -16(%ebp), %eax         #  13:     mul    t1 <- i, 1
+    movl    -16(%ebp), %eax         #  13:     mul    t2 <- i, 1
     movl    $1, %ebx               
     imull   %ebx                   
-    movl    %eax, -24(%ebp)        
+    movl    %eax, -32(%ebp)        
     movl    8(%ebp), %eax           #  14:     param  0 <- a
     pushl   %eax                   
-    call    DOFS                    #  15:     call   t2 <- DOFS
+    call    DOFS                    #  15:     call   t3 <- DOFS
     addl    $4, %esp               
-    movl    %eax, -32(%ebp)        
-    movl    -24(%ebp), %eax         #  16:     add    t3 <- t1, t2
-    movl    -32(%ebp), %ebx        
-    addl    %ebx, %eax             
     movl    %eax, -36(%ebp)        
-    movl    8(%ebp), %eax           #  17:     add    t4 <- a, t3
+    movl    -32(%ebp), %eax         #  16:     add    t4 <- t2, t3
     movl    -36(%ebp), %ebx        
     addl    %ebx, %eax             
     movl    %eax, -40(%ebp)        
-    movzbl  -17(%ebp), %eax         #  18:     assign @t4 <- t0
-    movl    -40(%ebp), %edi        
-    movb    %al, (%edi)            
-    movl    -16(%ebp), %eax         #  19:     add    t5 <- i, 1
-    movl    $1, %ebx               
+    movl    8(%ebp), %eax           #  17:     add    t5 <- a, t4
+    movl    -40(%ebp), %ebx        
     addl    %ebx, %eax             
     movl    %eax, -44(%ebp)        
-    movl    -44(%ebp), %eax         #  20:     assign i <- t5
+    movzbl  -17(%ebp), %eax         #  18:     assign @t5 <- t1
+    movl    -44(%ebp), %edi        
+    movb    %al, (%edi)            
+    movl    -16(%ebp), %eax         #  19:     add    t6 <- i, 1
+    movl    $1, %ebx               
+    addl    %ebx, %eax             
+    movl    %eax, -48(%ebp)        
+    movl    -48(%ebp), %eax         #  20:     assign i <- t6
     movl    %eax, -16(%ebp)        
     jmp     l_test_2_while_cond     #  21:     goto   2_while_cond
 l_test_1:
@@ -109,25 +109,25 @@ l_test_13_while_cond:
     jl      l_test_14_while_body   
     jmp     l_test_12               #  26:     goto   12
 l_test_14_while_body:
-    movl    -16(%ebp), %eax         #  28:     mul    t6 <- i, 1
+    movl    -16(%ebp), %eax         #  28:     mul    t7 <- i, 1
     movl    $1, %ebx               
     imull   %ebx                   
-    movl    %eax, -48(%ebp)        
+    movl    %eax, -52(%ebp)        
     movl    8(%ebp), %eax           #  29:     param  0 <- a
     pushl   %eax                   
-    call    DOFS                    #  30:     call   t7 <- DOFS
+    call    DOFS                    #  30:     call   t8 <- DOFS
     addl    $4, %esp               
-    movl    %eax, -52(%ebp)        
-    movl    -48(%ebp), %eax         #  31:     add    t8 <- t6, t7
-    movl    -52(%ebp), %ebx        
-    addl    %ebx, %eax             
     movl    %eax, -56(%ebp)        
-    movl    8(%ebp), %eax           #  32:     add    t9 <- a, t8
+    movl    -52(%ebp), %eax         #  31:     add    t9 <- t7, t8
     movl    -56(%ebp), %ebx        
     addl    %ebx, %eax             
     movl    %eax, -60(%ebp)        
-    movl    -60(%ebp), %edi        
-    movzbl  (%edi), %eax            #  33:     if     @t9 = 1 goto 17_if_true
+    movl    8(%ebp), %eax           #  32:     add    t10 <- a, t9
+    movl    -60(%ebp), %ebx        
+    addl    %ebx, %eax             
+    movl    %eax, -24(%ebp)        
+    movl    -24(%ebp), %edi        
+    movzbl  (%edi), %eax            #  33:     if     @t10 = 1 goto 17_if_true
     movl    $1, %ebx               
     cmpl    %ebx, %eax             
     je      l_test_17_if_true      
@@ -144,11 +144,11 @@ l_test_18_if_false:
     call    WriteInt                #  41:     call   WriteInt
     addl    $4, %esp               
 l_test_16:
-    movl    -16(%ebp), %eax         #  43:     add    t10 <- i, 1
+    movl    -16(%ebp), %eax         #  43:     add    t11 <- i, 1
     movl    $1, %ebx               
     addl    %ebx, %eax             
     movl    %eax, -28(%ebp)        
-    movl    -28(%ebp), %eax         #  44:     assign i <- t10
+    movl    -28(%ebp), %eax         #  44:     assign i <- t11
     movl    %eax, -16(%ebp)        
     jmp     l_test_13_while_cond    #  45:     goto   13_while_cond
 l_test_12:

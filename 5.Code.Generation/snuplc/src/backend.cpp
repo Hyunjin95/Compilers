@@ -199,7 +199,7 @@ void CBackendx86::EmitScope(CScope *scope)
        << label << ":" << endl;
 
   // Get Stack offset size.
-  int size = ComputeStackOffsets(scope->GetSymbolTable(), 8, -12);
+  size_t size = ComputeStackOffsets(scope->GetSymbolTable(), 8, -12);
 
   // Emit function prologue
   _out << left << _ind << "# prologue" << endl;
@@ -209,14 +209,14 @@ void CBackendx86::EmitScope(CScope *scope)
   EmitInstruction("pushl", "%ebx", "save callee saved registers");
   EmitInstruction("pushl", "%esi");
   EmitInstruction("pushl", "%edi");
-  EmitInstruction("subl", "$" + to_string(size) + ", %esp", "make room for locals");
+  EmitInstruction("subl", Imm((int)size) + ", %esp", "make room for locals");
 
   // Initialize local stack area when size < 20
-  if(size < 20 && size > 0) {
+  if(size > 0 && size < 20) {
     _out << endl;
     EmitInstruction("xorl", "%eax, %eax", "memset local stack area to 0");
     
-    for(int i = size / 4; i > 0; i--) {
+    for(int i = (int)size / 4; i > 0; i--) {
       EmitInstruction("movl", "%eax, " + to_string((i-1)*4) + "(%esp)");
     }
   }
@@ -224,9 +224,11 @@ void CBackendx86::EmitScope(CScope *scope)
     _out << endl;
     EmitInstruction("cld", "", "memset local stack area to 0");
     EmitInstruction("xorl", "%eax, %eax");
-    EmitInstruction("movl", "$" + to_string((size/4)) + ", %ecx");
+    EmitInstruction("movl", Imm((int)(size/4)) + ", %ecx");
     EmitInstruction("mov", "%esp, %edi");
     EmitInstruction("rep", "stosl");
+  }
+  else {
   }
 
   // Emit local data(for arrays)
@@ -244,7 +246,7 @@ void CBackendx86::EmitScope(CScope *scope)
 
   // Emit function epilogue.
   _out << endl << Label("exit") << ":" << endl << _ind << "# epilogue" << endl;
-  EmitInstruction("addl", "$" + to_string(size) + ", %esp", "remove locals");
+  EmitInstruction("addl", Imm((int)size) + ", %esp", "remove locals");
   EmitInstruction("popl", "%edi");
   EmitInstruction("popl", "%esi");
   EmitInstruction("popl", "%ebx");
@@ -350,12 +352,12 @@ void CBackendx86::EmitLocalData(CScope *scope)
         int dim_num = local_arr->GetNDim();
 
         // Emit prologue instructions for array
-        EmitInstruction("movl", "$" + to_string(dim_num) + "," + to_string(sym->GetOffset()) + "(" + sym->GetBaseRegister() + ")",
+        EmitInstruction("movl", Imm(dim_num) + "," + to_string(sym->GetOffset()) + "(" + sym->GetBaseRegister() + ")",
             "local array '" + sym->GetName() + "': " + to_string(dim_num) + " dimensions");
 
         for(int j = 0; j < dim_num; j++) {
           EmitInstruction("movl",
-              "$" + to_string(local_arr->GetNElem()) + "," + to_string(sym->GetOffset() + 4 + j*4) + "(" + sym->GetBaseRegister() + ")",
+              Imm(local_arr->GetNElem()) + "," + to_string(sym->GetOffset() + 4 + j*4) + "(" + sym->GetBaseRegister() + ")",
               "  dimension " + to_string(j+1) + ": " + to_string(local_arr->GetNElem()) + " elements");
 
           local_arr = dynamic_cast<const CArrayType *>(local_arr->GetInnerType());
@@ -489,7 +491,7 @@ void CBackendx86::EmitInstruction(CTacInstr *i)
 
       EmitInstruction("call", dynamic_cast<CTacName *>(i->GetSrc(1))->GetSymbol()->GetName(), cmt.str());
       if(params > 0) {
-        EmitInstruction("addl", "$" + to_string(params*4) + ", %esp");
+        EmitInstruction("addl", Imm(params*4) + ", %esp");
       }
       if(i->GetDest()) {
         Store(i->GetDest(), 'a');
@@ -684,7 +686,7 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
 {
   assert(symtab != NULL);
   vector<CSymbol*> slist = symtab->GetSymbols();
-  int size = 0;
+  size_t size = 0;
 
   for(int i = 0; i < slist.size(); i++) {
     CSymbol *sym = slist.at(i);
@@ -703,7 +705,7 @@ size_t CBackendx86::ComputeStackOffsets(CSymtab *symtab,
     } // local
     else if(dynamic_cast<CSymLocal *>(sym)) {
       CSymLocal *sym_local = dynamic_cast<CSymLocal *>(sym);
-      size += sym_local->GetDataType()->GetSize();
+      size += (size_t)sym_local->GetDataType()->GetSize();
       
       int off_local = local_ofs - sym_local->GetDataType()->GetSize();
 

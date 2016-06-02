@@ -22,11 +22,11 @@
 fib:
     # stack offsets:
     #      8(%ebp)   4  [ %n        <int> %ebp+8 ]
-    #    -16(%ebp)   4  [ $t0       <int> %ebp-16 ]
-    #    -20(%ebp)   4  [ $t1       <int> %ebp-20 ]
-    #    -24(%ebp)   4  [ $t2       <int> %ebp-24 ]
-    #    -28(%ebp)   4  [ $t3       <int> %ebp-28 ]
-    #    -32(%ebp)   4  [ $t4       <int> %ebp-32 ]
+    #    -16(%ebp)   4  [ $t10      <int> %ebp-16 ]
+    #    -20(%ebp)   4  [ $t11      <int> %ebp-20 ]
+    #    -24(%ebp)   4  [ $t12      <int> %ebp-24 ]
+    #    -28(%ebp)   4  [ $t8       <int> %ebp-28 ]
+    #    -32(%ebp)   4  [ $t9       <int> %ebp-32 ]
 
     # prologue
     pushl   %ebp                   
@@ -53,29 +53,29 @@ l_fib_1_if_true:
     jmp     l_fib_exit             
     jmp     l_fib_0                 #   4:     goto   0
 l_fib_2_if_false:
-    movl    8(%ebp), %eax           #   6:     sub    t0 <- n, 1
+    movl    8(%ebp), %eax           #   6:     sub    t8 <- n, 1
     movl    $1, %ebx               
     subl    %ebx, %eax             
-    movl    %eax, -16(%ebp)        
-    movl    -16(%ebp), %eax         #   7:     param  0 <- t0
+    movl    %eax, -28(%ebp)        
+    movl    -28(%ebp), %eax         #   7:     param  0 <- t8
     pushl   %eax                   
-    call    fib                     #   8:     call   t1 <- fib
+    call    fib                     #   8:     call   t9 <- fib
     addl    $4, %esp               
-    movl    %eax, -20(%ebp)        
-    movl    8(%ebp), %eax           #   9:     sub    t2 <- n, 2
+    movl    %eax, -32(%ebp)        
+    movl    8(%ebp), %eax           #   9:     sub    t10 <- n, 2
     movl    $2, %ebx               
     subl    %ebx, %eax             
-    movl    %eax, -24(%ebp)        
-    movl    -24(%ebp), %eax         #  10:     param  0 <- t2
+    movl    %eax, -16(%ebp)        
+    movl    -16(%ebp), %eax         #  10:     param  0 <- t10
     pushl   %eax                   
-    call    fib                     #  11:     call   t3 <- fib
+    call    fib                     #  11:     call   t11 <- fib
     addl    $4, %esp               
-    movl    %eax, -28(%ebp)        
-    movl    -20(%ebp), %eax         #  12:     add    t4 <- t1, t3
-    movl    -28(%ebp), %ebx        
+    movl    %eax, -20(%ebp)        
+    movl    -32(%ebp), %eax         #  12:     add    t12 <- t9, t11
+    movl    -20(%ebp), %ebx        
     addl    %ebx, %eax             
-    movl    %eax, -32(%ebp)        
-    movl    -32(%ebp), %eax         #  13:     return t4
+    movl    %eax, -24(%ebp)        
+    movl    -24(%ebp), %eax         #  13:     return t12
     jmp     l_fib_exit             
 l_fib_0:
 
@@ -93,7 +93,7 @@ ReadNumber:
     # stack offsets:
     #    -16(%ebp)   4  [ $i        <int> %ebp-16 ]
     #      8(%ebp)   4  [ %str      <ptr(4) to <array of <char>>> %ebp+8 ]
-    #    -20(%ebp)   4  [ $t0       <int> %ebp-20 ]
+    #    -20(%ebp)   4  [ $t8       <int> %ebp-20 ]
 
     # prologue
     pushl   %ebp                   
@@ -112,9 +112,9 @@ ReadNumber:
     pushl   %eax                   
     call    WriteStr                #   1:     call   WriteStr
     addl    $4, %esp               
-    call    ReadInt                 #   2:     call   t0 <- ReadInt
+    call    ReadInt                 #   2:     call   t8 <- ReadInt
     movl    %eax, -20(%ebp)        
-    movl    -20(%ebp), %eax         #   3:     assign i <- t0
+    movl    -20(%ebp), %eax         #   3:     assign i <- t8
     movl    %eax, -16(%ebp)        
     movl    -16(%ebp), %eax         #   4:     return i
     jmp     l_ReadNumber_exit      

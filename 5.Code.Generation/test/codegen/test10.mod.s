@@ -22,9 +22,9 @@
 sum_rec:
     # stack offsets:
     #      8(%ebp)   4  [ %n        <int> %ebp+8 ]
-    #    -16(%ebp)   4  [ $t0       <int> %ebp-16 ]
-    #    -20(%ebp)   4  [ $t1       <int> %ebp-20 ]
-    #    -24(%ebp)   4  [ $t2       <int> %ebp-24 ]
+    #    -16(%ebp)   4  [ $t11      <int> %ebp-16 ]
+    #    -20(%ebp)   4  [ $t12      <int> %ebp-20 ]
+    #    -24(%ebp)   4  [ $t13      <int> %ebp-24 ]
 
     # prologue
     pushl   %ebp                   
@@ -46,20 +46,20 @@ sum_rec:
     jg      l_sum_rec_1_if_true    
     jmp     l_sum_rec_2_if_false    #   1:     goto   2_if_false
 l_sum_rec_1_if_true:
-    movl    8(%ebp), %eax           #   3:     sub    t0 <- n, 1
+    movl    8(%ebp), %eax           #   3:     sub    t11 <- n, 1
     movl    $1, %ebx               
     subl    %ebx, %eax             
     movl    %eax, -16(%ebp)        
-    movl    -16(%ebp), %eax         #   4:     param  0 <- t0
+    movl    -16(%ebp), %eax         #   4:     param  0 <- t11
     pushl   %eax                   
-    call    sum_rec                 #   5:     call   t1 <- sum_rec
+    call    sum_rec                 #   5:     call   t12 <- sum_rec
     addl    $4, %esp               
     movl    %eax, -20(%ebp)        
-    movl    8(%ebp), %eax           #   6:     add    t2 <- n, t1
+    movl    8(%ebp), %eax           #   6:     add    t13 <- n, t12
     movl    -20(%ebp), %ebx        
     addl    %ebx, %eax             
     movl    %eax, -24(%ebp)        
-    movl    -24(%ebp), %eax         #   7:     return t2
+    movl    -24(%ebp), %eax         #   7:     return t13
     jmp     l_sum_rec_exit         
     jmp     l_sum_rec_0             #   8:     goto   0
 l_sum_rec_2_if_false:
@@ -82,8 +82,8 @@ sum_iter:
     #    -16(%ebp)   4  [ $i        <int> %ebp-16 ]
     #      8(%ebp)   4  [ %n        <int> %ebp+8 ]
     #    -20(%ebp)   4  [ $sum      <int> %ebp-20 ]
-    #    -24(%ebp)   4  [ $t0       <int> %ebp-24 ]
-    #    -28(%ebp)   4  [ $t1       <int> %ebp-28 ]
+    #    -24(%ebp)   4  [ $t11      <int> %ebp-24 ]
+    #    -28(%ebp)   4  [ $t12      <int> %ebp-28 ]
 
     # prologue
     pushl   %ebp                   
@@ -111,17 +111,17 @@ l_sum_iter_3_while_cond:
     jle     l_sum_iter_4_while_body
     jmp     l_sum_iter_2            #   4:     goto   2
 l_sum_iter_4_while_body:
-    movl    -20(%ebp), %eax         #   6:     add    t0 <- sum, i
+    movl    -20(%ebp), %eax         #   6:     add    t11 <- sum, i
     movl    -16(%ebp), %ebx        
     addl    %ebx, %eax             
     movl    %eax, -24(%ebp)        
-    movl    -24(%ebp), %eax         #   7:     assign sum <- t0
+    movl    -24(%ebp), %eax         #   7:     assign sum <- t11
     movl    %eax, -20(%ebp)        
-    movl    -16(%ebp), %eax         #   8:     add    t1 <- i, 1
+    movl    -16(%ebp), %eax         #   8:     add    t12 <- i, 1
     movl    $1, %ebx               
     addl    %ebx, %eax             
     movl    %eax, -28(%ebp)        
-    movl    -28(%ebp), %eax         #   9:     assign i <- t1
+    movl    -28(%ebp), %eax         #   9:     assign i <- t12
     movl    %eax, -16(%ebp)        
     jmp     l_sum_iter_3_while_cond #  10:     goto   3_while_cond
 l_sum_iter_2:
@@ -141,9 +141,9 @@ l_sum_iter_exit:
 sum_alg:
     # stack offsets:
     #      8(%ebp)   4  [ %n        <int> %ebp+8 ]
-    #    -16(%ebp)   4  [ $t0       <int> %ebp-16 ]
-    #    -20(%ebp)   4  [ $t1       <int> %ebp-20 ]
-    #    -24(%ebp)   4  [ $t2       <int> %ebp-24 ]
+    #    -16(%ebp)   4  [ $t11      <int> %ebp-16 ]
+    #    -20(%ebp)   4  [ $t12      <int> %ebp-20 ]
+    #    -24(%ebp)   4  [ $t13      <int> %ebp-24 ]
 
     # prologue
     pushl   %ebp                   
@@ -159,20 +159,20 @@ sum_alg:
     movl    %eax, 0(%esp)          
 
     # function body
-    movl    8(%ebp), %eax           #   0:     add    t0 <- n, 1
+    movl    8(%ebp), %eax           #   0:     add    t11 <- n, 1
     movl    $1, %ebx               
     addl    %ebx, %eax             
     movl    %eax, -16(%ebp)        
-    movl    8(%ebp), %eax           #   1:     mul    t1 <- n, t0
+    movl    8(%ebp), %eax           #   1:     mul    t12 <- n, t11
     movl    -16(%ebp), %ebx        
     imull   %ebx                   
     movl    %eax, -20(%ebp)        
-    movl    -20(%ebp), %eax         #   2:     div    t2 <- t1, 2
+    movl    -20(%ebp), %eax         #   2:     div    t13 <- t12, 2
     movl    $2, %ebx               
     cdq                            
     idivl   %ebx                   
     movl    %eax, -24(%ebp)        
-    movl    -24(%ebp), %eax         #   3:     return t2
+    movl    -24(%ebp), %eax         #   3:     return t13
     jmp     l_sum_alg_exit         
 
 l_sum_alg_exit:
@@ -189,7 +189,7 @@ ReadNumber:
     # stack offsets:
     #    -16(%ebp)   4  [ $i        <int> %ebp-16 ]
     #      8(%ebp)   4  [ %str      <ptr(4) to <array of <char>>> %ebp+8 ]
-    #    -20(%ebp)   4  [ $t0       <int> %ebp-20 ]
+    #    -20(%ebp)   4  [ $t11      <int> %ebp-20 ]
 
     # prologue
     pushl   %ebp                   
@@ -208,9 +208,9 @@ ReadNumber:
     pushl   %eax                   
     call    WriteStr                #   1:     call   WriteStr
     addl    $4, %esp               
-    call    ReadInt                 #   2:     call   t0 <- ReadInt
+    call    ReadInt                 #   2:     call   t11 <- ReadInt
     movl    %eax, -20(%ebp)        
-    movl    -20(%ebp), %eax         #   3:     assign i <- t0
+    movl    -20(%ebp), %eax         #   3:     assign i <- t11
     movl    %eax, -16(%ebp)        
     movl    -16(%ebp), %eax         #   4:     return i
     jmp     l_ReadNumber_exit      
