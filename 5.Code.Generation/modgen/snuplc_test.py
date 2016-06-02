@@ -48,8 +48,9 @@ def main():
   tempfilename = os.path.join(tempdir, "temp.mod")
   reffilename = os.path.join(tempdir, "ref.temp.mod.s")
   yoursfilename = os.path.join(tempdir, "yours.temp.mod.s")
+  res = True
 
-  while True:
+  while res:
     m = Module("test", funcnum, statnum, statlength)
     with open(tempfilename, "w") as modfile:
       print(m, file=modfile)
@@ -85,6 +86,8 @@ def main():
             if line.startswith('-') or line.startswith('+'):
                 print(line, end='', file=log)
         wrongcount += 1
+        res = False
+
       else: # success
         success += 1
 

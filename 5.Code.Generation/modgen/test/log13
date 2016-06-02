@@ -1,6 +1,0 @@
-- 
--     cld                             # memset local stack area to 0
--     xorl    %eax, %eax             
--     movl    $690369313, %ecx       
--     mov     %esp, %edi             
--     rep     stosl                  
