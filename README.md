@@ -1,10 +1,8 @@
 # The SnuPL/1 Language
 
-The course project was to implement a simple compiler for the SnuPL/1 language from scratch.
+The course project was to implement a simple compiler for the SnuPL/1 language from scratch. This compiler compiles the SnuPL/1 language to 32-bit Intel assembly code or an executable binary file.
 
-This compiler compiles the SnuPL/1 language to 32-bit Intel assembly code or an executable binary file.
-
-The source code of compiler is in [5.Code.Generation/snuplc](https://github.com/hyunjin95/snu-compilers-2016/tree/master/5.Code.Generation/snuplc) and the sample files are in [samples](https://github.com/hyunjin95/snu-compilers-2016/tree/master/samples)
+The source code of compiler is in [5.Code.Generation/snuplc/src](https://github.com/hyunjin95/snu-compilers-2016/tree/master/5.Code.Generation/snuplc/src) and the sample files are in [samples](https://github.com/hyunjin95/snu-compilers-2016/tree/master/samples).
 
 # Projects
 There were five projects we had to complete during the semester. A detailed explanation of each project is given in the project pdf files in the project directory.
@@ -23,6 +21,5 @@ In this phase, my task was to convert the abstract syntax tree into our intermed
 
 ## 5. Code Generation
 In the fifth and last phase of the project, my task was to convert the IR code into x86 assembly code.
-
 
 After finishing all these phases, the SnuPL/1 compiler was completed: it takes programs written in SnuPL/1 and outputs assembly code that can be compiled by an assembler into an executable file.
