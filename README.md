@@ -1,6 +1,6 @@
-# The SnuPL/1 Language
+# A Compiler for the SnuPL/1 Language
 
-The course project was to implement a simple compiler for the SnuPL/1 language from scratch. This compiler compiles the SnuPL/1 language to 32-bit Intel assembly code or an executable binary file.
+The course project was to implement a simple compiler for the SnuPL/1 language from scratch. It compiles the SnuPL/1 language to 32-bit Intel assembly code or an executable binary file.
 
 The source code of compiler is in [5.Code.Generation/snuplc/src](https://github.com/hyunjin95/snu-compilers-2016/tree/master/5.Code.Generation/snuplc/src) and the sample files are in [samples](https://github.com/hyunjin95/snu-compilers-2016/tree/master/samples).
 
