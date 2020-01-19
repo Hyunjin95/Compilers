@@ -2,7 +2,7 @@
 
 The files in this folder are sample files for SnuPL/1.
 
-# Run the compiler
+## Run the compiler
 
 To run the compiler, run the following:
 ```
@@ -17,8 +17,8 @@ For more information, run this:
 ./snuplc --help
 ```
 
-# Execute the sample file
-'fibo.mod' takes an input and as long as the input is valid (in this case, it has to be a number greater than 0). print its fibonacci number. 'fibo' is an executable binary file that has been already compiled. To test the file:
+## Execute the sample file
+'fibo.mod' takes an input and prints its Fibonacci number as long as the input is valid, which means a number greater than 0. 'fibo' is an executable binary file that has been already compiled. To test the file:
 ```
 ./fibo
 ```
