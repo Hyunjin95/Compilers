@@ -1,8 +1,15 @@
 # SnuPL/1
 
-The course project is to implement a simple compiler for the SnuPL/1 language from scratch. 
-Your compiler will compile SnuPL/1 source code to 32-bit Intel assembly code.
+The course project was to implement a simple compiler for the SnuPL/1 language from scratch.
 
+This compiler compiles SnuPL/1 source code to 32-bit Intel assembly code.
+
+The final version of compiler is in [5.Code.Generation/snuplc](https://github.com/hyunjin95/snu-compilers-2016/tree/master/5.Code.Generation/snuplc) and can be tested by typing this command:
+
+```
+snuplc $ make all
+snuplc $ ./TODO TODO.mod
+```
 
 # Project
 
