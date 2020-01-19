@@ -4,7 +4,7 @@ The course project was to implement a simple compiler for the SnuPL/1 language f
 
 The source code of compiler is in [5.Code.Generation/snuplc/src](https://github.com/hyunjin95/snu-compilers-2016/tree/master/5.Code.Generation/snuplc/src) and the sample files are in [samples](https://github.com/hyunjin95/snu-compilers-2016/tree/master/samples).
 
-You can use a SnuPL/1 syntax highlighter for vim. Check [here](https://github.com/hyunjin95/snupl-syntax-highlighter).
+You can use a SnuPL/1 syntax highlighter for vim. Check this repository: https://github.com/hyunjin95/snupl-syntax-highlighter
 
 # Projects
 There were five projects we had to complete during the semester. A detailed explanation of each project is given in the project pdf files in the project directory.
